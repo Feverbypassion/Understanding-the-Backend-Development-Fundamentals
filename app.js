@@ -2,7 +2,8 @@
   "use strict";
 
   var SITE_TITLE = "Understanding the Backend Development Fundamentals";
-  var manifestPath = "docs.json";
+  var DOCS_PATH = "docs/";
+  var GITHUB_REPO = "Feverbypassion/Understanding-the-Backend-Development-Fundamentals";
   var documentList = document.getElementById("documentList");
   var reader = document.getElementById("reader");
   var documents = [];
@@ -38,6 +39,21 @@
       });
   }
 
+  function isMarkdownPath(file) {
+    return /^docs\/.+\.md$/i.test(file);
+  }
+
+  function sortDocumentPaths(paths) {
+    return Array.from(new Set(paths))
+      .filter(isMarkdownPath)
+      .sort(function (left, right) {
+        return left.localeCompare(right, undefined, {
+          numeric: true,
+          sensitivity: "base"
+        });
+      });
+  }
+
   function titleFromMarkdown(file, markdown) {
     var match = markdown.match(/^#\s+(.+?)\s*#*\s*$/m);
     return match ? match[1].trim() : titleFromFilename(file);
@@ -58,18 +74,108 @@
     return markdown;
   }
 
-  async function loadManifest() {
-    var response = await fetch(manifestPath, { cache: "no-cache" });
+  function getGithubRepo() {
+    var githubPagesMatch = window.location.hostname.match(/^(.+)\.github\.io$/i);
+    var repoFromPath = window.location.pathname.split("/").filter(Boolean)[0];
+
+    if (githubPagesMatch && repoFromPath) {
+      return githubPagesMatch[1] + "/" + repoFromPath;
+    }
+
+    return GITHUB_REPO;
+  }
+
+  async function discoverFromGithubContents() {
+    var repo = getGithubRepo();
+    var apiUrl = "https://api.github.com/repos/" + repo + "/contents/" + DOCS_PATH.replace(/\/$/, "");
+    var response = await fetch(apiUrl, {
+      cache: "no-cache",
+      headers: {
+        Accept: "application/vnd.github+json"
+      }
+    });
+
     if (!response.ok) {
-      throw new Error("Could not load " + manifestPath + " (" + response.status + ")");
+      throw new Error("Could not list " + DOCS_PATH + " from GitHub (" + response.status + ")");
     }
 
-    var manifest = await response.json();
-    if (!Array.isArray(manifest.documents)) {
-      throw new Error("docs.json must contain a documents array.");
+    var entries = await response.json();
+    if (!Array.isArray(entries)) {
+      throw new Error("GitHub did not return a directory listing for " + DOCS_PATH);
     }
 
-    return manifest.documents
+    return sortDocumentPaths(
+      entries
+        .filter(function (entry) {
+          return entry.type === "file" && typeof entry.path === "string";
+        })
+        .map(function (entry) {
+          return entry.path;
+        })
+    );
+  }
+
+  async function discoverFromDirectoryListing() {
+    var response = await fetch(DOCS_PATH, { cache: "no-cache" });
+    if (!response.ok) {
+      throw new Error("Could not list " + DOCS_PATH + " locally (" + response.status + ")");
+    }
+
+    var html = await response.text();
+    var parsed = new DOMParser().parseFromString(html, "text/html");
+    var directoryUrl = new URL(DOCS_PATH, window.location.href);
+    var pageBasePath = new URL(".", window.location.href).pathname.replace(/^\/+/, "");
+
+    return sortDocumentPaths(
+      Array.from(parsed.querySelectorAll("a[href]"))
+        .map(function (link) {
+          var url = new URL(link.getAttribute("href"), directoryUrl);
+          if (url.origin !== window.location.origin) {
+            return "";
+          }
+
+          var path = decodeURIComponent(url.pathname.replace(/^\/+/, ""));
+          return pageBasePath && path.startsWith(pageBasePath)
+            ? path.slice(pageBasePath.length)
+            : path;
+        })
+    );
+  }
+
+  async function discoverDocumentPaths() {
+    if (window.location.protocol === "file:") {
+      throw new Error("Open this page through a local server or GitHub Pages so it can read docs/.");
+    }
+
+    var isLocal =
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1" ||
+      window.location.hostname === "[::1]" ||
+      window.location.hostname === "::1";
+
+    var discoveries = isLocal
+      ? [discoverFromDirectoryListing, discoverFromGithubContents]
+      : [discoverFromGithubContents, discoverFromDirectoryListing];
+    var lastError;
+
+    for (var index = 0; index < discoveries.length; index += 1) {
+      try {
+        var paths = await discoveries[index]();
+        if (paths.length) {
+          return paths;
+        }
+      } catch (error) {
+        lastError = error;
+      }
+    }
+
+    throw lastError || new Error("No Markdown files found in " + DOCS_PATH);
+  }
+
+  async function loadDocuments() {
+    var paths = await discoverDocumentPaths();
+
+    return paths
       .filter(function (file) {
         return typeof file === "string" && file.trim();
       })
@@ -103,20 +209,20 @@
   function renderNav() {
     documentList.innerHTML = "";
 
-    documents.forEach(function (doc) {
+    documents.forEach(function (doc, index) {
       var item = document.createElement("li");
       var button = document.createElement("button");
       var chapter = document.createElement("span");
       var title = document.createElement("span");
+      var filename = doc.file.split("/").pop() || doc.file;
+      var chapterMatch = filename.match(/^\d+/);
 
       button.type = "button";
       button.dataset.file = doc.file;
       button.className = "document-link";
       chapter.className = "document-index";
       title.className = "document-title";
-      chapter.textContent = doc.file.match(/^\d+/)
-        ? doc.file.match(/^\d+/)[0]
-        : String(documentList.children.length + 1).padStart(2, "0");
+      chapter.textContent = chapterMatch ? chapterMatch[0] : String(index + 1).padStart(2, "0");
       title.textContent = doc.title;
 
       button.appendChild(chapter);
@@ -190,7 +296,7 @@
 
   async function init() {
     try {
-      documents = await loadManifest();
+      documents = await loadDocuments();
       if (!documents.length) {
         setReaderState("No documents found.", "error");
         return;
