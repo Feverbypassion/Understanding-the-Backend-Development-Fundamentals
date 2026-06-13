@@ -177,6 +177,8 @@ Each part answers a different question.
 | Architecture Patterns | How should responsibilities be organized as the system grows? |
 | Platform Backend | Which parts can be handled by a managed or open-source game backend platform? |
 
+Chapter 1 grouped Security and Observability as cross-cutting concerns. In this final chapter, they are separated into review paths so you can choose what to study next. The earlier Infrastructure / Operations area maps mainly to Cloud / Infrastructure, while operational visibility continues through Observability and Operations.
+
 This map is useful because backend decisions are connected.
 
 For example, a daily reward feature is not only a reward feature. It may involve authentication, validation, database records, and time rules. It may also involve inventory updates, logs, admin tools, Remote Config, and possible customer support investigations.

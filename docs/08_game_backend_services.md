@@ -142,12 +142,14 @@ GET /players/me
 PATCH /players/me/profile
 GET /players/me/save
 PUT /players/me/save
-POST /players/me/progress/stage-clear
+POST /players/me/progress/stage-clears
 ```
 
 These are example API shapes for study. You are not expected to implement them in this chapter.
 
 Think of the generic save endpoints mainly as convenience cloud save examples, not as a safe default for every progression change. Sensitive progression often works better as smaller action-based requests, such as recording a validated stage clear.
+
+Even when these APIs use resource-style names, some of them represent gameplay commands from the player's point of view. For example, creating a stage-clear record or an achievement-claim record lets the server validate the action, apply related state changes, and return the result as one operation. The request body can identify the stage, achievement, or other gameplay object involved.
 
 #### What should the server validate?
 
@@ -342,7 +344,7 @@ A simple API shape might look like this:
 
 ```http
 GET /players/me/achievements
-POST /players/me/achievements/{achievementId}/claim
+POST /players/me/achievement-claims
 ```
 
 For achievements, the server should validate progress, completion state, duplicate reward claims, and event status when needed. Sensitive achievement progress should come from trusted server-side records, validated gameplay events, or previously accepted gameplay results, not only from a client-sent completion flag.
