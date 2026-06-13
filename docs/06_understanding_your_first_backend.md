@@ -173,7 +173,7 @@ keeps the example small by using only `displayName` in the request body.
 
 The player profile and leaderboard examples are also simplified. `GET /players/me` assumes authenticated
 self-profile access, so a real API should include authentication checks. If an API returns limited public
-profile or ranking data, the common error examples may be small. If it returns private player data,
+profile or ranking data, the table may list only a small set of common errors. If it returns private player data,
 admin/support data, or protected leaderboard details, authentication and authorization errors such as
 `401 Unauthorized` or `403 Forbidden` may also need to be considered.
 
@@ -368,7 +368,7 @@ Examples:
 ```text
 /health
 /players/{playerId}
-/scores
+/players/me/scores
 /leaderboard
 ```
 
@@ -442,7 +442,7 @@ POST /players/me/scores
 This is clearer than saying only:
 
 ```text
-The /scores API handles scores.
+The score submission API handles scores.
 ```
 
 Clear vocabulary makes debugging, documentation, and team communication easier.

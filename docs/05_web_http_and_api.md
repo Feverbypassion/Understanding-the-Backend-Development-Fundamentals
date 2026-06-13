@@ -202,7 +202,7 @@ Example response:
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
-Location: /scores/score-9001
+Location: /players/me/scores/score-9001
 
 {
   "scoreId": "score-9001",
@@ -382,7 +382,7 @@ Purpose:
 Submit a score after a stage run or play attempt.
 ```
 
-This operation is a contract example. It describes how the request and response could look. It is not a requirement to implement this endpoint in this chapter.
+This operation is a contract example. It describes how the request and response could look. It is not a requirement to implement this API operation in this chapter.
 
 ### Request
 
@@ -428,7 +428,7 @@ A successful score submission might return:
 ```http
 HTTP/1.1 201 Created
 Content-Type: application/json
-Location: /scores/score-9001
+Location: /players/me/scores/score-9001
 ```
 
 ```json
@@ -558,7 +558,7 @@ For this guide, use REST-style thinking as a beginner-friendly resource-oriented
 - Avoid paths that hide the resource being changed.
 - Document request and response examples clearly.
 
-Clear documented behavior matters more than forcing every endpoint into a strict REST label. If the client and server teams can read the contract and understand the expected behavior, the API is easier to use, test, and operate.
+Clear documented behavior matters more than forcing every API operation into a strict REST-style resource model. If the client and server teams can read the contract and understand the expected behavior, the API is easier to use, test, and operate.
 
 ---
 
@@ -679,7 +679,7 @@ Required Headers:
 - Content-Type: application/json
 - Authorization: Bearer <token>
 Success Status: 201 Created
-Optional Success Header: Location: /scores/{scoreId}
+Optional Success Header: Location: /players/me/scores/{scoreId}
 ```
 
 The optional `Location` header is useful when the API exposes created score records as addressable resources.

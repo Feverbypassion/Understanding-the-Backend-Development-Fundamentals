@@ -864,7 +864,7 @@ when later chapters refer to requests, files, commands, or repositories.
 - [GitHub Docs — Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository)  
   Use this if a secret value was accidentally committed or uploaded.
 
-- [Visual Studio Code — User Interface](https://code.visualstudio.com/docs/getstarted/userinterface)  
+- [Visual Studio Code — User Interface](https://code.visualstudio.com/docs/editing/userinterface)  
   Use this when you want to understand the main VS Code interface. For this chapter, focus on opening a folder and using the Explorer view.
 
 - [Visual Studio Code — Integrated Terminal](https://code.visualstudio.com/docs/terminal/basics)  

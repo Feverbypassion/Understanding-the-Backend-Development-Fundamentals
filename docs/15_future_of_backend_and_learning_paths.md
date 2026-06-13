@@ -696,7 +696,7 @@ You would study:
 - How players reach the server
 - DNS and HTTPS
 - Environment variables
-- Logs and monitoring
+- Logs, metrics, alerts, and observability
 - Basic deployment flow
 - Handling event traffic spikes
 

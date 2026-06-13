@@ -191,7 +191,7 @@ A structured log might look like this:
   "timestamp": "2026-05-16T09:30:00Z",
   "level": "error",
   "method": "POST",
-  "path": "/rewards/daily",
+  "path": "/players/me/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
   "requestId": "req-20260516-0001",
@@ -261,7 +261,7 @@ A label might describe a `route`, `status_code`, `region`, or `feature`.
 For example:
 
 ```text
-api_request_duration_seconds{route="/rewards/daily", status_code="500", region="eu"}
+api_request_duration_seconds{route="/players/me/rewards/daily", status_code="500", region="eu"}
 ```
 
 The example above uses a clear unit in the metric name.
@@ -522,7 +522,7 @@ For example, this is dangerous:
 ```json
 {
   "level": "error",
-  "path": "/rewards/daily",
+  "path": "/players/me/rewards/daily",
   "playerId": "player-1001",
   "authToken": "eyJhbGciOi...raw-token-value",
   "message": "Reward claim failed"
@@ -535,7 +535,7 @@ A safer log would remove, mask, or replace it with a safe reference such as a re
 ```json
 {
   "level": "error",
-  "path": "/rewards/daily",
+  "path": "/players/me/rewards/daily",
   "playerId": "player-1001",
   "requestId": "req-20260516-0001",
   "errorCode": "DB_TIMEOUT",
@@ -596,8 +596,8 @@ The team checks related metrics:
 |---|---|
 | Daily reward request rate | Request rate increased after the event started. |
 | Daily reward failure rate | Failure rate increased sharply. |
-| API error rate for `/rewards/daily` | Error rate is high for one route. |
-| API latency for `/rewards/daily` | Latency is higher than normal for the daily reward API. |
+| API error rate for `/players/me/rewards/daily` | Error rate is high for one route. |
+| API latency for `/players/me/rewards/daily` | Latency is higher than normal for the daily reward API. |
 | Database timeout error rate | Database timeout errors increased. |
 
 These metrics help narrow the scope.
@@ -614,7 +614,7 @@ Next, the team looks at logs for failed reward requests.
   "timestamp": "2026-05-16T09:30:00Z",
   "level": "error",
   "method": "POST",
-  "path": "/rewards/daily",
+  "path": "/players/me/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
   "requestId": "req-20260516-0001",
@@ -687,7 +687,7 @@ Read the following log carefully:
   "timestamp": "2026-05-16T09:30:00Z",
   "level": "error",
   "method": "POST",
-  "path": "/rewards/daily",
+  "path": "/players/me/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
   "requestId": "req-20260516-0001",
@@ -719,7 +719,7 @@ A careful reader should notice:
 | Item | Observation |
 |---|---|
 | Method | `POST` |
-| Path | `/rewards/daily` |
+| Path | `/players/me/rewards/daily` |
 | Status code | `500` |
 | Latency | `1240 ms` |
 | Request ID | `req-20260516-0001` |
