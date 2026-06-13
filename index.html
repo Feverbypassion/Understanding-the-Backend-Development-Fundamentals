@@ -19,9 +19,19 @@
       </aside>
 
       <main class="content-shell">
-        <article id="reader" class="markdown-body" aria-live="polite">
-          <div class="reader-state">Loading...</div>
-        </article>
+        <section class="content-panel" aria-label="Document reader">
+          <div class="reader-toolbar" aria-label="Reader toolbar">
+            <div class="toolbar-left">
+              <button id="modeToggle" class="toolbar-button toolbar-button--primary" type="button" disabled>Edit</button>
+            </div>
+            <button id="downloadButton" class="toolbar-button toolbar-button--secondary" type="button" disabled>
+              Download
+            </button>
+          </div>
+          <article id="reader" class="markdown-body" aria-live="polite">
+            <div class="reader-state">Loading...</div>
+          </article>
+        </section>
       </main>
     </div>
 

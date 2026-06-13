@@ -5,9 +5,14 @@
   var DOCS_PATH = "docs/";
   var GITHUB_REPO = "Feverbypassion/Understanding-the-Backend-Development-Fundamentals";
   var documentList = document.getElementById("documentList");
+  var modeToggle = document.getElementById("modeToggle");
+  var downloadButton = document.getElementById("downloadButton");
   var reader = document.getElementById("reader");
   var documents = [];
   var markdownCache = new Map();
+  var draftCache = new Map();
+  var currentFile = "";
+  var isEditMode = false;
 
   function setReaderState(message, type) {
     reader.className = "markdown-body";
@@ -17,6 +22,29 @@
     state.className = "reader-state" + (type ? " reader-state--" + type : "");
     state.textContent = message;
     reader.appendChild(state);
+  }
+
+  function setModeToggleState() {
+    modeToggle.textContent = isEditMode ? "Preview" : "Edit";
+    modeToggle.disabled = !currentFile;
+    modeToggle.setAttribute("aria-pressed", isEditMode ? "true" : "false");
+  }
+
+  function getDownloadFilename(file) {
+    return file.split("/").pop() || "document.md";
+  }
+
+  function hasDocumentUpdate(file) {
+    return (
+      Boolean(file) &&
+      markdownCache.has(file) &&
+      draftCache.has(file) &&
+      draftCache.get(file) !== markdownCache.get(file)
+    );
+  }
+
+  function setDownloadButtonState() {
+    downloadButton.disabled = !hasDocumentUpdate(currentFile);
   }
 
   function getEncodedPath(file) {
@@ -254,6 +282,116 @@
     reader.innerHTML = window.DOMPurify.sanitize(window.marked.parse(markdown));
   }
 
+  function getVisibleMarkdown(file, markdown) {
+    return draftCache.has(file) ? draftCache.get(file) : markdown;
+  }
+
+  function updateCurrentDocumentTitle(markdown) {
+    var doc = documents.find(function (entry) {
+      return entry.file === currentFile;
+    });
+
+    if (!doc) {
+      return;
+    }
+
+    var title = titleFromMarkdown(currentFile, markdown);
+    if (doc.title !== title) {
+      doc.title = title;
+      renderNav();
+      updateActiveNav(currentFile);
+    }
+
+    document.title = title + " - " + SITE_TITLE;
+  }
+
+  function syncEditorDraft() {
+    var editor = document.getElementById("markdownEditor");
+    if (currentFile && editor) {
+      draftCache.set(currentFile, editor.value);
+      setDownloadButtonState();
+    }
+  }
+
+  function renderEditor(markdown) {
+    var editor = document.createElement("textarea");
+    editor.id = "markdownEditor";
+    editor.className = "markdown-editor";
+    editor.value = markdown;
+    editor.spellcheck = false;
+    editor.setAttribute("aria-label", "Markdown text editor");
+    editor.addEventListener("input", function () {
+      if (currentFile) {
+        draftCache.set(currentFile, editor.value);
+        setDownloadButtonState();
+      }
+    });
+
+    reader.className = "markdown-body markdown-editor-shell";
+    reader.innerHTML = "";
+    reader.appendChild(editor);
+    editor.focus();
+  }
+
+  function renderCurrentDocument(markdown) {
+    var visibleMarkdown = getVisibleMarkdown(currentFile, markdown);
+    updateCurrentDocumentTitle(visibleMarkdown);
+    setDownloadButtonState();
+    if (isEditMode) {
+      renderEditor(visibleMarkdown);
+    } else {
+      renderMarkdown(visibleMarkdown);
+    }
+  }
+
+  async function toggleMode() {
+    if (!currentFile) {
+      return;
+    }
+
+    if (isEditMode) {
+      syncEditorDraft();
+    }
+
+    isEditMode = !isEditMode;
+    setModeToggleState();
+
+    try {
+      var markdown = await fetchMarkdown(currentFile);
+      renderCurrentDocument(markdown);
+      reader.scrollTop = 0;
+      document.querySelector(".content-shell").scrollTop = 0;
+    } catch (error) {
+      currentFile = "";
+      document.title = SITE_TITLE;
+      setModeToggleState();
+      setDownloadButtonState();
+      setReaderState(error.message, "error");
+    }
+  }
+
+  function downloadCurrentDocument() {
+    syncEditorDraft();
+    if (!hasDocumentUpdate(currentFile)) {
+      return;
+    }
+
+    var content = draftCache.get(currentFile);
+    var blob = new Blob([content], { type: "text/markdown;charset=utf-8" });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement("a");
+
+    link.href = url;
+    link.download = getDownloadFilename(currentFile);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 0);
+  }
+
   async function loadDocument(file) {
     var doc = documents.find(function (entry) {
       return entry.file === file;
@@ -263,6 +401,9 @@
       return;
     }
 
+    currentFile = file;
+    setModeToggleState();
+    setDownloadButtonState();
     setReaderState("Loading...");
     updateActiveNav(file);
 
@@ -272,11 +413,14 @@
       document.title = doc.title + " - " + SITE_TITLE;
       renderNav();
       updateActiveNav(file);
-      renderMarkdown(markdown);
+      renderCurrentDocument(markdown);
       reader.scrollTop = 0;
       document.querySelector(".content-shell").scrollTop = 0;
     } catch (error) {
+      currentFile = "";
       document.title = SITE_TITLE;
+      setModeToggleState();
+      setDownloadButtonState();
       setReaderState(error.message, "error");
     }
   }
@@ -311,8 +455,13 @@
   }
 
   window.addEventListener("hashchange", function () {
+    syncEditorDraft();
     loadDocument(getRequestedFile());
   });
 
+  modeToggle.addEventListener("click", toggleMode);
+  downloadButton.addEventListener("click", downloadCurrentDocument);
+  setModeToggleState();
+  setDownloadButtonState();
   init();
 })();
