@@ -198,7 +198,7 @@ Examples:
 POST /auth/login
 GET /players/me
 GET /leaderboard?season=weekly
-POST /rewards/daily
+POST /players/me/rewards/daily
 POST /internal/matches/{matchId}/result
 ```
 

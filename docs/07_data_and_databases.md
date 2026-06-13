@@ -87,7 +87,7 @@ Imagine a small score submission flow:
 
 ```text
 [Game Client]
-   | POST /scores
+   | POST /players/me/scores
    v
 [API Server]
    | store score only in server memory
@@ -222,8 +222,8 @@ An item definition might say:
 
 | item_id | name | item_type | max_stack |
 |---|---|---|---:|
-| potion_small | Small Potion | consumable | 99 |
-| material_iron | Iron Material | material | 999 |
+| potion-small | Small Potion | consumable | 99 |
+| material-iron | Iron Material | material | 999 |
 | sword_iron | Iron Sword | weapon | 1 |
 
 This table does not say which player owns the item. It only defines what the item is.
@@ -232,11 +232,11 @@ Currency may also have definitions, such as which currency types exist in the ga
 
 | currency_type | display_name | max_balance |
 |---|---|---:|
-| coin_gold | Gold Coin | 999999 |
-| gem_premium | Premium Gem | 99999 |
+| coin-gold | Gold Coin | 999999 |
+| gem-premium | Premium Gem | 99999 |
 
 This currency definition table describes what currency types exist. It does not describe a player's actual
-balance. In this chapter, we will not put `coin_gold` as a row inside `game_items`. We will handle player
+balance. In this chapter, we will not put `coin-gold` as a row inside `game_items`. We will handle player
 currency balances through `player_currencies` and currency changes through `currency_ledger`.
 
 Game Master Data often changes when the game is updated or when operators configure events. Some Game Master
@@ -269,8 +269,8 @@ This distinction is very important.
 Game Master Data: What is a Small Potion?
 User Data: How many Small Potions does this player own?
 
-Game Master Data: What is `coin_gold` as a currency type?
-User Data: How much `coin_gold` does this player currently have?
+Game Master Data: What is `coin-gold` as a currency type?
+User Data: How much `coin-gold` does this player currently have?
 ```
 
 ### Operational Data
@@ -300,9 +300,9 @@ Log Data records what happened in the system.
 Examples:
 
 ```text
-2026-06-01T10:05:21Z INFO  POST /scores playerId=player-001 stageId=stage-01 score=15200
-2026-06-01T10:05:25Z WARN  POST /rewards/daily playerId=player-001 result=AlreadyClaimed
-2026-06-01T10:05:30Z ERROR GET /inventory playerId=player-404 error=PlayerNotFound
+2026-06-01T10:05:21Z INFO  POST /players/me/scores playerId=player-001 stageId=stage-01 score=15200
+2026-06-01T10:05:25Z WARN  POST /players/me/rewards/daily playerId=player-001 result=AlreadyClaimed
+2026-06-01T10:05:30Z ERROR GET /players/me/inventory playerId=player-404 error=PlayerNotFound
 ```
 
 Logs are useful for debugging, operations, and incident investigation. They are not the same as normal player
@@ -370,9 +370,9 @@ history. If the score submission history disappears, the backend may not know th
 | Data example | Likely category | Why |
 |---|---|---|
 | Item definition for `sword_iron` | Game Master Data | Defines what the item is |
-| Currency definition for `coin_gold` | Game Master Data | Defines what the currency type means |
-| `player-001` owns `potion_small` x3 | User Data | Belongs to a specific player |
-| `player-001` has `coin_gold = 1200` | User Data | Describes a specific player's current currency state |
+| Currency definition for `coin-gold` | Game Master Data | Defines what the currency type means |
+| `player-001` owns `potion-small` x3 | User Data | Belongs to a specific player |
+| `player-001` has `coin-gold = 1200` | User Data | Describes a specific player's current currency state |
 | Weekend event schedule | Operational Data | Used to operate a live event |
 | API error line | Log Data | Records what happened |
 | One-time login code | Temporary Data | Expires after short use |
@@ -978,8 +978,8 @@ The `game_items` table stores item definitions.
 
 | item_id | name | item_type | max_stack |
 |---|---|---|---:|
-| potion_small | Small Potion | consumable | 99 |
-| material_iron | Iron Material | material | 999 |
+| potion-small | Small Potion | consumable | 99 |
+| material-iron | Iron Material | material | 999 |
 | sword_iron | Iron Sword | weapon | 1 |
 
 This table answers:
@@ -992,7 +992,7 @@ It does not answer:
 
 ```text
 Which player owns which item?
-How much `coin_gold` does this player have?
+How much `coin-gold` does this player have?
 ```
 
 Currency is intentionally not listed in this `game_items` table. In this chapter, item definitions and
@@ -1004,9 +1004,9 @@ The `player_items` table stores player ownership of stackable items.
 
 | player_id | item_id | quantity | updated_at |
 |---|---|---:|---|
-| player-001 | potion_small | 3 | 2026-06-01 10:30:00 |
-| player-001 | material_iron | 12 | 2026-06-01 10:31:00 |
-| player-002 | potion_small | 5 | 2026-06-01 10:32:00 |
+| player-001 | potion-small | 3 | 2026-06-01 10:30:00 |
+| player-001 | material-iron | 12 | 2026-06-01 10:31:00 |
+| player-002 | potion-small | 5 | 2026-06-01 10:32:00 |
 
 This table answers:
 
@@ -1056,8 +1056,8 @@ The `currency_definitions` table stores currency types.
 
 | currency_type | display_name | max_balance |
 |---|---|---:|
-| coin_gold | Gold Coin | 999999 |
-| gem_premium | Premium Gem | 99999 |
+| coin-gold | Gold Coin | 999999 |
+| gem-premium | Premium Gem | 99999 |
 
 This table answers:
 
@@ -1092,9 +1092,9 @@ The `player_currencies` table stores current currency balances.
 
 | player_id | currency_type | balance | updated_at |
 |---|---|---:|---|
-| player-001 | coin_gold | 1200 | 2026-06-01 10:45:00 |
-| player-001 | gem_premium | 25 | 2026-06-01 10:40:00 |
-| player-002 | coin_gold | 300 | 2026-06-01 10:41:00 |
+| player-001 | coin-gold | 1200 | 2026-06-01 10:45:00 |
+| player-001 | gem-premium | 25 | 2026-06-01 10:40:00 |
+| player-002 | coin-gold | 300 | 2026-06-01 10:41:00 |
 
 This table answers:
 
@@ -1121,11 +1121,11 @@ The `currency_ledger` table stores structured currency change history.
 
 | ledger_id | player_id | currency_type | change_amount | reason | created_at |
 |---|---|---|---:|---|---|
-| ledger-9001 | player-001 | coin_gold | 100 | daily_reward | 2026-06-01 10:40:00 |
-| ledger-9002 | player-001 | coin_gold | -50 | item_purchase | 2026-06-01 10:45:00 |
+| ledger-9001 | player-001 | coin-gold | 100 | daily-reward | 2026-06-01 10:40:00 |
+| ledger-9002 | player-001 | coin-gold | -50 | item-purchase | 2026-06-01 10:45:00 |
 
 This table shows only two recent example rows, not a full history view. For example, if `player-001` had 1,150
-`coin_gold` before these two rows, then `+100` and `-50` lead to the current balance of 1,200 at
+`coin-gold` before these two rows, then `+100` and `-50` lead to the current balance of 1,200 at
 `2026-06-01 10:45:00`.
 
 A real backend should define a retention policy. For economy, purchase, support, or audit workflows, teams usually keep enough structured history to investigate and recover important account changes.
@@ -1136,7 +1136,7 @@ This table answers:
 Why did this currency amount change?
 ```
 
-In a real service, `reason` is often a controlled reason code such as `daily_reward`, `item_purchase`, or
+In a real service, `reason` is often a controlled reason code such as `daily-reward`, `item-purchase`, or
 `admin_adjustment`, not an arbitrary sentence. This makes support, analytics, and auditing easier.
 
 This is only a ledger-like beginner model. Real economy or purchase records may include more fields, such as
@@ -1219,7 +1219,7 @@ For example:
 ```text
 Current state:
 player_items can tell us what the player currently owns.
-player_currencies can tell us the player's current `coin_gold` balance.
+player_currencies can tell us the player's current `coin-gold` balance.
 player_stage_best_scores can tell us the player's current best score for a stage.
 
 Structured history:
@@ -1284,13 +1284,13 @@ This matters when one feature changes multiple pieces of data.
 Imagine a daily reward grant:
 
 ```text
-Step 1: Add 100 `coin_gold` to the player's currency.
+Step 1: Add 100 `coin-gold` to the player's currency.
 Step 2: Record that the daily reward was claimed.
 ```
 
 What happens if Step 1 succeeds but Step 2 fails?
 
-The player receives `coin_gold`, but the system does not record the claim. The player might be able to claim
+The player receives `coin-gold`, but the system does not record the claim. The player might be able to claim
 again.
 
 What happens if Step 2 succeeds but Step 1 fails?
@@ -1351,8 +1351,8 @@ may be sent again because the first response was lost.
 For example:
 
 ```text
-POST /rewards/daily
-POST /rewards/daily
+POST /players/me/rewards/daily
+POST /players/me/rewards/daily
 ```
 
 The backend should avoid granting the same daily reward twice.
@@ -2106,7 +2106,7 @@ topic from this chapter in more depth.
 The SQL references below use PostgreSQL because it provides clear official documentation. The concepts in this
 chapter are not limited to PostgreSQL.
 
-### Core References
+### Start Here
 
 - [PostgreSQL — Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
   Use this when you want a beginner-friendly introduction to relational databases and SQL.
@@ -2117,7 +2117,7 @@ chapter are not limited to PostgreSQL.
 - [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
   Use this when you want to understand primary keys, foreign keys, unique constraints, and check constraints.
 
-### Optional References
+### Optional Deep Dive
 
 - [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
   Use this when you want to understand why several data changes sometimes need to succeed or fail together.

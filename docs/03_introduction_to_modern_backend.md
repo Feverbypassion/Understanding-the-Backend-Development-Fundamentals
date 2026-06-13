@@ -36,7 +36,7 @@ By the end of this chapter, you should be able to explain:
 
 - Why a backend is needed when a game becomes an online service.
 - Why a backend is not just one server file.
-- The basic role of an API Server, database, cache, File/Object Storage, message queue, authentication, Logging and Monitoring, Admin Dashboard, and Dedicated Game Server.
+- The basic role of an API Server, database, cache, File/Object Storage, message queue, authentication, Logging and Observability, Admin Dashboard, and Dedicated Game Server.
 - The difference between a Game Backend Service and a Dedicated Game Server.
 - How login, profile loading, score submission, leaderboard display, and daily rewards can be mapped to backend components.
 - Why some topics belong to later chapters or advanced courses.
@@ -89,7 +89,7 @@ trust what the client sends.
 For example, imagine a score submission request:
 
 ```text
-stageId: stage_01
+stageId: stage-01
 score: 999999999
 playTime: 3 seconds
 
@@ -186,7 +186,7 @@ A larger backend map may look like this:
       +--> [Cache]
       +--> [File/Object Storage]
       +--> [Message Queue]
-      +--> [Logging and Monitoring]
+      +--> [Logging and Observability]
 
 [Admin Dashboard]
       |
@@ -196,7 +196,7 @@ A larger backend map may look like this:
       +--> [Authentication and Authorization]
       +--> [Database]
       +--> [Audit Log]
-      +--> [Logging and Monitoring]
+      +--> [Logging and Observability]
 
 [Dedicated Game Server]
       |
@@ -232,7 +232,7 @@ As the service grows, new needs appear:
 | The same leaderboard is read very often. | Cache |
 | Analytics processing slows down the player response. | Message Queue |
 | Operators need to change event settings safely. | Admin Dashboard and Audit Log |
-| Developers cannot see why requests are failing. | Logging and Monitoring |
+| Developers cannot see why requests are failing. | Logging and Observability |
 | Players need to move together in a real-time match. | Dedicated Game Server |
 
 This is a better learning path than copying a complex architecture too early. First understand the
@@ -337,7 +337,7 @@ Use this short table as a navigation map before reading the detailed sections.
 | File/Object Storage | Stores larger file-like data. |
 | Message Queue | Queues background work for later processing. |
 | Authentication | Identifies who sent a request. |
-| Logging and Monitoring | Records events and shows system health. |
+| Logging and Observability | Records events and shows system health. |
 | Admin Dashboard | Helps operators manage and investigate the service. |
 | Dedicated Game Server | Runs real-time match or session state. |
 
@@ -353,12 +353,12 @@ Example API-style actions include:
 
 ```http
 POST /auth/guest
-GET  /players/me
-GET  /inventory
-POST /scores
-GET  /leaderboard
-POST /rewards/daily
-GET  /events/current
+GET /players/me
+GET /players/me/inventory
+POST /players/me/scores
+GET /leaderboard
+POST /players/me/rewards/daily
+GET /events/current
 ```
 
 In this example, `GET /players/me` means the backend identifies the player from the authenticated token or
@@ -465,7 +465,7 @@ For example, the database may store replay metadata while File/Object Storage st
 ```text
 Database record:
 - replayId: replay_9001
-- playerId: player_1001
+- playerId: player-1001
 - matchId: match_7001
 - storagePath: replays/2026/05/replay_9001.dat
 
@@ -542,9 +542,9 @@ be authorized to change event rewards in an Admin Dashboard.
 
 Security, authentication, authorization, and validation will be covered more deeply in Chapter 11.
 
-### Logging and Monitoring
+### Logging and Observability
 
-Logging and Monitoring help developers and operators understand what is happening in a running backend.
+Logging and Observability help developers and operators understand what is happening in a running backend.
 
 Logs are records of events. They may show that a player submitted a score, a reward claim failed, or an API
 returned an error.
@@ -552,9 +552,9 @@ returned an error.
 Example log lines:
 
 ```text
-2026-06-01 10:05:12 INFO  requestId=req_abc123 POST /scores playerId=player_1001 score=15200 status=200
-2026-06-01 10:07:31 WARN  requestId=req_def456 GET /leaderboard latency=820ms status=200
-2026-06-01 10:09:44 ERROR requestId=req_ghi789 POST /rewards/daily playerId=player_2040 error=AlreadyClaimed
+2026-06-01 10:05:12 INFO  requestId=req-abc123 POST /players/me/scores playerId=player-1001 score=15200 status=200
+2026-06-01 10:07:31 WARN  requestId=req-def456 GET /leaderboard latency=820ms status=200
+2026-06-01 10:09:44 ERROR requestId=req-ghi789 POST /players/me/rewards/daily playerId=player-2040 error=AlreadyClaimed
 ```
 
 Many real systems also include a request ID so one request can be traced across logs.
@@ -574,7 +574,7 @@ Common monitoring data includes:
 - Reward grant failure count.
 - Concurrent users.
 
-Without logs and monitoring, running a backend is like operating in the dark. We will study logs, metrics,
+Without logs and observability, running a backend is like operating in the dark. We will study logs, metrics,
 traces, alerts, and dashboards in Chapter 12.
 
 ### Admin Dashboard
@@ -607,9 +607,9 @@ stricter authorization, validation, and audit logging because they can affect li
 Example audit log:
 
 ```text
-2026-06-01 11:00:00 admin_01 changed weekend_event_reward from 100 gold to 200 gold
-2026-06-01 11:05:10 admin_02 granted item_rare_ticket x3 to player_1001
-2026-06-01 11:10:44 admin_03 disabled summer_event_banner
+2026-06-01 11:00:00 admin-01 changed weekend-event-reward from 100 gold to 200 gold
+2026-06-01 11:05:10 admin-02 granted item-rare-ticket x3 to player-1001
+2026-06-01 11:10:44 admin-03 disabled summer-event-banner
 ```
 
 We will study tools, dashboards, permissions, audit logs, and LiveOps concepts in Chapter 13.
@@ -650,7 +650,7 @@ design discussion, which belongs to Chapter 9 and later advanced courses.
 
 At this point, do not worry about memorizing every component. The most important pattern is this: the API Server
 receives requests, persistent storage keeps long-term data, caching improves repeated reads, message queues handle
-background work, authentication identifies users, logs and monitoring help operations, and Dedicated Game Servers
+background work, authentication identifies users, logs and observability help operations, and Dedicated Game Servers
 handle real-time sessions when needed.
 
 ## 3.7 Game Backend Service vs Dedicated Game Server
@@ -831,7 +831,7 @@ A simplified component map:
 ```text
 [Game Client]
    |
-   | POST /scores
+   | POST /players/me/scores
    v
 [API Server] ---> [Authentication]
    |
@@ -1045,7 +1045,7 @@ You learned the basic roles of:
 - File/Object Storage.
 - Message Queue.
 - Authentication.
-- Logging and Monitoring.
+- Logging and Observability.
 - Admin Dashboard.
 - Dedicated Game Server.
 

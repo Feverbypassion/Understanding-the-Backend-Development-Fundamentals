@@ -12,7 +12,7 @@ score submission and leaderboard lookup.
 In Chapter 5, you studied HTTP requests, responses, methods, paths, headers, bodies, JSON, status
 codes, and API contracts. This chapter uses those ideas from the point of view of an API Server.
 
-Read this chapter as a map of responsibilities. When you see an example such as `POST /scores`, do
+Read this chapter as a map of responsibilities. When you see an example such as `POST /players/me/scores`, do
 not ask, "Which framework syntax should I type?" Ask, "What does the server need to understand,
 check, and return?"
 
@@ -55,7 +55,7 @@ may enter the leaderboard. A duplicated request may submit the same run twice. A
 cause confusing errors. A client may send a request without authentication. A server may return a
 vague error that the client cannot handle.
 
-This is why API Server flow matters. A backend API is not just a URL path such as `/scores`. It is a
+This is why API Server flow matters. A backend API is not just a URL path such as `/players/me/scores`. It is a
 controlled flow of receiving, checking, processing, and responding.
 
 In beginner backend learning, understanding this flow is more important than learning framework
@@ -71,11 +71,11 @@ backend keeps track of players, receives scores, and returns leaderboard data.
 We will use the following API operations as reading examples.
 
 ```http
-GET  /health
+GET /health
 POST /players
-GET  /players/me
-POST /scores
-GET  /leaderboard
+GET /players/me
+POST /players/me/scores
+GET /leaderboard
 ```
 
 These API operations are examples, not implementation targets. You are not expected to implement
@@ -86,21 +86,21 @@ them in this chapter.
 | `GET /health` | Check a simple health signal from the API Server. |
 | `POST /players` | Create a player record. |
 | `GET /players/me` | Read the authenticated player's own profile information. |
-| `POST /scores` | Create a score submission record for a completed stage run. |
+| `POST /players/me/scores` | Create a score submission record for a completed stage run. |
 | `GET /leaderboard` | Read ranked scores. |
 
 The same API operation can be described in several layers. For example:
 
 ```text
-API operation: POST /scores
-Endpoint path: /scores
-Route: server-side matching rule for POST + /scores
+API operation: POST /players/me/scores
+Endpoint path: /players/me/scores
+Route: server-side matching rule for POST + /players/me/scores
 Handler: request-processing unit for score submission
 Validation: checks format, identity, score value, and game rules
 Response: status code + JSON response body in these examples
 ```
 
-Here, `/scores` by itself is an endpoint path. `POST /scores` is an API operation because it
+Here, `/players/me/scores` by itself is an endpoint path. `POST /players/me/scores` is an API operation because it
 combines an HTTP method and a path.
 
 The server does not look only at the endpoint path. It usually considers the method, path, headers,
@@ -116,7 +116,7 @@ used in this chapter. This short section prepares the terms that will appear aga
 A path parameter is a value placed inside the path.
 
 ```http
-GET /players/player_001
+GET /players/player-001
 ```
 
 In an API contract, the same shape may be written like this:
@@ -156,14 +156,13 @@ chapter.
 | `GET` | `/health` | Check server status | None | `200 OK` | `503` |
 | `POST` | `/players` | Create a player | JSON with `displayName` | `201 Created` | `400`, `409` |
 | `GET` | `/players/me` | Read the authenticated player's own profile | None | `200 OK` | `401`, `404` |
-| `POST` | `/scores` | Create a score submission record | JSON with `stageId`, `runId`, and `score` | `201 Created` | `400`, `401`, `403`, `409`, `413`, `415` |
+| `POST` | `/players/me/scores` | Create a score submission record | JSON with `stageId`, `runId`, and `score` | `201 Created` | `400`, `401`, `403`, `409`, `413`, `415` |
 | `GET` | `/leaderboard` | Read leaderboard | None | `200 OK` | `400` |
 
-The exact response shapes may differ by team. In this chapter, `POST /scores` is treated as an API
+The exact response shapes may differ by team. In this chapter, `POST /players/me/scores` is treated as an API
 operation that creates a new score submission record, so the success status is `201 Created`.
 
-You can think of `/scores` as the collection of score submission records in this simplified API
-contract.
+You can think of `/players/me/scores` as the authenticated player's score submission collection in this simplified API contract.
 
 Different API contracts may define score processing in other ways, but this chapter uses one
 contract consistently. For beginners, the key lesson is that both success and failure should be
@@ -193,7 +192,7 @@ Client request
 → Client receives a status code and, in these examples, a JSON body
 ```
 
-Let us walk through this slowly with `POST /scores`.
+Let us walk through this slowly with `POST /players/me/scores`.
 
 ### Step 1: The Client Sends a Request
 
@@ -203,15 +202,15 @@ The examples below use a simplified HTTP-style format so that you can focus on t
 structure.
 
 ```http
-POST /scores
+POST /players/me/scores
 Content-Type: application/json
 Authorization: Bearer example-token
 ```
 
 ```json
 {
-  "stageId": "stage_01",
-  "runId": "run_20260601_0001",
+  "stageId": "stage-01",
+  "runId": "run-20260601-0001",
   "score": 15200
 }
 ```
@@ -254,7 +253,7 @@ appears later with the status-code notes.
 
 After the request is matched, the handler reads the data needed for the operation.
 
-For `POST /scores`, the handler may need to read:
+For `POST /players/me/scores`, the handler may need to read:
 
 - The `Authorization` header.
 - The `Content-Type` header.
@@ -306,7 +305,7 @@ The server returns an HTTP status code and, in these examples, a JSON body.
 The HTTP status code tells the client the overall result of the request. The JSON body can include
 additional details about the created score submission.
 
-In this chapter, `POST /scores` creates a new score submission record, so a successful response uses
+In this chapter, `POST /players/me/scores` creates a new score submission record, so a successful response uses
 `201 Created`.
 
 ```http
@@ -317,7 +316,7 @@ Content-Type: application/json
 ```json
 {
   "success": true,
-  "runId": "run_20260601_0001",
+  "runId": "run-20260601-0001",
   "score": 15200,
   "submissionStatus": "created"
 }
@@ -349,7 +348,7 @@ Content-Type: application/json
     "code": "INVALID_SCORE",
     "message": "score must be a number greater than or equal to 0."
   },
-  "requestId": "req_20260601_0001"
+  "requestId": "req-20260601-0001"
 }
 ```
 
@@ -386,11 +385,11 @@ Examples:
 
 ```text
 GET /health
-POST /scores
+POST /players/me/scores
 GET /leaderboard
 ```
 
-`GET /scores` and `POST /scores` are different API operations, even though the endpoint path is the
+`GET /players/me/scores` and `POST /players/me/scores` are different API operations, even though the endpoint path is the
 same.
 
 The method matters because it tells the server what kind of action the client is requesting.
@@ -402,11 +401,11 @@ A route is the server-side matching rule.
 Conceptually, the server may have routing rules like this:
 
 ```text
-GET  /health             → health handler
+GET /health             → health handler
 POST /players            → player creation handler
-GET  /players/me          → authenticated player profile handler
-POST /scores             → score submission handler
-GET  /leaderboard        → leaderboard query handler
+GET /players/me          → authenticated player profile handler
+POST /players/me/scores             → score submission handler
+GET /leaderboard        → leaderboard query handler
 ```
 
 This is not framework code. It is a conceptual map of how the server chooses which handler should
@@ -434,7 +433,7 @@ The distinction helps you talk about backend flow clearly.
 For example, this sentence is precise:
 
 ```text
-POST /scores
+POST /players/me/scores
 → matched by a route
 → handled by the score submission handler
 → validated before the server returns a response
@@ -468,7 +467,7 @@ Each part has a different role.
 The method and path decide the API operation.
 
 ```http
-POST /scores
+POST /players/me/scores
 ```
 
 This says that the client is asking the server to create a score submission record.
@@ -478,12 +477,12 @@ This says that the client is asking the server to create a score submission reco
 Path parameters identify a specific resource.
 
 ```http
-GET /players/player_001
+GET /players/player-001
 ```
 
 This example is only for understanding path parameters. For a private "my profile" API, this guide uses `GET /players/me`.
 
-Here, the server reads `player_001` as the `playerId` path parameter.
+Here, the server reads `player-001` as the `playerId` path parameter.
 
 A player lookup handler may use that value to find the player record, but the server must still check whether the caller is allowed to read that record. For a private "my profile" flow, `GET /players/me` avoids letting the client choose an arbitrary player ID. In this chapter, focus on the idea rather than the database code.
 
@@ -529,8 +528,8 @@ For score submission:
 
 ```json
 {
-  "stageId": "stage_01",
-  "runId": "run_20260601_0001",
+  "stageId": "stage-01",
+  "runId": "run-20260601-0001",
   "score": 15200
 }
 ```
@@ -595,8 +594,8 @@ For example:
 
 ```json
 {
-  "stageId": "stage_01",
-  "runId": "run_20260601_0001",
+  "stageId": "stage-01",
+  "runId": "run-20260601-0001",
   "score": 15200
 }
 ```
@@ -627,7 +626,7 @@ Content-Type: application/json
     "code": "DUPLICATE_RUN",
     "message": "This run has already been submitted."
   },
-  "requestId": "req_20260601_0002"
+  "requestId": "req-20260601-0002"
 }
 ```
 
@@ -689,7 +688,7 @@ A simple shape can be:
     "code": "MISSING_FIELD",
     "message": "stageId is required."
   },
-  "requestId": "req_20260601_0003"
+  "requestId": "req-20260601-0003"
 }
 ```
 
@@ -755,7 +754,7 @@ Some teams use one simple `/health` API. Other teams separate checks into paths 
 
 ### Health Check Is Not a Feature for Players
 
-`GET /health` is different from a gameplay feature such as `POST /scores`.
+`GET /health` is different from a gameplay feature such as `POST /players/me/scores`.
 
 A player does not usually press a "health check" button in the game. Health checks are more
 connected to development, deployment, monitoring, and operations.
@@ -787,7 +786,7 @@ This chapter does not implement these layers. The goal is to understand why the 
 The route matches the method and path.
 
 ```text
-POST /scores → score submission handler
+POST /players/me/scores → score submission handler
 ```
 
 The route answers:
@@ -931,15 +930,15 @@ The examples below use a simplified HTTP-style format so that you can focus on t
 structure.
 
 ```http
-POST /scores
+POST /players/me/scores
 Content-Type: application/json
 Authorization: Bearer example-token
 ```
 
 ```json
 {
-  "stageId": "stage_01",
-  "runId": "run_20260601_0001",
+  "stageId": "stage-01",
+  "runId": "run-20260601-0001",
   "score": 15200
 }
 ```
@@ -948,7 +947,7 @@ The token text is a placeholder, not a real access token.
 
 ### Possible Success Response
 
-In this chapter's contract, `POST /scores` creates a new score submission record, so a successful
+In this chapter's contract, `POST /players/me/scores` creates a new score submission record, so a successful
 response uses `201 Created`.
 
 ```http
@@ -959,7 +958,7 @@ Content-Type: application/json
 ```json
 {
   "success": true,
-  "runId": "run_20260601_0001",
+  "runId": "run-20260601-0001",
   "score": 15200,
   "submissionStatus": "created"
 }
@@ -991,7 +990,7 @@ Content-Type: application/json
     "code": "INVALID_SCORE",
     "message": "score must be a number greater than or equal to 0."
   },
-  "requestId": "req_20260601_0001"
+  "requestId": "req-20260601-0001"
 }
 ```
 
@@ -1014,11 +1013,11 @@ Content-Type: application/json
 | Item | Example Answer |
 |---|---|
 | Method | `POST` |
-| Endpoint path | `/scores` |
-| API operation | `POST /scores` |
+| Endpoint path | `/players/me/scores` |
+| API operation | `POST /players/me/scores` |
 | Headers | `Content-Type`, `Authorization` |
 | Body fields | `stageId`, `runId`, `score` |
-| Route role | Match `POST /scores` to the score submission handler. |
+| Route role | Match `POST /players/me/scores` to the score submission handler. |
 | Handler role | Read headers and the request body, then prepare a success or error response. |
 | Validation examples | JSON format, content type, size limit, required fields, score type, score range, authentication, known stage, duplicate `runId`. |
 | Success status | `201 Created`, because this API creates a new score submission record. |
@@ -1026,7 +1025,7 @@ Content-Type: application/json
 
 ### What to Observe
 
-You should notice that `POST /scores` is more than a URL.
+You should notice that `POST /players/me/scores` is more than a URL.
 
 It includes a method, endpoint path, headers, request body, validation rules, server-side decisions,
 and response design.
@@ -1043,7 +1042,7 @@ You can use this shape:
 
 ```text
 In this request, the client asks the API Server to create a score submission record.
-The server should match POST /scores to the score submission handler.
+The server should match POST /players/me/scores to the score submission handler.
 It should read the JSON body, validate the score, record the submission,
 and return either a success response or an error response.
 The score submission record probably needs persistent storage, which connects this chapter to
@@ -1054,9 +1053,9 @@ databases.
 
 ### Mistake 1: Thinking an Endpoint Path Is the Whole API
 
-`/scores` is only the endpoint path. `POST /scores` is the API operation.
+`/players/me/scores` is only the endpoint path. `POST /players/me/scores` is the API operation.
 
-The method changes the meaning. `GET /scores` and `POST /scores` are not the same operation.
+The method changes the meaning. `GET /players/me/scores` and `POST /players/me/scores` are not the same operation.
 
 ### Mistake 2: Thinking a Route and a Handler Are the Same Thing
 
@@ -1157,17 +1156,17 @@ input, and returns a response. It does not render game graphics or replace the w
 
 ### Question 2
 
-In the API operation `POST /scores`, which part is the endpoint path?
+In the API operation `POST /players/me/scores`, which part is the endpoint path?
 
 A. `POST`  
-B. `/scores`  
+B. `/players/me/scores`  
 C. `score`  
 D. `201 Created`
 
 **Answer: B**
 
 **Explanation:**  
-The endpoint path is `/scores`. The full API operation combines the method and path: `POST /scores`.
+The endpoint path is `/players/me/scores`. The full API operation combines the method and path: `POST /players/me/scores`.
 
 ### Question 3
 
@@ -1181,7 +1180,7 @@ D. It encrypts every database row.
 **Answer: C**
 
 **Explanation:**  
-A route is the server-side matching rule. It connects an operation such as `POST /scores` to the
+A route is the server-side matching rule. It connects an operation such as `POST /players/me/scores` to the
 handler that should process that request.
 
 ### Question 4

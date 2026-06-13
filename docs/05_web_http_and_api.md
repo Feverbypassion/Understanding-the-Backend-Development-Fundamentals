@@ -69,10 +69,10 @@ That pattern fits HTTP APIs well.
 | Health check | `GET /health` | The client or monitoring tool only needs to know whether the service is reachable. |
 | Player creation | `POST /players` | The client asks the server to create a player record. |
 | Own player profile lookup | `GET /players/me` | The client requests the authenticated player's own profile data. |
-| Score submission | `POST /scores` | The client sends result data, and the server validates it. |
+| Score submission | `POST /players/me/scores` | The client sends result data, and the server validates it. |
 | Leaderboard lookup | `GET /leaderboard` | The client receives ranked score data. |
 | Remote Config lookup | `GET /config` | The client receives current server-managed game settings. |
-| Daily reward claim | `POST /rewards/daily` | The server checks whether the reward can be claimed before granting it. |
+| Daily reward claim | `POST /players/me/rewards/daily` | The server checks whether the reward can be claimed before granting it. |
 
 These examples have clear request/response boundaries. The client does not need to stay connected every frame. It can send one request, receive one response, and update the UI.
 
@@ -121,17 +121,18 @@ A Web Server often serves web pages, images, JavaScript files, and other static 
 | Web Server | A server that can return web pages, files, or other web resources. |
 | API Server | A server that exposes operations clients can call through API requests. |
 | Resource | An entity or concept the API works with, such as players, scores, rewards, or config. |
-| Endpoint | A specific API address and operation, such as `GET /leaderboard`. |
+| Endpoint path | The path part of an API address, such as `/leaderboard` or `/players/me/scores`. |
+| API operation | A method plus a path, such as `GET /leaderboard` or `POST /players/me/scores`. |
 | API Contract | A documented agreement about request shape, response shape, and possible results. |
 
-In this guide, `endpoint` often means the method and path together when we need to identify the operation precisely. For example, `GET /leaderboard` and `POST /scores` are different API operations even though both are HTTP requests.
+In this guide, `endpoint path` means the path part only. `API operation` means method plus path. For example, `/players/me/scores` is an endpoint path, while `POST /players/me/scores` is an API operation.
 
 An API contract is not server code. It is a description of what both sides should expect.
 
 For example:
 
 ```text
-POST /scores
+POST /players/me/scores
 ```
 
 can mean:
@@ -160,7 +161,7 @@ The examples in this chapter use an HTTP/1.1-style text format because it is eas
 Example request:
 
 ```http
-POST /scores HTTP/1.1
+POST /players/me/scores HTTP/1.1
 Host: api.example-game.test
 Content-Type: application/json
 Authorization: Bearer <token>
@@ -176,7 +177,7 @@ Authorization: Bearer <token>
 Read this request as:
 
 ```text
-The client is sending score data to the /scores endpoint.
+The client is sending score data to the `POST /players/me/scores` API operation.
 The request body is JSON.
 The client sends an authorization token. If the token is valid, the server can identify the player from it.
 The client does not choose an arbitrary playerId in the request body.
@@ -229,9 +230,9 @@ The method and path together describe the API operation.
 
 ```http
 GET /leaderboard
-POST /scores
+POST /players/me/scores
 GET /players/me
-POST /rewards/daily
+POST /players/me/rewards/daily
 ```
 
 Common HTTP methods:
@@ -239,12 +240,12 @@ Common HTTP methods:
 | Method | Common Beginner Meaning | Game Backend Example |
 |---|---|---|
 | `GET` | Read data. | `GET /leaderboard` retrieves ranking data. |
-| `POST` | Create data or ask the server to perform an action. | `POST /scores` submits a score. |
+| `POST` | Create data or ask the server to perform an action. | `POST /players/me/scores` submits a score. |
 | `PUT` | Replace a resource with a new complete version. | `PUT /players/me/profile` could replace the authenticated player's full profile. |
 | `PATCH` | Partially update a resource. | `PATCH /players/me/nickname` could update only the authenticated player's nickname. |
 | `DELETE` | Remove a resource or request removal. | `DELETE /sessions/{sessionId}` could end a stored session record. |
 
-These meanings are common conventions; the actual behavior still depends on the API contract. The server decides what each endpoint actually does. Good API design makes the meaning clear and predictable.
+These meanings are common conventions; the actual behavior still depends on the API contract. The server decides what each API operation actually does. Good API design makes the meaning clear and predictable.
 
 ### Query Parameters
 
@@ -372,7 +373,7 @@ At the API level, the flow needs a clear contract.
 ### API Operation
 
 ```text
-POST /scores
+POST /players/me/scores
 ```
 
 Purpose:
@@ -530,10 +531,10 @@ REST-style paths often use nouns:
 
 ```http
 GET /players/me
-POST /scores
+POST /players/me/scores
 GET /leaderboard?season=weekly&limit=10
 GET /config
-POST /rewards/daily
+POST /players/me/rewards/daily
 ```
 
 A path should help developers understand which resource the API operation is about.
@@ -541,10 +542,10 @@ A path should help developers understand which resource the API operation is abo
 | Less Clear | More REST-Style | Why It Is Clearer |
 |---|---|---|
 | `GET /getLeaderboard` | `GET /leaderboard` | The method already says this is a read operation. |
-| `POST /submitScore` | `POST /scores` | The resource is `scores`; `POST` shows that data is being submitted. |
+| `POST /submitScore` | `POST /players/me/scores` | The resource is `scores`; `POST` shows that data is being submitted. |
 | `GET /getMyPlayer` | `GET /players/me` | The path identifies the authenticated player's own profile resource. |
 | `GET /getPublicPlayer?id=player-001` | `GET /players/player-001` | The path identifies a public player profile resource. The server must still check what data is allowed to be exposed. |
-| `POST /claimDailyReward` | `POST /rewards/daily` | The path points to the daily reward resource. |
+| `POST /claimDailyReward` | `POST /players/me/rewards/daily` | The path points to the daily reward resource. |
 
 This does not mean every real API must be strictly RESTful. Some services use action-based or RPC-style APIs, especially when operations do not fit resource naming cleanly.
 
@@ -612,7 +613,7 @@ Good API documentation usually includes:
 
 - Method and path.
 - Query parameters, if they exist.
-- Purpose of the endpoint.
+- Purpose of the API operation.
 - Required headers.
 - Request body shape.
 - Response body shape.
@@ -663,7 +664,7 @@ Focus on becoming comfortable with request/response details, not on mastering ev
 
 ## 5.9 Learning Practice
 
-This Learning Practice is for reading and understanding API contracts. You are not expected to implement these endpoints in this chapter.
+This Learning Practice is for reading and understanding API contracts. You are not expected to implement these API operations in this chapter.
 
 ### Goal
 
@@ -672,7 +673,7 @@ Read a simple API contract and identify the important parts of the HTTP request 
 ### Contract to Read
 
 ```text
-API Operation: POST /scores
+API Operation: POST /players/me/scores
 Purpose: Submit a score after a stage run or play attempt.
 Required Headers:
 - Content-Type: application/json
@@ -794,7 +795,7 @@ Request C may look valid by type, but it reuses the same `runId` as Request A wh
 
 An identical retry is different: it repeats the same `runId` with the same important values because the client did not receive the first response. Some APIs handle that case by safely returning the previous stored result with the status code and response body defined by the API contract. The contract should make this behavior clear.
 
-Request D includes a `playerId` even though this contract identifies the player from the validated token. The server should not accept `another-player` just because it appears in JSON. For this strict `POST /scores` contract, `playerId` is not an allowed request body field, so `400 Bad Request` can be a clear response. If another API intentionally includes a player ID in the path, query, or body, but the authenticated player is not allowed to access that player resource, `403 Forbidden` may be clearer. Some APIs may ignore unknown fields, but that behavior should be defined explicitly in the contract and should not allow the client to choose another player identity.
+Request D includes a `playerId` even though this contract identifies the player from the validated token. The server should not accept `another-player` just because it appears in JSON. For this strict `POST /players/me/scores` contract, `playerId` is not an allowed request body field, so `400 Bad Request` can be a clear response. If another API intentionally includes a player ID in the path, query, or body, but the authenticated player is not allowed to access that player resource, `403 Forbidden` may be clearer. Some APIs may ignore unknown fields, but that behavior should be defined explicitly in the contract and should not allow the client to choose another player identity.
 
 ### What to Observe
 
@@ -823,44 +824,57 @@ Why is it useful to write or read an API contract before studying how an API Ser
 
 ## 5.10 Common Mistakes
 
-1. **Thinking HTTP Is Only for Websites**  
-   HTTP is used by websites, but it is also used by mobile apps, game clients, admin dashboards, backend services, and testing tools. Many game backend features use HTTP APIs because request/response communication fits them well.
+### Mistake 1: Thinking HTTP Is Only for Websites
 
-2. **Using `GET` for Every Operation**  
-   `GET` is commonly used for reading data. It should not be used as the default for operations that create data, submit results, or change server state. For score submission, `POST /scores` is clearer than `GET /submitScore`.
+HTTP is used by websites, but it is also used by mobile apps, game clients, admin dashboards, backend services, and testing tools. Many game backend features use HTTP APIs because request/response communication fits them well.
 
-3. **Relying on a Request Body in `GET`**  
-   A `GET` request is for retrieving data. If the client needs lookup options, use the path or query parameters, such as `GET /leaderboard?season=weekly&limit=10`.
+### Mistake 2: Using `GET` for Every Operation
 
-4. **Returning `200 OK` for Every Result**  
-   If the request is missing required data, returning `200 OK` can confuse the client. A clear error status such as `400 Bad Request` helps the client understand that the request should be fixed.
+`GET` is commonly used for reading data. It should not be used as the default for operations that create data, submit results, or change server state. For score submission, `POST /players/me/scores` is clearer than `GET /submitScore`.
 
-5. **Ignoring Headers**  
-   Headers such as `Content-Type` and `Authorization` are part of the contract. If `Content-Type: application/json` is missing, the server may not know how to interpret the request body. If authorization data is missing or invalid, the server may not know who sent the request. A descriptive header such as `User-Agent` can help with diagnostics, but it should not be trusted as authentication.
+### Mistake 3: Relying on a Request Body in `GET`
 
-6. **Trusting `playerId` from the Body, Path, or Query**  
-   In an authenticated API, the server should usually identify the player after validating the authorization token. If the request body, path, or query parameters include a `playerId`, the server must check whether the authenticated player is allowed to use it before accepting sensitive data such as scores or rewards. For strict contracts, rejecting unexpected identity fields is often clearer than silently ignoring them.
+A `GET` request is for retrieving data. If the client needs lookup options, use the path or query parameters, such as `GET /leaderboard?season=weekly&limit=10`.
 
-7. **Treating `runId` as Proof of a Valid Score**  
-   A server-issued or server-recorded `runId` can help the server connect a submission to a known play attempt and detect duplicates. It does not prove by itself that the score is possible or fair. The server still needs validation based on game rules and server-side records.
+### Mistake 4: Returning `200 OK` for Every Result
 
-8. **Treating Valid JSON as Valid Game Data**  
-   A request can be valid JSON and still be invalid game data. For example, `score: 999999999` may be a valid number but impossible under the game rules. The server still needs validation.
+If the request is missing required data, returning `200 OK` can confuse the client. A clear error status such as `400 Bad Request` helps the client understand that the request should be fixed.
 
-9. **Confusing CORS with HTTPS**  
-   CORS controls whether browser-based code can read cross-origin responses. HTTPS protects HTTP communication in transit. They solve different problems and do not replace each other. A CORS error also does not always prove that the server never received the request.
+### Mistake 5: Ignoring Headers
 
-10. **Thinking HTTPS Replaces Server-Side Validation**  
-    HTTPS protects the communication channel. It does not prove that a score is possible, that a reward can be claimed, or that a user has permission to perform an action. Validation and authorization still matter.
+Headers such as `Content-Type` and `Authorization` are part of the contract. If `Content-Type: application/json` is missing, the server may not know how to interpret the request body. If authorization data is missing or invalid, the server may not know who sent the request. A descriptive header such as `User-Agent` can help with diagnostics, but it should not be trusted as authentication.
 
-11. **Exposing Internal Error Details to the Client**  
-    An error response should help the client understand the result without revealing sensitive internal details. Stack traces, database error messages, file paths, and secret values should stay in protected server logs, not in public API responses.
+### Mistake 6: Trusting `playerId` from the Body, Path, or Query
 
-12. **Letting API Documentation Drift Away from Actual Server Behavior**  
-    If the documentation says the request body uses `score`, but the server actually expects `points`, client developers, testers, and operators can all become confused. API documentation should stay in sync with actual server behavior.
+In an authenticated API, the server should usually identify the player after validating the authorization token. If the request body, path, or query parameters include a `playerId`, the server must check whether the authenticated player is allowed to use it before accepting sensitive data such as scores or rewards. For strict contracts, rejecting unexpected identity fields is often clearer than silently ignoring them.
 
-13. **Treating an API Contract as a Complete Backend Design**  
-    An API contract explains the request and response boundary. It does not fully explain storage, authentication, authorization, caching, logging, retries, or operations. Those topics appear in later chapters.
+### Mistake 7: Treating `runId` as Proof of a Valid Score
+
+A server-issued or server-recorded `runId` can help the server connect a submission to a known play attempt and detect duplicates. It does not prove by itself that the score is possible or fair. The server still needs validation based on game rules and server-side records.
+
+### Mistake 8: Treating Valid JSON as Valid Game Data
+
+A request can be valid JSON and still be invalid game data. For example, `score: 999999999` may be a valid number but impossible under the game rules. The server still needs validation.
+
+### Mistake 9: Confusing CORS with HTTPS
+
+CORS controls whether browser-based code can read cross-origin responses. HTTPS protects HTTP communication in transit. They solve different problems and do not replace each other. A CORS error also does not always prove that the server never received the request.
+
+### Mistake 10: Thinking HTTPS Replaces Server-Side Validation
+
+HTTPS protects the communication channel. It does not prove that a score is possible, that a reward can be claimed, or that a user has permission to perform an action. Validation and authorization still matter.
+
+### Mistake 11: Exposing Internal Error Details to the Client
+
+An error response should help the client understand the result without revealing sensitive internal details. Stack traces, database error messages, file paths, and secret values should stay in protected server logs, not in public API responses.
+
+### Mistake 12: Letting API Documentation Drift Away from Actual Server Behavior
+
+If the documentation says the request body uses `score`, but the server actually expects `points`, client developers, testers, and operators can all become confused. API documentation should stay in sync with actual server behavior.
+
+### Mistake 13: Treating an API Contract as a Complete Backend Design
+
+An API contract explains the request and response boundary. It does not fully explain storage, authentication, authorization, caching, logging, retries, or operations. Those topics appear in later chapters.
 
 ---
 
@@ -920,7 +934,7 @@ D. `DELETE`
 
 ### Question 3
 
-A `POST /scores` request is missing the required `score` field. Which status code is usually the clearest response?
+A `POST /players/me/scores` request is missing the required `score` field. Which status code is usually the clearest response?
 
 A. `200 OK`  
 B. `201 Created`  
@@ -976,7 +990,7 @@ An API contract helps both sides understand the request shape, response shape, h
 
 ### Question 7
 
-In an authenticated `POST /scores` API, what should the server do if the request includes a `playerId` that is not allowed by the API contract or that the authenticated player is not allowed to use?
+In an authenticated `POST /players/me/scores` API, what should the server do if the request includes a `playerId` that is not allowed by the API contract or that the authenticated player is not allowed to use?
 
 A. Accept the request because the JSON is valid.  
 B. Ignore authentication and trust the body.  
@@ -1008,7 +1022,7 @@ CORS is enforced by browsers. Some requests are stopped during preflight, while 
 
 You do not need to read all of these resources immediately. Use them as references when you want to review a specific part of HTTP and API communication.
 
-### HTTP and API Basics
+### Start Here
 
 - [MDN — An overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)  
   Use this when you want to review the basic structure of HTTP request/response communication.
@@ -1019,15 +1033,8 @@ You do not need to read all of these resources immediately. Use them as referenc
 - [MDN — HTTP response status codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Status)  
   Use this when you want to review what common status codes mean.
 
-- [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages)  
-  Use this when you want to understand the structure of HTTP requests and responses in more detail.
-
-### JSON
-
 - [MDN — Working with JSON](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Scripting/JSON)  
   Use this when you want to review JSON as a data format.
-
-### Browser, Security, and Documentation
 
 - [MDN — Cross-Origin Resource Sharing](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/CORS)  
   Use this when browser-based API calls fail because of cross-origin access rules.
@@ -1035,13 +1042,16 @@ You do not need to read all of these resources immediately. Use them as referenc
 - [MDN — HTTPS](https://developer.mozilla.org/en-US/docs/Glossary/HTTPS)  
   Use this when you want to review what HTTPS means at a beginner level.
 
+### Optional Deep Dive
+
+- [MDN — HTTP messages](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Messages)  
+  Use this when you want to understand the structure of HTTP requests and responses in more detail.
+
 - [OpenAPI — Learn OpenAPI](https://learn.openapis.org/)  
   Use this later when you want to understand formal API contract documentation.
 
 - [Swagger Documentation](https://swagger.io/docs/)  
   Use this as a reference for tools commonly used around OpenAPI.
-
-### API Observation Tools
 
 - [Chrome DevTools — Network panel](https://developer.chrome.com/docs/devtools/network/overview)  
   Use this when you want to observe requests and responses made by a browser.

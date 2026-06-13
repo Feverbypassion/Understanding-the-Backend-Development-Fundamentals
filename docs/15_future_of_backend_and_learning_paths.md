@@ -610,7 +610,7 @@ The Web Backend path fits well.
 
 You would study:
 
-- `POST /scores`
+- `POST /players/me/scores`
 - Request body validation
 - Player identity
 - Database storage
@@ -740,7 +740,7 @@ Choose one advanced backend direction and create a simple three-month learning p
 
 The goal is not to cover every backend topic. The goal is to make a realistic plan that connects your interest to earlier chapters and one advanced track.
 
-### Step 1. Choose One Primary Track
+### Step 1: Choose One Primary Track
 
 Choose one primary backend track from the list below.
 
@@ -754,7 +754,7 @@ Platform Backend
 
 You may be interested in several tracks, but choose one primary track for this practice.
 
-### Step 2. Choose One Game Backend Problem
+### Step 2: Choose One Game Backend Problem
 
 Choose one problem that you want to understand more deeply.
 
@@ -768,7 +768,7 @@ Examples:
 - How should a backend become reachable through DNS and HTTPS?
 - How should a team decide between a custom backend and a platform service?
 
-### Step 3. Review Earlier Chapters
+### Step 3: Review Earlier Chapters
 
 Choose three to six chapters from this guide that you should review before going deeper.
 
@@ -782,7 +782,7 @@ For example:
 | Cloud / Infrastructure | Chapters 2, 4, 10, 11, 12, 14 |
 | Platform Backend | Chapters 3, 8, 10, 11, 13, 14 |
 
-### Step 4. Write a Month-by-Month Plan
+### Step 4: Write a Month-by-Month Plan
 
 Use this template.
 
@@ -811,7 +811,7 @@ Month 3:
 Why this track fits my current goal:
 ```
 
-### Step 5. Keep the Output Small
+### Step 5: Keep the Output Small
 
 Your plan should be realistic.
 
@@ -843,7 +843,7 @@ Chapter 5, Chapter 6, Chapter 7, Chapter 8, Chapter 11
 Month 1:
 - Review: HTTP methods, request body, status codes, API contracts
 - Practice: Read three score submission API examples and identify validation points
-- Output: One API contract note for POST /scores
+- Output: One API contract note for POST /players/me/scores
 
 Month 2:
 - Review: Database tables, source of truth, transactions, cache

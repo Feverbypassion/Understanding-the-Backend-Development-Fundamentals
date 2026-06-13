@@ -107,7 +107,7 @@ Profile and save data answer a related question:
 What should the game remember for this player?
 ```
 
-An account is the server-side identity of a player. Authentication is the process of checking that a request really belongs to that player. A profile stores player-facing and service-used information, such as nickname, avatar, level, title, or selected character. Save data stores progress such as cleared stages, unlocked content, quest state, tutorial state, and last played position.
+An account is the server-side identity of a player. Authentication is the process of checking that a request really belongs to that player. A profile stores player-facing and service-side information, such as nickname, avatar, level, title, or selected character. Save data stores progress such as cleared stages, unlocked content, quest state, tutorial state, and last played position.
 
 #### What problem does this solve?
 
@@ -138,11 +138,11 @@ In real systems, raw tokens and session identifiers should be handled carefully 
 
 ```http
 POST /auth/guest
-GET /me/profile
-PATCH /me/profile
-GET /me/save
-PUT /me/save
-POST /me/progress/stage-clear
+GET /players/me
+PATCH /players/me/profile
+GET /players/me/save
+PUT /players/me/save
+POST /players/me/progress/stage-clear
 ```
 
 These are example API shapes for study. You are not expected to implement them in this chapter.
@@ -194,7 +194,7 @@ A key distinction is static game data versus user data.
 | Static game data | Shared definitions used by the game | itemId, itemName, rarity, maxStack, basePrice |
 | User data | Data owned by a specific player | playerId, ownedItemId, quantity, acquiredAt |
 
-For example, an item definition may say that `potion_small` is a stackable consumable. A player inventory record says that player `player-001` owns 12 of that item.
+For example, an item definition may say that `potion-small` is a stackable consumable. A player inventory record says that player `player-001` owns 12 of that item.
 
 ```text
 Item definition: What is this item?
@@ -216,11 +216,11 @@ This distinction matters because inventory APIs, database design, support tools,
 #### What API shape might appear?
 
 ```http
-GET /me/inventory
+GET /players/me/inventory
 GET /items/catalog
-POST /me/rewards/daily-claim
-POST /me/economy/spend
-GET /me/currencies
+POST /players/me/rewards/daily
+POST /players/me/economy/spend
+GET /players/me/currencies
 ```
 
 The first two examples are often read-only or read-heavy flows. The reward and spend examples are action flows and require stronger validation.
@@ -233,8 +233,8 @@ For rewards and economy changes, the server should also keep a change record.
 
 ```text
 Before: player has 900 gold
-Action: spend 300 gold to unlock item_iron_sword
-After: player has 600 gold and owns item_iron_sword
+Action: spend 300 gold to unlock item-iron-sword
+After: player has 600 gold and owns item-iron-sword
 Record: when, why, requestId, playerId, result
 ```
 
@@ -315,7 +315,7 @@ Common leaderboard decisions include:
 API shapes may look like this:
 
 ```http
-POST /me/scores
+POST /players/me/scores
 GET /leaderboards/weekly?limit=100
 GET /leaderboards/weekly/me
 ```
@@ -341,8 +341,8 @@ Achievements often connect to rewards. This means the backend should know whethe
 A simple API shape might look like this:
 
 ```http
-GET /me/achievements
-POST /me/achievements/{achievementId}/claim
+GET /players/me/achievements
+POST /players/me/achievements/{achievementId}/claim
 ```
 
 For achievements, the server should validate progress, completion state, duplicate reward claims, and event status when needed. Sensitive achievement progress should come from trusted server-side records, validated gameplay events, or previously accepted gameplay results, not only from a client-sent completion flag.
@@ -571,10 +571,10 @@ The following examples show what API shapes might appear in such a game. They ar
 
 ```http
 POST /auth/guest
-GET /me/profile
-GET /me/inventory
-POST /me/rewards/daily-claim
-POST /me/scores
+GET /players/me
+GET /players/me/inventory
+POST /players/me/rewards/daily
+POST /players/me/scores
 GET /leaderboards/weekly?limit=50
 GET /config
 GET /events/active
@@ -606,7 +606,7 @@ The server may need to check:
 A possible daily reward request may be simpler:
 
 ```http
-POST /me/rewards/daily-claim
+POST /players/me/rewards/daily
 ```
 
 But the server still needs to check authentication, server-side reward period, event status, reward rule, duplicate claim history, `requestId` or idempotency key, and inventory update result.
@@ -691,7 +691,7 @@ Use the table below in your own notes.
 |---|---|
 | Problem | Grant a reward once per day. |
 | Data | playerId, rewardId, server-side reward period, claimedAt, reward rule, inventory state. |
-| API shape | `POST /me/rewards/daily-claim` |
+| API shape | `POST /players/me/rewards/daily` |
 | Server validation | Authentication, already claimed, event active, reward rule, `requestId` or idempotency key, inventory update. |
 | Failure case | Duplicate claim, client time manipulation, partial grant, missing log. |
 | Operations/support | Reward claim log, currency ledger, `requestId`, eventId, operator audit log if changed. |
@@ -731,7 +731,7 @@ Using a platform is not automatically right or wrong. Building custom services i
 
 ### Mistake 7: Forgetting Operations and Support
 
-A feature that works once in the client is not automatically operation-ready. Operators and support staff may need logs, audit records, search tools, grant histories, and admin workflows protected by permissions and audit logs. Chapter 12 and Chapter 13 will revisit logs, observability, dashboards, and internal tools more deeply.
+A feature that works once in the client is not automatically ready for operations. Operators and support staff may need logs, audit records, search tools, grant histories, and admin workflows protected by permissions and audit logs. Chapter 12 and Chapter 13 will revisit logs, observability, dashboards, and internal tools more deeply.
 
 ## 8.8 Chapter Summary
 

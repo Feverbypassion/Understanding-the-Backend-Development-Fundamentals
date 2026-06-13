@@ -287,7 +287,7 @@ For example, when a player claims a daily reward, the server may need to check t
 
 ```text
 Client
-→ POST /rewards/daily
+→ POST /players/me/rewards/daily
 → Server checks player and claim status
 → Server grants reward
 → Server saves result
@@ -302,7 +302,7 @@ For example, when a player submits a score, the server may save the score immedi
 
 ```text
 Client
-→ POST /scores
+→ POST /players/me/scores
 → Server validates and saves score
 → Server creates a domain event, or it enqueues a follow-up work item for later processing
 ← Response: score accepted
@@ -386,7 +386,7 @@ ScoreSubmitted happened.
 A job may express a task:
 
 ```text
-RecalculateWeeklyLeaderboard for season_2026_w22.
+RecalculateWeeklyLeaderboard for season-2026-w22.
 ```
 
 A queue may deliver that task to a worker:

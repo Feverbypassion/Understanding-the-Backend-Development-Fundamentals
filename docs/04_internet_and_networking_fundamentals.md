@@ -899,15 +899,17 @@ After the practice, you should be able to say:
 
 Networking problems are easy to misread because several layers are involved. Use this section as a checklist when a connection-related symptom appears.
 
-### Address and DNS Mistakes
+### Mistake 1: Thinking an IP Address and a Port Are the Same Thing
 
-| Mistake | Better thinking |
-|---|---|
-| Thinking an IP address and a port are the same thing. | An IP address helps identify a destination. A port helps identify a service on that destination. |
-| Forgetting the transport protocol. | TCP port 7777 and UDP port 7777 are different communication targets. Check address, port, and protocol together. |
-| Thinking a domain name is the server itself. | A domain name is a name. DNS may resolve it to one or more addresses or aliases. Those results may point to systems such as load balancers, CDNs, or regional endpoints. |
-| Thinking DNS chooses the application port. | In most beginner-level cases, DNS resolves a name to one or more usable addresses or records. The port usually comes from the URL scheme, client configuration, or service configuration. |
-| Thinking DNS success means the API is healthy. | DNS success means the name returned an answer. It does not prove that the API Server, database, cache, authentication service, or application logic is healthy. |
+An IP address helps identify a destination. A port helps identify a service on that destination.
+
+### Mistake 2: Forgetting the Transport Protocol
+
+TCP port `7777` and UDP port `7777` are different communication targets. Check address, port, and protocol together.
+
+### Mistake 3: Thinking a Domain Name Is the Server Itself
+
+A domain name is a name. DNS may resolve it to one or more addresses or aliases. Those results may point to systems such as load balancers, CDNs, or regional endpoints.
 
 Better wording:
 
@@ -916,15 +918,33 @@ The client uses a domain name, DNS helps resolve it to one or more usable addres
 and the client uses an address, port, and protocol to communicate.
 ```
 
-### Protocol and Transport Mistakes
+### Mistake 4: Thinking DNS Chooses the Application Port
 
-| Mistake | Better thinking |
-|---|---|
-| Thinking TCP means client data is safe to trust. | TCP can help deliver data reliably and in order. It does not prove the data is valid, fair, or allowed. |
-| Thinking UDP is always wrong because it can lose packets. | UDP gives fewer guarantees by default, which can be useful when fresh state matters more than old updates. |
-| Thinking UDP automatically means low latency. | UDP is only one part of the design. Region, routing, congestion, packet loss, server tick processing, and client correction still matter. |
-| Treating HTTP/3 as ordinary unreliable UDP traffic. | HTTP/3 uses QUIC over UDP, and QUIC adds connection management, security, stream handling, flow control, and reliable in-order delivery within streams. |
-| Thinking WebSocket and UDP are the same because both can be used for real-time features. | WebSocket is a persistent bidirectional communication style usually used over TCP/TLS. UDP is a transport protocol with fewer delivery guarantees by default. We will compare them more carefully in Chapter 9. |
+In most beginner-level cases, DNS resolves a name to one or more usable addresses or records. The port usually comes from the URL scheme, client configuration, or service configuration.
+
+### Mistake 5: Thinking DNS Success Means the API Is Healthy
+
+DNS success means the name returned an answer. It does not prove that the API Server, database, cache, authentication service, or application logic is healthy.
+
+### Mistake 6: Thinking TCP Means Client Data Is Safe to Trust
+
+TCP can help deliver data reliably and in order. It does not prove the data is valid, fair, or allowed.
+
+### Mistake 7: Thinking UDP Is Always Wrong Because It Can Lose Packets
+
+UDP gives fewer guarantees by default, which can be useful when fresh state matters more than old updates.
+
+### Mistake 8: Thinking UDP Automatically Means Low Latency
+
+UDP is only one part of the design. Region, routing, congestion, packet loss, server tick processing, and client correction still matter.
+
+### Mistake 9: Treating HTTP/3 as Ordinary Unreliable UDP Traffic
+
+HTTP/3 uses QUIC over UDP. QUIC adds connection management, security, stream handling, flow control, and reliable in-order delivery within streams.
+
+### Mistake 10: Thinking WebSocket and UDP Are the Same Because Both Can Be Used for Real-time Features
+
+WebSocket is a persistent bidirectional communication style usually used over TCP/TLS. UDP is a transport protocol with fewer delivery guarantees by default. We will compare them more carefully in Chapter 9.
 
 The right question is not “Is TCP good?” or “Is UDP bad?” The better question is:
 
@@ -933,24 +953,35 @@ What does this feature need: reliability, ordering, freshness, low latency,
 application-level control, security, or server validation?
 ```
 
-### Network Quality Mistakes
+### Mistake 11: Treating `ping` as Final Proof
 
-| Mistake | Better thinking |
-|---|---|
-| Treating `ping` as final proof. | `ping` gives a limited IP-level response-time clue. It does not confirm API health or game traffic behavior, and some servers or networks block ping-style ICMP traffic. |
-| Thinking high bandwidth means low latency. | Bandwidth is capacity. Latency is delay. A network can download large files quickly but still feel slow for real-time input. |
-| Ignoring jitter. | Unstable delay can feel worse than a slightly higher but stable delay, especially for voice, live room state, and real-time gameplay. |
-| Assuming packet loss has the same effect for every protocol. | TCP may retransmit and add delay. UDP does not retransmit by default, so the application or game networking layer must decide what to do. |
+`ping` gives a limited IP-level response-time clue. It does not confirm API health or game traffic behavior, and some servers or networks block ping-style ICMP traffic.
+
+### Mistake 12: Thinking High Bandwidth Means Low Latency
+
+Bandwidth is capacity. Latency is delay. A network can download large files quickly but still feel slow for real-time input.
+
+### Mistake 13: Ignoring Jitter
+
+Unstable delay can feel worse than a slightly higher but stable delay, especially for voice, live room state, and real-time gameplay.
+
+### Mistake 14: Assuming Packet Loss Has the Same Effect for Every Protocol
+
+TCP may retransmit and add delay. UDP does not retransmit by default, so the application or game networking layer must decide what to do.
 
 For patch downloads, bandwidth and throughput matter a lot. For real-time combat, latency, jitter, and packet loss are often more noticeable.
 
-### Backend Logic and Operations Mistakes
+### Mistake 15: Thinking `localhost` Is Public
 
-| Mistake | Better thinking |
-|---|---|
-| Thinking `localhost` is public. | `localhost` and `127.0.0.1` point to your own computer. They are useful for local development, not for public player access. |
-| Retrying every failed request blindly. | Read-only requests are often safer to retry, but retries should still have limits and delay between attempts. State-changing requests, such as reward claims or purchases, need duplicate protection. |
-| Assuming a network problem has only one cause. | Separate network reachability, server process health, application logic, data storage, authentication, and client configuration. |
+`localhost` and `127.0.0.1` point to your own computer. They are useful for local development, not for public player access.
+
+### Mistake 16: Retrying Every Failed Request Blindly
+
+Read-only requests are often safer to retry, but retries should still have limits and delay between attempts. State-changing requests, such as reward claims or purchases, need duplicate protection.
+
+### Mistake 17: Assuming a Network Problem Has Only One Cause
+
+Separate network reachability, server process health, application logic, data storage, authentication, and client configuration.
 
 When players report connection problems, separate the layers:
 

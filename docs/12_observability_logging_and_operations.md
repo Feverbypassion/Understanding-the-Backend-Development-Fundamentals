@@ -110,7 +110,7 @@ A running backend may still have serious operational problems:
 | Only one region has high errors. | A global health check may hide region-specific problems. |
 | A Remote Config change caused unexpected results. | The server may be running, but operators need records of what changed and when. |
 
-An **operation-ready backend** is a backend that provides enough operational signals for developers and operators to understand what is happening while the service is running.
+A **backend that is ready for operations** is a backend that provides enough operational signals for developers and operators to understand what is happening while the service is running.
 It should help answer questions such as:
 
 ```text
@@ -176,7 +176,7 @@ Logs are useful when you want to investigate a specific event, request, error, o
 A simple log line might look like this:
 
 ```text
-2026-05-16T09:30:00Z ERROR POST /rewards/daily status=500 latencyMs=1240 requestId=req_20260516_0001 playerId=player_1001 errorCode=DB_TIMEOUT
+2026-05-16T09:30:00Z ERROR POST /players/me/rewards/daily status=500 latencyMs=1240 requestId=req-20260516-0001 playerId=player-1001 errorCode=DB_TIMEOUT
 ```
 
 This log tells us that a daily reward request failed, returned status `500`, took `1240 ms`, and had the error code `DB_TIMEOUT`.
@@ -194,9 +194,9 @@ A structured log might look like this:
   "path": "/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
-  "requestId": "req_20260516_0001",
-  "playerId": "player_1001",
-  "rewardId": "spring_event_day_3",
+  "requestId": "req-20260516-0001",
+  "playerId": "player-1001",
+  "rewardId": "spring-event-day-3",
   "errorCode": "DB_TIMEOUT",
   "message": "Daily reward grant failed"
 }
@@ -280,7 +280,7 @@ Use logs for specific investigation.
 ```
 
 For example, `route`, `status_code`, `region`, and `feature` may be practical metric labels when their values are limited and predictable.
-When a path contains unique values, such as `/players/player_1001`, avoid using the raw path as a metric label.
+When a path contains unique values, such as `/players/player-1001`, avoid using the raw path as a metric label.
 Prefer a stable route template such as `route="/players/{playerId}"`.
 This keeps metric labels bounded and easier to aggregate.
 In logs, the actual request path can be useful for investigation.
@@ -295,7 +295,7 @@ A trace shows where time was spent or where a request failed.
 Imagine a daily reward request:
 
 ```text
-POST /rewards/daily
+POST /players/me/rewards/daily
   ├─ Check authentication
   ├─ Read reward configuration
   ├─ Check previous claim record
@@ -308,8 +308,8 @@ If the request takes `1800 ms`, a trace may show that most of the time was spent
 For example:
 
 ```text
-Trace: req_20260516_0001
-  POST /rewards/daily                 1800 ms
+Trace: req-20260516-0001
+  POST /players/me/rewards/daily                 1800 ms
   ├─ authenticate player                30 ms
   ├─ load reward config                 25 ms
   ├─ check claim record                110 ms
@@ -523,7 +523,7 @@ For example, this is dangerous:
 {
   "level": "error",
   "path": "/rewards/daily",
-  "playerId": "player_1001",
+  "playerId": "player-1001",
   "authToken": "eyJhbGciOi...raw-token-value",
   "message": "Reward claim failed"
 }
@@ -536,8 +536,8 @@ A safer log would remove, mask, or replace it with a safe reference such as a re
 {
   "level": "error",
   "path": "/rewards/daily",
-  "playerId": "player_1001",
-  "requestId": "req_20260516_0001",
+  "playerId": "player-1001",
+  "requestId": "req-20260516-0001",
   "errorCode": "DB_TIMEOUT",
   "message": "Reward claim failed"
 }
@@ -617,9 +617,9 @@ Next, the team looks at logs for failed reward requests.
   "path": "/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
-  "requestId": "req_20260516_0001",
-  "playerId": "player_1001",
-  "rewardId": "spring_event_day_3",
+  "requestId": "req-20260516-0001",
+  "playerId": "player-1001",
+  "rewardId": "spring-event-day-3",
   "errorCode": "DB_TIMEOUT",
   "message": "Daily reward grant failed"
 }
@@ -633,8 +633,8 @@ This helps the team connect the dashboard signal to real failure examples.
 A trace for the same request shows:
 
 ```text
-Trace: req_20260516_0001
-  POST /rewards/daily                 1240 ms
+Trace: req-20260516-0001
+  POST /players/me/rewards/daily                 1240 ms
   ├─ authenticate player                25 ms
   ├─ load reward config                 30 ms
   ├─ check existing claim record        85 ms
@@ -690,9 +690,9 @@ Read the following log carefully:
   "path": "/rewards/daily",
   "statusCode": 500,
   "latencyMs": 1240,
-  "requestId": "req_20260516_0001",
-  "playerId": "player_1001",
-  "rewardId": "spring_event_day_3",
+  "requestId": "req-20260516-0001",
+  "playerId": "player-1001",
+  "rewardId": "spring-event-day-3",
   "errorCode": "DB_TIMEOUT",
   "message": "Daily reward grant failed",
   "authToken": "raw-token-value-should-not-be-logged"
@@ -722,15 +722,15 @@ A careful reader should notice:
 | Path | `/rewards/daily` |
 | Status code | `500` |
 | Latency | `1240 ms` |
-| Request ID | `req_20260516_0001` |
-| Feature context | Daily reward claim for `spring_event_day_3` |
+| Request ID | `req-20260516-0001` |
+| Feature context | Daily reward claim for `spring-event-day-3` |
 | Error code | `DB_TIMEOUT` |
 | Sensitive data risk | `authToken` should not be logged in raw form. |
 
 A meaningful metric could be:
 
 ```text
-rate(reward_claim_failures_total{feature="daily_reward", event="spring_event"}[1m])
+rate(reward_claim_failures_total{feature="daily-reward", event="spring-event"}[1m])
 ```
 
 This example uses bounded labels such as `feature` and `event`.

@@ -683,16 +683,37 @@ What should I remember about .env and .env.example?
 
 Beginners often make setup problems larger than they need to be. When something goes wrong, start with simple checks.
 
-| Mistake | Better habit |
-|---|---|
-| Opening only one file in the editor. | Open the whole learning folder. |
-| Running commands in the wrong folder. | Run `pwd` and `ls` before trying again. |
-| Thinking Git and GitHub are the same. | Remember that Git records changes and GitHub hosts repositories online. |
-| Installing many runtimes without knowing why. | Learn the role of runtime and package manager first. |
-| Treating `command not found` as a personal failure. | Record it as information about your current environment. |
-| Committing `.env`. | Add `.env` to `.gitignore`, use `.env.example` for safe examples, and rotate exposed secrets. |
-| Ignoring error messages. | Copy the message into learning notes and identify what it is saying. |
-| Expecting to create a working backend server in this chapter. | Focus on workspace, tools, and observation habits. |
+### Mistake 1: Opening Only One File in the Editor
+
+Open the whole learning folder so the editor can show related files, notes, examples, and configuration files together.
+
+### Mistake 2: Running Commands in the Wrong Folder
+
+Run `pwd` and `ls` before trying again. Many beginner errors happen because the terminal is not in the folder you think it is in.
+
+### Mistake 3: Thinking Git and GitHub Are the Same
+
+Git records changes on your machine. GitHub hosts repositories online. They often work together, but they are not the same tool.
+
+### Mistake 4: Installing Many Runtimes without Knowing Why
+
+Learn the role of a runtime and package manager first. Installing more tools does not automatically make the learning environment clearer.
+
+### Mistake 5: Treating `command not found` as a Personal Failure
+
+Record it as information about your current environment. It usually means the command is not installed, not on the PATH, or typed differently from what the shell expects.
+
+### Mistake 6: Committing `.env`
+
+Add `.env` to `.gitignore`, use `.env.example` for safe examples, and rotate exposed secrets if real values were committed.
+
+### Mistake 7: Ignoring Error Messages
+
+Copy the message into learning notes and identify what it is saying. Error messages are part of backend learning, not just interruptions.
+
+### Mistake 8: Expecting to Create a Working Backend Server in This Chapter
+
+Focus on workspace, tools, and observation habits. Later chapters and advanced courses can go deeper into implementation.
 
 If you feel stuck, use this short checklist:
 
@@ -849,7 +870,7 @@ when later chapters refer to requests, files, commands, or repositories.
 - [Visual Studio Code — Integrated Terminal](https://code.visualstudio.com/docs/terminal/basics)  
   Use this when you want to use a terminal inside your editor.
 
-- [Ubuntu Desktop Documentation — The Linux command line for beginners](https://documentation.ubuntu.com/desktop/en/latest/tutorial/the-linux-command-line-for-beginners/)  
+- [Ubuntu Desktop Documentation — The Linux command line for beginners](https://ubuntu.com/desktop/docs/en/latest/tutorial/the-linux-command-line-for-beginners/)  
   Use this when terminal commands still feel unfamiliar.
 
 - [Everything curl — Command line HTTP](https://everything.curl.dev/http/index.html)  

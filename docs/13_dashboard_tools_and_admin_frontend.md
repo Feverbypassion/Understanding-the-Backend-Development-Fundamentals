@@ -92,7 +92,7 @@ Direct production database modification has several risks.
 
 | Risk | Example |
 |---|---|
-| Wrong target | The operator intends to update `player_001` but changes `player_010`. |
+| Wrong target | The operator intends to update `player-001` but changes `player-010`. |
 | Wrong value | A reward of 500 gold becomes 5,000 gold by mistake. |
 | Missing validation | The change bypasses normal reward rules. |
 | Duplicate operation | The same reward is granted twice because the normal request flow was bypassed. |
@@ -369,7 +369,7 @@ Here is a simplified conceptual audit log example:
   "reason": "Weekend bonus event",
   "approvalId": "approval_7788",
   "approvalStatus": "approved",
-  "requestId": "req_admin_abc123",
+  "requestId": "req-admin-abc123",
   "changeRequestId": "change_7788",
   "status": "succeeded"
 }
@@ -536,7 +536,7 @@ So it is useful to distinguish:
 
 The key point is that changing live settings is not only a product decision. It is also a backend safety decision.
 
-## 13.9 Operational Tool UX and Common Mistakes
+## 13.9 Operational Tool UX
 
 Operational tool UX is not only about making the screen look clean. It is about helping people avoid mistakes while working with powerful backend features.
 
@@ -590,22 +590,55 @@ Confirmation: type APPLY PRODUCTION CHANGE
 
 This screen is more deliberate, and the extra steps reduce the chance of a serious incident.
 
-Common mistakes include:
+## 13.10 Common Mistakes
 
-| Mistake | Why it is dangerous |
-|---|---|
-| Treating internal tools as safe just because they are internal. | Internal accounts can still be misused or compromised. |
-| Giving all operators the same permission. | Low-risk and high-risk tasks become mixed. |
-| Relying only on hidden frontend buttons. | The Admin API still needs server-side authorization. |
-| Adding audit logs later. | Missing records make incidents hard to investigate. |
-| Allowing audit logs to be edited casually. | A dangerous operation could be hidden after the fact. |
-| Logging raw tokens or secrets. | Logs can become a source of security leaks. |
-| Editing production config without preview. | One small value may affect many players. |
-| Confusing config rollback with data recovery. | Already-granted rewards may need separate correction. |
-| Ignoring server time and time zones. | Events may start, end, or grant rewards at the wrong time. |
-| Ignoring segment size. | A change intended for a small group may affect everyone. |
-| Keeping old Feature Flags forever. | Stale flags make behavior difficult to understand and can create hidden operational risk. |
-| Starting with too many write operations. | The tool becomes dangerous before safety systems exist. |
+### Mistake 1: Treating Internal Tools as Safe Just Because They Are Internal
+
+Internal accounts can still be misused or compromised.
+
+### Mistake 2: Giving All Operators the Same Permission
+
+Low-risk and high-risk tasks become mixed.
+
+### Mistake 3: Relying Only on Hidden Frontend Buttons
+
+The Admin API still needs server-side authorization.
+
+### Mistake 4: Adding Audit Logs Later
+
+Missing records make incidents hard to investigate.
+
+### Mistake 5: Allowing Audit Logs to Be Edited Casually
+
+A dangerous operation could be hidden after the fact.
+
+### Mistake 6: Logging Raw Tokens or Secrets
+
+Logs can become a source of security leaks.
+
+### Mistake 7: Editing Production Config without Preview
+
+One small value may affect many players.
+
+### Mistake 8: Confusing Config Rollback with Data Recovery
+
+Already-granted rewards may need separate correction.
+
+### Mistake 9: Ignoring Server Time and Time Zones
+
+Events may start, end, or grant rewards at the wrong time.
+
+### Mistake 10: Ignoring Segment Size
+
+A change intended for a small group may affect everyone.
+
+### Mistake 11: Keeping Old Feature Flags Forever
+
+Stale flags make behavior difficult to understand and can create hidden operational risk.
+
+### Mistake 12: Starting with Too Many Write Operations
+
+The tool becomes dangerous before safety systems exist.
 
 For a beginner project, it is often better to start with read-only internal views:
 
@@ -617,7 +650,7 @@ For a beginner project, it is often better to start with read-only internal view
 
 Write operations can be added later when the permission model, validation, confirmation, approval, duplicate execution handling, and audit logging are ready.
 
-## 13.10 Learning Practice
+## 13.11 Learning Practice
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
@@ -709,7 +742,7 @@ The audit log should record actor, role, environment, config key, previous value
 Rollback can restore the config value, but already-granted rewards may need separate review.
 ```
 
-## 13.11 Chapter Summary
+## 13.12 Chapter Summary
 
 In this chapter, we looked at backend systems from the operator side.
 
@@ -734,7 +767,7 @@ As backend systems grow, player APIs, Admin APIs, databases, logs, dashboards, R
 
 In the next chapter, we will study architecture patterns that help teams organize these responsibilities and manage trade-offs.
 
-## 13.12 Quiz
+## 13.13 Quiz
 
 ### Question 1
 
@@ -848,7 +881,7 @@ D. Rollback removes the need for audit logs.
 **Explanation:**  
 Changing a config value back can help stop future impact. But if players already received rewards, the team may need data correction, compensation, or support follow-up.
 
-## 13.13 Further Reading
+## 13.14 Further Reading
 
 You do not need to read all of these resources immediately. Use them when you want to connect the concepts in this chapter to real tools and official documentation.
 

@@ -50,7 +50,7 @@ Imagine that a player clears a stage and submits a score.
 
 ```json
 {
-  "stageId": "stage_01",
+  "stageId": "stage-01",
   "score": 999999999,
   "playTimeSeconds": 3
 }
@@ -61,7 +61,7 @@ The request may be valid JSON, but that does not mean the result is believable. 
 Now imagine a daily reward request.
 
 ```http
-POST /rewards/daily
+POST /players/me/rewards/daily
 Authorization: Bearer player-token
 ```
 
@@ -100,12 +100,12 @@ These protected targets are accessed through APIs. That means high-risk data usu
 Consider these APIs:
 
 ```http
-GET  /me/inventory
-POST /scores
-POST /rewards/daily
-GET  /leaderboard
+GET /players/me/inventory
+POST /players/me/scores
+POST /players/me/rewards/daily
+GET /leaderboard
 POST /admin/events
-GET  /admin/audit-logs
+GET /admin/audit-logs
 POST /admin/players/{playerId}/grant-item
 ```
 
@@ -113,9 +113,9 @@ Each API raises a different kind of question.
 
 | API | First Security Question |
 |---|---|
-| `GET /me/inventory` | Does it return only the authenticated user's own inventory? |
-| `POST /scores` | Is the score possible, and is the submission frequency suspicious? |
-| `POST /rewards/daily` | Has the player already claimed today's reward according to server state? |
+| `GET /players/me/inventory` | Does it return only the authenticated user's own inventory? |
+| `POST /players/me/scores` | Is the score possible, and is the submission frequency suspicious? |
+| `POST /players/me/rewards/daily` | Has the player already claimed today's reward according to server state? |
 | `GET /leaderboard` | Can this be public, or does it need caching and rate limiting? |
 | `POST /admin/events` | Is the requester an authorized operator, and will the change be audited? |
 | `GET /admin/audit-logs` | Who is allowed to view sensitive operational records? |
@@ -147,8 +147,8 @@ A dangerous score submission might look like this:
 
 ```json
 {
-  "playerId": "player_001",
-  "stageId": "stage_01",
+  "playerId": "player-001",
+  "stageId": "stage-01",
   "score": 999999999,
   "rewardGems": 5000
 }
@@ -157,12 +157,12 @@ A dangerous score submission might look like this:
 There are two problems here. First, the score may be impossible. Second, the client is trying to send the reward amount directly. A safer design asks the client to submit the result or claim, while the server checks the rule and decides what reward applies.
 
 ```http
-POST /scores
+POST /players/me/scores
 ```
 
 ```json
 {
-  "stageId": "stage_01",
+  "stageId": "stage-01",
   "score": 15200,
   "playTimeSeconds": 94
 }
@@ -204,14 +204,14 @@ Authorization asks a different question. A user may be logged in, but that does 
 A common risky API shape is this:
 
 ```http
-GET /players/player_002/inventory
+GET /players/player-002/inventory
 Authorization: Bearer token-of-player-001
 ```
 
-If the token belongs to `player_001`, the server must not return `player_002`'s inventory just because the path says so. A safer design for a player viewing their own data is:
+If the token belongs to `player-001`, the server must not return `player-002`'s inventory just because the path says so. A safer design for a player viewing their own data is:
 
 ```http
-GET /me/inventory
+GET /players/me/inventory
 Authorization: Bearer token-of-player-001
 ```
 
@@ -243,7 +243,7 @@ A request can pass the first layer but still be dangerous.
 The value `100000` is a number, so it may pass format validation. But if a regular player can decide how many gems should be granted, the API design is unsafe. A better shape is to let the server decide the reward amount from server-side rules.
 
 ```http
-POST /rewards/daily
+POST /players/me/rewards/daily
 ```
 
 The client asks to claim the daily reward. The server checks server time, player state, reward configuration, and claim history. Then the server decides whether to grant the reward and how much to grant.
@@ -387,7 +387,7 @@ A safer client-facing response is shorter and can include a request ID.
 {
   "error": "RewardClaimFailed",
   "message": "The reward could not be claimed. Please try again later.",
-  "requestId": "req_9f21c0"
+  "requestId": "req-9f21c0"
 }
 ```
 
@@ -406,14 +406,14 @@ Let’s connect the concepts through two common game backend scenarios.
 The player finishes a stage and the client sends a score request.
 
 ```http
-POST /scores
+POST /players/me/scores
 Authorization: Bearer player-token
 Content-Type: application/json
 ```
 
 ```json
 {
-  "stageId": "stage_01",
+  "stageId": "stage-01",
   "score": 15200,
   "playTimeSeconds": 94
 }
@@ -443,7 +443,7 @@ Highly competitive games may need stronger evidence, replay checks, server-side 
 The player presses a daily reward button.
 
 ```http
-POST /rewards/daily
+POST /players/me/rewards/daily
 Authorization: Bearer player-token
 ```
 
@@ -499,10 +499,10 @@ Read the API examples below.
 
 | API | Short Description |
 |---|---|
-| `POST /scores` | Submit a stage score. |
-| `POST /rewards/daily` | Claim today's login or attendance reward. |
+| `POST /players/me/scores` | Submit a stage score. |
+| `POST /players/me/rewards/daily` | Claim today's login or attendance reward. |
 | `GET /leaderboard` | Read leaderboard ranking data. |
-| `GET /me/inventory` | Read the authenticated player's inventory. |
+| `GET /players/me/inventory` | Read the authenticated player's inventory. |
 | `POST /admin/events` | Create or update event settings. |
 | `GET /admin/audit-logs` | View records of operator actions. |
 | `POST /admin/players/{playerId}/grant-item` | Grant an item to a player through an admin API. |
@@ -538,10 +538,10 @@ After you classify the APIs yourself, compare your reasoning with the table belo
 
 | API | Likely Risk | Important Checks |
 |---|---|---|
-| `POST /scores` | Medium to High | Authentication, authorization, validation, rate limiting, server authority, logging. |
-| `POST /rewards/daily` | High | Authentication, authorization, validation, claim-state check, idempotency, server authority, reward history or operation record. |
+| `POST /players/me/scores` | Medium to High | Authentication, authorization, validation, rate limiting, server authority, logging. |
+| `POST /players/me/rewards/daily` | High | Authentication, authorization, validation, claim-state check, idempotency, server authority, reward history or operation record. |
 | `GET /leaderboard` | Low to Medium | Caching, rate limiting, response size limits, suspicious score policy, minimal public profile data. |
-| `GET /me/inventory` | Medium | Authentication, authorization, reasonable rate limits, minimal response data. |
+| `GET /players/me/inventory` | Medium | Authentication, authorization, reasonable rate limits, minimal response data. |
 | `POST /admin/events` | High | Admin authentication, least-privilege authorization, validation, confirmation, change reason, audit log. |
 | `GET /admin/audit-logs` | High | Admin authentication, least-privilege authorization, filtering, redaction, sensitive data access logging. |
 | `POST /admin/players/{playerId}/grant-item` | Very High | Admin authentication, least-privilege authorization, target player validation, item validation, confirmation, approval rule, idempotency, audit log. |
