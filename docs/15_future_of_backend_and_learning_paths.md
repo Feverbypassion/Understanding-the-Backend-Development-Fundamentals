@@ -166,7 +166,7 @@ The map below is not a production architecture diagram. It is a learning map. It
 
 Each part answers a different question.
 
-| Backend area or support habit | Main question |
+| Learning area or support habit | Main question |
 |---|---|
 | Web Backend | How does the client send requests, and how does the server validate, process, store, and return data? |
 | Data and Databases | Where does important player and service data live, and how can it be queried safely? |
@@ -183,9 +183,9 @@ This map is useful because backend decisions are connected.
 
 For example, a daily reward feature is not only a reward feature. It may involve authentication, validation, database records, and time rules. It may also involve inventory updates, logs, admin tools, Remote Config, and possible customer support investigations.
 
-A score submission feature is not only a score feature. It may involve API design, request validation, player identity, database storage, and leaderboard ranking. It may also involve cache, abnormal score review, rate limiting, and observability.
+A score submission feature also connects to several backend responsibilities. It may involve API design, request validation, player identity, database storage, and leaderboard ranking. It may also involve cache, abnormal score review, rate limiting, and observability.
 
-A real-time co-op match is not only a network feature. It may involve matchmaking, session allocation, Dedicated Game Server capacity, player connection state, and match result reporting. It may also involve reward granting and incident response.
+A real-time co-op match also reaches beyond networking. It may involve matchmaking, session allocation, Dedicated Game Server capacity, player connection state, and match result reporting. It may also involve reward granting and incident response.
 
 The more clearly you can connect features to responsibilities, the easier it becomes to choose what to study next.
 
@@ -195,7 +195,7 @@ The more clearly you can connect features to responsibilities, the easier it bec
 
 There is no single correct next path for every student.
 
-A good next path depends on your interests, your current skill level, your project idea, and the kind of backend problem you want to solve.
+A good next path depends on your interests, your current skill level, your project idea, and the backend problem you want to understand first.
 
 Use this table as a starting point.
 
@@ -248,7 +248,7 @@ For most beginners, Web Backend is often the easiest advanced path to start with
 
 However, that does not mean everyone must start there.
 
-For example, a student interested in real-time matches may choose Real-time Multiplayer Backend, while a student interested in operations and internal tools may choose LiveOps / Tools Backend.
+For example, a student who is interested in real-time matches may choose Real-time Multiplayer Backend, while a student who is interested in operations and internal tools may choose LiveOps / Tools Backend.
 
 The important point is to choose one primary path first. You can study the other paths later.
 
@@ -256,9 +256,9 @@ The important point is to choose one primary path first. You can study the other
 
 ## 15.6 Advanced Track Overview
 
-This section summarizes the major advanced tracks that can follow this guide.
+This section summarizes the major advanced backend tracks that can follow this guide, plus AI-assisted learning habits that can support any track.
 
-Treat these tracks as learning directions, not as a checklist that must be completed immediately.
+Treat this section as a set of learning directions, not as a checklist that must be completed immediately.
 
 ### 15.6.1 Web Backend
 
@@ -557,7 +557,7 @@ A platform does not remove the need to understand backend fundamentals. It chang
 
 ### 15.6.6 AI-Assisted Backend Learning
 
-In this chapter, AI-assisted backend learning means learning how to use AI tools responsibly while studying any backend path. It can support Web Backend, Real-time Multiplayer Backend, LiveOps / Tools Backend, Cloud / Infrastructure, and Platform Backend, but it is not a replacement for backend fundamentals.
+In this chapter, AI-assisted backend learning means learning how to use AI tools responsibly while studying any backend path. It can support every primary backend track, but it is not a replacement for backend fundamentals.
 
 AI tools can help with tasks such as:
 
@@ -577,7 +577,7 @@ Also be careful about what you paste into AI tools.
 
 Do not paste secrets, private keys, or production tokens into AI tools.
 
-Also avoid pasting real player data, payment data, raw production logs, internal incident details, or proprietary source code. Only use sensitive or production data if your organization explicitly allows it and the tool is approved for that data.
+Also avoid pasting real player data, payment data, raw production logs, internal incident details, or proprietary source code. Use sensitive or production data only when your organization explicitly allows it and the tool is approved for that data.
 
 For learning, use sample code, mock data, and sanitized examples.
 
@@ -784,7 +784,7 @@ The main question is:
 Which parts should I build myself, and which parts can a platform handle for now?
 ```
 
-This example shows that one game idea can lead to several backend learning paths. You do not need to choose all of them at once. Choose the most important problem for your current goal.
+This example shows that one game idea can lead to several backend learning paths. You do not need to choose all of them at once. Choose the problem that matters most for your current goal.
 
 ---
 
@@ -835,7 +835,7 @@ Choose three to six chapters from this guide that you should review before going
 
 For example:
 
-| Track | Useful chapters to review |
+| Track or supporting habit | Useful chapters to review |
 |---|---|
 | Web Backend | Chapters 5, 6, 7, 8, 11 |
 | Real-time Multiplayer Backend | Chapters 4, 9, 10, 11, 12 |
@@ -1161,7 +1161,7 @@ Cloud / Infrastructure focuses on where backend systems run, how clients reach t
 
 You do not need to read all of these resources immediately. Use them as references when the topic appears in your chosen learning path.
 
-Official documentation and platform features can change over time. When using a platform or tool, check the current documentation, pricing, support scope, and feature availability.
+Official documentation and platform features can change over time. When using a platform or tool, check the current documentation, pricing, support options, and feature availability.
 
 ### Web Backend
 
