@@ -371,11 +371,11 @@ master in this chapter.
   updates to the client.
 - WebRTC DataChannel is often discussed for browser-based peer-to-peer data
   exchange, sometimes alongside WebRTC audio/video systems.
-- At the time of writing, MDN lists WebTransport as a Baseline 2026 web API. It
-  uses HTTP/3 and can support reliable streams and UDP-like datagrams. It is
-  still an advanced option for this guide, so older devices, browser
-  implementation differences, secure context requirements, HTTP/3 server
-  support, and deployment environment should be checked carefully before
+- As of June 2026, MDN lists WebTransport as a Baseline 2026 web API. It uses
+  HTTP/3 and can support reliable streams and UDP-like datagrams. It is still an
+  advanced option for this guide, so older devices, browser implementation
+  differences, secure context requirements, HTTP/3 server support, fallback
+  behavior, and deployment environment should be checked carefully before
   considering it for a real service.
 
 For this introductory guide, WebSocket is enough for understanding the idea of a
@@ -1237,7 +1237,7 @@ Dedicated Game Servers.
 A beginner-friendly rule is:
 
 ```text
-Use HTTP APIs for service-side request/response features.
+Use HTTP APIs for server-side request/response features.
 Use persistent connections when the server must push updates quickly.
 Use Dedicated Game Servers when gameplay state needs a separate server-side execution unit.
 Use an Authoritative Server model when the server must decide important game state.
@@ -1643,10 +1643,11 @@ behavior, allocation, hosting, and Dedicated Game Server operations.
 
 - [MDN — WebTransport API](https://developer.mozilla.org/en-US/docs/Web/API/WebTransport_API)  
   Treat this as an optional advanced reference for HTTP/3-based transport,
-  reliable streams, and UDP-like datagrams. At the time of writing, MDN lists
+  reliable streams, and UDP-like datagrams. As of June 2026, MDN lists
   WebTransport as a Baseline 2026 web API. Before considering it for a real
   service, check older devices, browser implementation differences, secure
-  context requirements, HTTP/3 server support, and deployment environment.
+  context requirements, HTTP/3 server support, fallback behavior, and deployment
+  environment.
 
 - [Cloudflare — What is UDP?](https://www.cloudflare.com/learning/ddos/glossary/user-datagram-protocol-udp/)  
   Use this to review why UDP does not provide the same delivery guarantees as TCP.

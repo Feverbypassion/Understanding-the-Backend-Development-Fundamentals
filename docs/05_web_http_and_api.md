@@ -68,7 +68,7 @@ That pattern fits HTTP APIs well.
 |---|---|---|
 | Health check | `GET /health` | The client or monitoring tool only needs to know whether the service is reachable. |
 | Player creation | `POST /players` | The client asks the server to create a player record. |
-| Player profile lookup | `GET /players/{playerId}` | The client requests profile data for one player. Private data still requires authorization. |
+| Own player profile lookup | `GET /players/me` | The client requests the authenticated player's own profile data. |
 | Score submission | `POST /scores` | The client sends result data, and the server validates it. |
 | Leaderboard lookup | `GET /leaderboard` | The client receives ranked score data. |
 | Remote Config lookup | `GET /config` | The client receives current server-managed game settings. |
@@ -76,7 +76,7 @@ That pattern fits HTTP APIs well.
 
 These examples have clear request/response boundaries. The client does not need to stay connected every frame. It can send one request, receive one response, and update the UI.
 
-For APIs that include player IDs, the exact authorization rule depends on the feature. A public profile API may intentionally expose limited public data, while private player data should be protected by authentication and authorization.
+For APIs that include player IDs, the exact authorization rule depends on the feature. A public profile API may intentionally expose limited public data with `GET /players/{playerId}`, while private player data should usually use an authenticated endpoint such as `GET /players/me` and must be protected by authentication and authorization.
 
 HTTP is not the best answer for every game communication problem. If a game needs to synchronize player positions many times per second, handle fast combat decisions, or maintain a shared match state, real-time communication may be needed. We will revisit those ideas in Chapter 9.
 
@@ -230,7 +230,7 @@ The method and path together describe the API operation.
 ```http
 GET /leaderboard
 POST /scores
-GET /players/player-001
+GET /players/me
 POST /rewards/daily
 ```
 
@@ -529,7 +529,7 @@ A resource is an entity or concept the API works with. In a game backend, resour
 REST-style paths often use nouns:
 
 ```http
-GET /players/player-001
+GET /players/me
 POST /scores
 GET /leaderboard?season=weekly&limit=10
 GET /config
@@ -542,7 +542,8 @@ A path should help developers understand which resource the API operation is abo
 |---|---|---|
 | `GET /getLeaderboard` | `GET /leaderboard` | The method already says this is a read operation. |
 | `POST /submitScore` | `POST /scores` | The resource is `scores`; `POST` shows that data is being submitted. |
-| `GET /getPlayer?id=player-001` | `GET /players/player-001` | The path identifies the player resource. Private data still requires authorization. |
+| `GET /getMyPlayer` | `GET /players/me` | The path identifies the authenticated player's own profile resource. |
+| `GET /getPublicPlayer?id=player-001` | `GET /players/player-001` | The path identifies a public player profile resource. The server must still check what data is allowed to be exposed. |
 | `POST /claimDailyReward` | `POST /rewards/daily` | The path points to the daily reward resource. |
 
 This does not mean every real API must be strictly RESTful. Some services use action-based or RPC-style APIs, especially when operations do not fit resource naming cleanly.

@@ -120,7 +120,7 @@ section in small pieces.
 
 You will see each tool again in later chapters.
 
-### 2.4.1 Backend Learning Is an Observation Loop
+### Backend Learning Is an Observation Loop
 
 A beginner may think backend development means writing server code. Writing code matters, but backend learning
 includes more than writing code.
@@ -151,7 +151,7 @@ Also ask, "What evidence tells me what happened?"
 That evidence may be a terminal message, an HTTP status code, a JSON response, a log line, a file path, or a note from
 your previous study session.
 
-### 2.4.2 Backend Developers Read Invisible Flows
+### Backend Developers Read Invisible Flows
 
 A backend feature often looks simple from the outside. For example, a player taps a daily reward button and receives a
 reward.
@@ -179,7 +179,7 @@ At this stage, you do not need to design a full anti-cheat system. For now, keep
 currencies, items, and rankings should be checked carefully, and the backend often acts as the source of truth for
 those values.
 
-### 2.4.3 Local Development Environment
+### Local Development Environment
 
 A local development environment is the place where you study and experiment on your own computer.
 
@@ -212,7 +212,7 @@ localhost usually means "this computer."
 You may also see `127.0.0.1` for IPv4 loopback or `::1` for IPv6 loopback. We will study these networking details
 later in the guide.
 
-### 2.4.4 Terminal and Project Folders
+### Terminal and Project Folders
 
 The terminal is a text-based way to give commands to your computer. Backend developers use the terminal often because
 many backend tools are command-line tools.
@@ -257,7 +257,7 @@ backend-learning-workspace/
 
 This is only a learning workspace. It is not a full backend project.
 
-### 2.4.5 Code Editor and Workspace
+### Code Editor and Workspace
 
 A code editor is where you read and write project files. A beginner may open only one file, such as `README.md`. In
 backend learning, it is usually better to open the whole folder.
@@ -285,7 +285,7 @@ A good editor workspace helps you:
 Visual Studio Code is a common beginner-friendly option, but it is not required. The important idea is the workspace,
 not one specific editor.
 
-### 2.4.6 Git and GitHub Basics
+### Git and GitHub Basics
 
 Git and GitHub are related, but they are not the same thing.
 
@@ -323,7 +323,7 @@ Reading.
 If GitHub still feels unfamiliar, focus on local Git and learning notes first. Creating an online repository can wait
 until you are confident that your files do not contain secrets.
 
-### 2.4.7 Runtime and Package Manager
+### Runtime and Package Manager
 
 Backend code usually needs a runtime. A runtime is the environment that can execute code for a specific language or
 platform.
@@ -364,7 +364,7 @@ dotnet --version
 
 Do not treat `command not found` as a failure. It is information about your current environment.
 
-### 2.4.8 API Testing Tools
+### API Testing Tools
 
 An API testing tool helps you send a request and inspect the response. This is useful because backend APIs can be
 tested without waiting for a complete game client.
@@ -394,7 +394,7 @@ curl --version
 If it is not available, write that down and revisit it later. The point is not to fix every setup issue immediately.
 The point is to know what the tool is for.
 
-### 2.4.9 Environment Variables and Configuration Files
+### Environment Variables and Configuration Files
 
 Backend systems often need configuration values. Examples include port numbers, environment names, database addresses,
 API keys, or secret tokens.
@@ -450,7 +450,7 @@ Use .env.example to share required variable names and safe example values.
 Keep real secret values out of Git.
 ```
 
-### 2.4.10 Learning Notes and Error Messages
+### Learning Notes and Error Messages
 
 Learning notes are not extra work. They are part of backend learning.
 
@@ -550,14 +550,18 @@ The score submission feature itself will be studied later. For now, this workspa
 
 ---
 
-## 2.6 Learning Practice: Prepare a Simple Backend Learning Workspace
+## 2.6 Learning Practice
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
-### Goal
+### Prepare a Simple Backend Learning Workspace
 
 Create a small local folder for backend learning and write short notes explaining what each file is for. The goal is
 to observe the workflow of backend learning, not to create a working backend server.
+
+### Goal
+
+Prepare a simple workspace that keeps notes, safe example configuration, and project files separate.
 
 ### Steps
 

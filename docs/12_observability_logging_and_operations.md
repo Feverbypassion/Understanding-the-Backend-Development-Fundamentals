@@ -24,7 +24,7 @@ In this chapter, an **operational signal** means a piece of information produced
 
 A key message for this chapter is:
 
-> A server that runs is not automatically an Operation-Ready Backend.
+> A server that runs is not automatically an operation-ready backend.
 
 Treat this chapter as a map.
 The goal is to understand what information a backend should provide.
@@ -34,7 +34,7 @@ These operational signals help developers and operators notice problems, investi
 
 By the end of this chapter, you should be able to explain:
 
-- Why a running server is not always an Operation-Ready Backend.
+- Why a running server is not always an operation-ready backend.
 - What an operational signal means in backend operations.
 - The difference between logs, metrics, and traces.
 - Why monitoring and observability are related but not identical.
@@ -87,7 +87,7 @@ This connects directly to Chapter 13, where we will study dashboards, internal t
 
 In this section, we will move through these ideas:
 
-1. Running server vs Operation-Ready Backend
+1. Running server vs operation-ready backend
 2. Monitoring vs Observability
 3. Logs, Metrics, and Traces
 4. Technical Metrics and Game Operations Metrics
@@ -95,7 +95,7 @@ In this section, we will move through these ideas:
 6. SLIs and SLOs as a short preview
 7. Sensitive Data and Operational Safety
 
-### A Running Server Is Not Automatically an Operation-Ready Backend
+### A Running Server Is Not Automatically Operation-Ready
 
 A beginner may think that a server is healthy if it starts and returns `200 OK` from a `/health` endpoint.
 That check is valuable, but it is only the beginning.
@@ -110,7 +110,7 @@ A running backend may still have serious operational problems:
 | Only one region has high errors. | A global health check may hide region-specific problems. |
 | A Remote Config change caused unexpected results. | The server may be running, but operators need records of what changed and when. |
 
-An **Operation-Ready Backend** is a backend that provides enough operational signals for developers and operators to understand what is happening while the service is running.
+An **operation-ready backend** is a backend that provides enough operational signals for developers and operators to understand what is happening while the service is running.
 It should help answer questions such as:
 
 ```text
@@ -166,7 +166,7 @@ In practice, teams use monitoring and observability together.
 A metric or alert may tell the team that something is wrong.
 Logs and traces may help the team understand why.
 
-Now that we have separated a running server from an Operation-Ready Backend, let’s look at the three observability signals beginners usually meet first: logs, metrics, and traces.
+Now that we have separated a running server from an operation-ready backend, let’s look at the three observability signals beginners usually meet first: logs, metrics, and traces.
 
 ### Logs
 
@@ -392,7 +392,7 @@ Error rate, latency, and database time are system health signals.
 Some game operations metrics are also product analytics signals.
 In this chapter, treat them as operational context rather than as a full analytics course.
 
-However, in live operations they often need to be viewed together.
+However, in LiveOps workflows they often need to be viewed together.
 For example, a sudden DAU drop may be a product signal, but it may also point to a login API problem.
 A reward claim count drop may mean players are not interested in an event, but it may also mean the reward API is failing.
 
@@ -571,7 +571,7 @@ The server is running.
 ```
 
 That is not enough.
-An Operation-Ready Backend should help the team ask better questions.
+An operation-ready backend should help the team ask better questions.
 
 ### Step 1: Notice the Signal Through an Alert and Dashboard
 
@@ -824,8 +824,8 @@ Technical metrics and game operations metrics should help tell one combined stor
 ## 12.8 Chapter Summary
 
 In this chapter, we studied how backend teams understand what is happening in a running system.
-The main idea is that a server that runs is not automatically an Operation-Ready Backend.
-An Operation-Ready Backend should provide actionable signals for noticing, investigating, and responding to problems.
+The main idea is that a server that runs is not automatically an operation-ready backend.
+An operation-ready backend should provide actionable signals for noticing, investigating, and responding to problems.
 
 We distinguished logs, metrics, and traces.
 Logs record specific events.
@@ -851,7 +851,7 @@ Internal tools help operators and support teams act on what they see safely.
 
 ### Question 1
 
-Which statement best describes an Operation-Ready Backend?
+Which statement best describes an operation-ready backend?
 
 A. A server that only returns `200 OK` from `/health`.  
 B. A backend that provides actionable signals so developers and operators can understand and investigate what is happening while it runs.  
@@ -861,7 +861,7 @@ D. A backend that only works on a developer's local computer.
 **Answer: B**
 
 **Explanation:**  
-An Operation-Ready Backend is not only running.
+An operation-ready backend is not only running.
 It emits actionable signals such as logs, metrics, traces, alerts, and dashboard data.
 Those signals help developers and operators investigate problems and understand service status.
 

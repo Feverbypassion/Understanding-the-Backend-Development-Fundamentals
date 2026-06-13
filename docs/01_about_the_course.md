@@ -18,7 +18,7 @@ This chapter is designed to answer three questions.
 2. Why do games need backend systems?
 3. Which backend area might be worth studying more deeply later?
 
-This chapter is not a framework tutorial. It does not guide you through installing a server framework, connecting a specific game engine, or completing a production system. The Learning Practice near the end of the chapter is a short classification activity. Its purpose is to help you notice which backend area or supporting specialization best fits a scenario.
+This chapter is not a framework tutorial. It does not guide you through installing a server framework, connecting a specific game engine, or completing a production system. The Learning Practice near the end of the chapter is a short classification activity. Its purpose is to help you notice which backend area or cross-cutting concern best fits a scenario.
 
 As you read, keep one question in mind:
 
@@ -65,7 +65,7 @@ However, once a game becomes an online service, new questions appear.
 
 These questions cannot be answered by client-side code alone. They are backend concerns.
 
-A backend is the service-side foundation behind the game. It stores important data, validates requests, supports communication, helps operators manage the service, and keeps records that help the team understand what happened.
+A backend is the server-side foundation behind the game. It stores important data, validates requests, supports communication, helps operators manage the service, and keeps records that help the team understand what happened.
 
 For a small offline prototype, you may not need a backend at all. That is normal. But when a game needs accounts, saved data, rankings, rewards, events, chat, multiplayer sessions, support tools, or server-side validation, the backend becomes increasingly important.
 
@@ -88,15 +88,15 @@ This guide will repeatedly return to four major backend areas.
 | LiveOps / Tools Backend | How does a team operate and adjust the game after launch? | Remote Config, event reward settings, admin dashboard, audit log |
 | Infrastructure / Operations | Where do servers run, and how are they kept reliable? | Local vs production, deployment concept, monitoring, incident response |
 
-This guide also introduces one supporting specialization made of cross-cutting concerns that appear across the core areas. It is separated from the core areas because it affects many backend flows rather than replacing them.
+This guide also introduces one set of cross-cutting concerns that appears across the core areas. Security and Observability affect many backend flows rather than replacing the core areas.
 
-| Supporting Specialization | Main Question | Simple Game Example |
+| Cross-Cutting Concerns | Main Question | Simple Game Example |
 |---|---|---|
 | Security and Observability | How do we protect important backend flows and understand what happened when something goes wrong? | Request validation, authentication checks, logs, metrics, alerts, suspicious score investigation |
 
 These areas often work together. For example, a leaderboard feature may use Web Backend for request/response, a database for saved scores, validation for suspicious values, and a cache for faster reads. It may also use logs for investigation and an Admin Tool for reviewing abnormal scores.
 
-### 1.4.1 Web Backend
+### Web Backend
 
 Web Backend usually means backend systems built around request/response flows. A game client asks for something, and the backend sends back a result.
 
@@ -111,7 +111,7 @@ Examples include:
 
 In later chapters, you will learn how HTTP, API contracts, JSON, status codes, validation, and databases fit into this area.
 
-### 1.4.2 Real-time Communication
+### Real-time Communication
 
 Real-time Communication is about keeping clients connected or exchanging messages and state over time, instead of relying only on one request and one response.
 
@@ -123,7 +123,7 @@ In this guide, Real-time Communication is the introductory concept area. Real-ti
 
 Real-time Multiplayer can become much deeper than chat. It may involve low latency, frequent updates, server authority, prediction, synchronization, and dedicated servers. This introductory guide explains the vocabulary and mental model, but a full Real-time Multiplayer implementation belongs to a later advanced course.
 
-### 1.4.3 LiveOps / Tools Backend
+### LiveOps / Tools Backend
 
 LiveOps means operating and adjusting a live game, especially after launch. A live game often changes over time. Events start and end, rewards are adjusted, notices are updated, and player issues are investigated.
 
@@ -138,7 +138,7 @@ Tools Backend supports internal tools used by operators, support teams, and deve
 
 A backend is not used only by players. It is also used by the team that operates the service.
 
-### 1.4.4 Infrastructure / Operations
+### Infrastructure / Operations
 
 Infrastructure is about where backend systems run. At first, you may test examples on your own computer. Later, a real service may use cloud servers, containers, databases, load balancers, DNS, HTTPS, and monitoring systems.
 
@@ -146,9 +146,9 @@ Operations is about keeping the service healthy after it starts running. A serve
 
 In this guide, LiveOps mainly means operating game content and live service workflows, such as events, rewards, notices, Remote Config, and support processes. Operations, in the infrastructure sense, means keeping backend systems running reliably through deployment, monitoring, alerts, and incident response.
 
-### 1.4.5 Security and Observability as a Supporting Specialization
+### Security and Observability as Cross-Cutting Concerns
 
-This guide treats Security and Observability as a supporting specialization made up of cross-cutting concerns that appear across many backend areas. It is not just one more player-facing feature, and it should not be treated as an afterthought.
+This guide treats Security and Observability as cross-cutting concerns that support every backend role. They are not just one more player-facing feature, and they should not be treated as afterthoughts.
 
 Security asks questions such as:
 
@@ -172,7 +172,7 @@ As a beginner, you do not need to solve every security or observability problem 
 
 This guide is an introduction. It gives you a clear foundation before you study implementation in depth.
 
-### 1.5.1 What This Guide Covers
+### What This Guide Covers
 
 This guide introduces the concepts behind:
 
@@ -192,7 +192,7 @@ This guide introduces the concepts behind:
 
 The chapters use small scenarios so you can observe flows and connect concepts. These scenarios are designed for learning, not for commercial release.
 
-### 1.5.2 What This Guide Does Not Ask You to Complete
+### What This Guide Does Not Ask You to Complete
 
 This guide does not ask you to complete any of the following systems:
 
@@ -210,7 +210,7 @@ This guide does not ask you to complete any of the following systems:
 
 These topics are important. They require more depth than this introductory guide can provide. This guide prepares you to choose an advanced direction later.
 
-### 1.5.3 Future Learning Paths
+### Future Learning Paths
 
 After this guide, you may continue in several directions.
 
@@ -235,7 +235,7 @@ The game is simple. A player clears a stage, receives a score, checks the leader
 
 This example does not depend on a specific game engine. You can imagine the client as a mobile game, PC game, browser game, or prototype. The backend ideas remain similar.
 
-### 1.6.1 Player-Facing Features
+### Player-Facing Features
 
 The player-facing side may include these actions.
 
@@ -250,7 +250,7 @@ The player-facing side may include these actions.
 
 These features do not all belong to the same backend area. Some are Web Backend examples. Some are Real-time Communication examples. Some also connect to validation, data storage, or Security and Observability.
 
-### 1.6.2 Operator-Facing Features
+### Operator-Facing Features
 
 The team may also need internal tools.
 
@@ -264,7 +264,7 @@ The team may also need internal tools.
 
 This is why backend learning should not stop at player-facing APIs. A live game also needs ways to see what is happening inside the service and safe operational tools.
 
-### 1.6.3 How This Scenario Connects to Later Chapters
+### How This Scenario Connects to Later Chapters
 
 You will see this type of scenario repeatedly throughout the guide.
 
@@ -281,11 +281,11 @@ The scenario is intentionally small. It is not meant to become a final project. 
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
-### 1.7.1 Goal
+### Goal
 
-Classify simple game service scenarios into backend areas and, when useful, a supporting specialization. This helps you practice the most important skill in this chapter: matching a backend problem to the right part of the backend map.
+Classify simple game service scenarios into backend areas and, when useful, cross-cutting concerns. This helps you practice the most important skill in this chapter: matching a backend problem to the right part of the backend map.
 
-### 1.7.2 Backend Areas and Supporting Specialization to Use
+### Backend Areas and Cross-Cutting Concerns to Use
 
 Use the following main area labels.
 
@@ -294,15 +294,15 @@ Use the following main area labels.
 - LiveOps / Tools Backend
 - Infrastructure / Operations
 
-Use the following supporting specialization when it is the main concern or a useful secondary concern.
+Use the following cross-cutting concerns when they are the main concern or a useful secondary concern.
 
 - Security and Observability
 
-Even when the Security and Observability specialization is the main concern in a scenario, it still supports a backend flow rather than replacing the core backend areas.
+Even when Security and Observability are the main concern in a scenario, they still support a backend flow rather than replacing the core backend areas.
 
 Some scenarios can connect to more than one area. Some may not need a strong secondary area. Choose the main area or concern first, then write a short note if a secondary area is useful.
 
-### 1.7.3 Scenarios
+### Scenarios
 
 Classify each scenario.
 
@@ -317,7 +317,7 @@ Classify each scenario.
 | A support operator checks whether a daily reward was granted. | Your answer | Optional note | Your reason |
 | The client sends an unusually high score. | Your answer | Optional note | Your reason |
 
-### 1.7.4 Suggested Classification
+### Suggested Classification
 
 Try the classification before reading the suggested answers below. Use this suggested classification after you try the activity yourself.
 
@@ -332,7 +332,7 @@ Try the classification before reading the suggested answers below. Use this sugg
 | A support operator checks whether a daily reward was granted. | LiveOps / Tools Backend | Security and Observability | Internal tools help inspect player records, and audit logs help explain what happened. |
 | The client sends an unusually high score. | Security and Observability | Web Backend | The main concern is trust and investigation, but the suspicious value usually arrives through an API request. |
 
-### 1.7.5 What to Observe
+### What to Observe
 
 Notice these patterns.
 
@@ -344,7 +344,7 @@ Notice these patterns.
 
 A real feature can involve multiple areas. For example, score submission is mainly a Web Backend feature, but suspicious score handling also involves Security and Observability.
 
-### 1.7.6 Short Note
+### Short Note
 
 Write two or three sentences about one scenario that could belong to more than one backend area or concern. Explain which area you chose as the main one and why.
 
@@ -352,49 +352,49 @@ Write two or three sentences about one scenario that could belong to more than o
 
 Beginners often misunderstand backend development because the term “server” is used in many ways. This section clears up common mistakes before later chapters introduce more detail.
 
-### 1.8.1 Mistake 1: Thinking Backend Means Only One Server File
+### Mistake 1: Thinking Backend Means Only One Server File
 
 A backend is not just one file or a single program. Even when a project starts with one simple application, backend thinking includes requests, responses, data, validation, logs, tools, infrastructure, and operations.
 
 A small learning example can be simple. The mental model should still include the larger responsibilities.
 
-### 1.8.2 Mistake 2: Treating Web Backend and Real-time Communication as the Same Thing
+### Mistake 2: Treating Web Backend and Real-time Communication as the Same Thing
 
 Web Backend and Real-time Communication can both be part of game backend development, but they solve different problems. Real-time Multiplayer Backend is a deeper learning path that builds on the Real-time Communication area.
 
 A leaderboard query is usually a request/response feature. A real-time match requires message or state exchange over time. The tools, risks, and design questions are different.
 
-### 1.8.3 Mistake 3: Confusing LiveOps with Infrastructure Operations
+### Mistake 3: Confusing LiveOps with Infrastructure Operations
 
 LiveOps and infrastructure operations both matter after launch, but they are not the same thing.
 
 LiveOps usually focuses on operating game content and live service workflows, such as events, rewards, notices, support processes, and Remote Config. Infrastructure operations focuses on keeping backend systems running reliably through deployment, monitoring, alerts, and incident response.
 
-### 1.8.4 Mistake 4: Ignoring LiveOps and Internal Tools
+### Mistake 4: Ignoring LiveOps and Internal Tools
 
 Many students first think only about player-facing features. But a live game also needs tools for operators and support teams.
 
 Event settings, reward adjustments, user lookup, audit logs, and Remote Config are backend topics too. They help the service continue after launch.
 
-### 1.8.5 Mistake 5: Treating Security and Observability as Afterthoughts
+### Mistake 5: Treating Security and Observability as Afterthoughts
 
 The Security and Observability specialization affects every backend area. It is not a separate topic that can always be added safely at the very end.
 
 For example, a score submission feature should consider validation and logs from the beginning. An event reward tool should consider permissions and audit logs. A production server should consider metrics and alerts.
 
-### 1.8.6 Mistake 6: Trusting the Client Too Much
+### Mistake 6: Trusting the Client Too Much
 
 The game client runs on the player’s device. It may be outdated, buggy, or manipulated. Important client-sent values, such as scores, currency changes, reward claims, purchase receipts, and item-grant claims, should not be trusted blindly.
 
-The server should act as a more reliable reference point for important service-side data.
+The server should act as a more reliable reference point for important server-side data.
 
-### 1.8.7 Mistake 7: Thinking Local Success Means Production Readiness
+### Mistake 7: Thinking Local Success Means Production Readiness
 
 A server that works on your computer is only the beginning. Real service environments add traffic, latency, failures, security concerns, monitoring, deployment processes, and operational responsibility.
 
 This guide introduces those ideas gradually. It does not ask you to operate a production service after this chapter.
 
-### 1.8.8 Mistake 8: Trying to Learn Everything at Once
+### Mistake 8: Trying to Learn Everything at Once
 
 Backend development is broad. Trying to study API design, databases, real-time networking, cloud infrastructure, security, observability, and admin tools in depth from the beginning can be overwhelming.
 
@@ -404,15 +404,15 @@ Use this guide as a map. First, understand what each area is for. Then choose a 
 
 In this chapter, you learned what this guide is for and how to read it.
 
-Backend development is not only about writing server code. It is about understanding service-side responsibilities: storing data, validating requests, supporting communication, operating live features, protecting important values, and observing what happens when something goes wrong.
+Backend development is not only about writing server code. It is about understanding server-side responsibilities: storing data, validating requests, supporting communication, operating live features, protecting important values, and observing what happens when something goes wrong.
 
-You also learned that backend work can be divided into several areas and one supporting specialization.
+You also learned that backend work can be divided into several areas plus cross-cutting concerns.
 
 - Web Backend handles request/response features such as score submission, leaderboard queries, inventory lookup, and reward claims.
 - Real-time Communication handles message or state exchange over time, such as chat concepts, rooms, sessions, and matches.
 - LiveOps / Tools Backend supports internal tools for events, support, Remote Config, dashboards, permissions, and audit logs.
 - Infrastructure / Operations explains where servers run and how teams keep them reliable.
-- The Security and Observability specialization supports all of these areas by helping teams validate requests, investigate issues, and understand running systems.
+- Security and Observability support all of these areas by helping teams validate requests, investigate issues, and understand running systems.
 
 This guide stays concept-first. It uses small scenarios and Learning Practice sections to help you observe ideas. It does not expect you to complete a commercial backend, a production-ready API system, a Real-time Multiplayer server, or a full LiveOps platform.
 
@@ -494,7 +494,7 @@ LiveOps is mainly about operating game content and service workflows. Infrastruc
 
 Which statement best describes Security and Observability in this chapter?
 
-A. They form a supporting specialization that affects many backend areas.  
+A. They are cross-cutting concerns that affect many backend areas.
 B. They are optional topics that should only be added after all backend features are finished.  
 C. They are only needed for cloud infrastructure, not for Web Backend or LiveOps.  
 D. They replace Web Backend, LiveOps, and Infrastructure.
@@ -502,14 +502,14 @@ D. They replace Web Backend, LiveOps, and Infrastructure.
 **Answer: A**
 
 **Explanation:**  
-Together, Security and Observability form a supporting specialization that affects many backend flows. This specialization helps teams protect important actions, validate requests, record evidence, and investigate problems. Treating it as a late add-on can make important flows harder to secure or investigate.
+Together, Security and Observability affect many backend flows. They help teams protect important actions, validate requests, record evidence, and investigate problems. Treating them as late add-ons can make important flows harder to secure or investigate.
 
 ### Question 7
 
 What is the main purpose of the Learning Practice in this chapter?
 
 A. To choose one advanced backend specialization immediately.  
-B. To classify game service scenarios into backend areas or a supporting specialization.  
+B. To classify game service scenarios into backend areas or cross-cutting concerns.
 C. To memorize every backend technology before Chapter 2.  
 D. To decide which game engine must be used for the rest of the guide.
 

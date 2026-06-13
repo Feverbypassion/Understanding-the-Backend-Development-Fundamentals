@@ -270,7 +270,7 @@ services:
     image: postgres:16
 ```
 
-In this example, `api` and `db` are separate services. The API Server uses `db` as the database service name inside the Compose network. It should not use `localhost` to mean the database container, because inside the API container, `localhost` means the API container itself.
+In this example, `api` and `db` are separate services. The API Server uses `db` as the database service name inside the Compose network. It should not use `localhost` to mean the database container, because inside the API container, `localhost` means the API container itself. The PostgreSQL version in this snippet is illustrative; real projects should choose a supported version intentionally.
 
 Again, the goal here is reading the structure:
 

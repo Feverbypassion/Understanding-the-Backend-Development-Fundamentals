@@ -44,7 +44,7 @@ You should also understand what this chapter does not cover in depth. Production
 
 ## 11.3 Why Security Matters in Game Backends
 
-Game backend security is not only about blocking attackers from the outside. A game backend is tied to player accounts, time, effort, purchases, rewards, rankings, event participation, and operator actions. If these are processed incorrectly, the problem can affect both player trust and live operations.
+Game backend security is not only about blocking attackers from the outside. A game backend is tied to player accounts, time, effort, purchases, rewards, rankings, event participation, and operator actions. If these are processed incorrectly, the problem can affect both player trust and LiveOps workflows.
 
 Imagine that a player clears a stage and submits a score.
 
@@ -137,7 +137,7 @@ In this section, we will look at seven core ideas:
 - Server authority
 - Safe error responses and sensitive logs
 
-### 11.5.1 Do Not Trust Client-Sent Values Blindly
+### Do Not Trust Client-Sent Values Blindly
 
 The client runs close to the player, on a device the player controls. The server is the reference point for important service data.
 
@@ -180,7 +180,7 @@ If this value were manipulated, would it affect fairness, economy, player trust,
 
 If the answer is yes, the backend should verify it carefully or decide it on the server side.
 
-### 11.5.2 Authentication and Authorization
+### Authentication and Authorization
 
 Authentication and authorization are related, but they are not the same.
 
@@ -219,7 +219,7 @@ Here, the server reads the user identity from the verified token or session and 
 
 At this stage, you are not expected to implement JWT validation, session storage, OAuth login, or password recovery. Remember the concept: every sensitive API needs both identity verification and permission checking.
 
-### 11.5.3 Input Validation and Abuse Prevention
+### Input Validation and Abuse Prevention
 
 Input validation checks whether values sent by the client match what the server expects and allows. Beginners often think validation only means checking types, but game backend validation goes further.
 
@@ -264,7 +264,7 @@ A reward API still needs server-side claim state. A score API still needs score 
 
 For duplicate-sensitive features such as rewards, payments, currency grants, and inventory updates, you may also hear the word idempotency. Idempotency means the server is designed so that the same request does not apply the same change multiple times. In real systems, this may use a request ID, transaction ID, or idempotency key, but this chapter only introduces the idea.
 
-### 11.5.4 HTTPS, CORS, and Secret Management
+### HTTPS, CORS, and Secret Management
 
 HTTPS, CORS, and secret management often appear together, but they protect different things.
 
@@ -319,7 +319,7 @@ Anything embedded in a game client, WebGL build, or browser JavaScript should be
 
 Hard to find is not the same as secret. If the server alone should know a value, do not put that value in the client.
 
-### 11.5.5 API Security and OWASP as a Risk Map
+### API Security and OWASP as a Risk Map
 
 The OWASP API Security Top 10 is updated over time. In this chapter, we use the API Security Top 10 2023 edition as a beginner-friendly map of API-specific risks. This is separate from the OWASP Top 10 for general web application risks. At this stage, you do not need to memorize every item. Use it to organize the questions you should ask when reviewing APIs.
 
@@ -339,7 +339,7 @@ In OWASP terminology, “inventory” means the documented map of API hosts, env
 
 Use OWASP as a study map, not as a memorization list. When you see a game backend API, connect the abstract risk to a concrete game situation.
 
-### 11.5.6 Server Authority in Game Backends
+### Server Authority in Game Backends
 
 Server authority means that important game outcomes are verified or decided by the server instead of being freely decided by the client.
 
@@ -364,7 +364,7 @@ The client may present effects and UI.
 The server should verify important rewards and outcomes.
 ```
 
-### 11.5.7 Safe Error Responses and Sensitive Logs
+### Safe Error Responses and Sensitive Logs
 
 Security is also connected to error handling and logs.
 
@@ -401,7 +401,7 @@ The next chapter builds on this idea: logs and metrics should help the team unde
 
 Let’s connect the concepts through two common game backend scenarios.
 
-### 11.6.1 Scenario A: Score Submission
+### Scenario A: Score Submission
 
 The player finishes a stage and the client sends a score request.
 
@@ -438,7 +438,7 @@ This example helps you practice server-side checks, but it is still not a full a
 
 Highly competitive games may need stronger evidence, replay checks, server-side simulation, or authoritative match logic, often running on a Dedicated Game Server. A complete anti-cheat system belongs in a later advanced course.
 
-### 11.6.2 Scenario B: Daily Reward Claim
+### Scenario B: Daily Reward Claim
 
 The player presses a daily reward button.
 

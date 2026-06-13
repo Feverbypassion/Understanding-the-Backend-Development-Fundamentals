@@ -617,13 +617,17 @@ For a beginner project, it is often better to start with read-only internal view
 
 Write operations can be added later when the permission model, validation, confirmation, approval, duplicate execution handling, and audit logging are ready.
 
-## 13.10 Learning Practice — Review a Remote Config Change Screen
+## 13.10 Learning Practice
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
+### Review a Remote Config Change Screen
+
+Review a simple Remote Config change screen and identify the permission, validation, confirmation, duplicate execution prevention, and audit log needs behind it.
+
 ### Goal
 
-You will review a simple Remote Config change screen and identify the permission, validation, confirmation, duplicate execution prevention, and audit log needs behind it.
+Identify what a safe operator-facing change flow needs before it writes a new Remote Config value.
 
 ### Scenario
 
@@ -866,7 +870,7 @@ You do not need to read all of these resources immediately. Use them when you wa
 
 ### API Security
 
-- [OWASP API Security Top 10 2023](https://owasp.org/API-Security/editions/2023/en/0x11-t10/)  
+- [OWASP API Security Top 10 2023](https://owasp.org/API-Security/editions/2023/en/0x00-header/)
   Use this when you want to study common API security risks such as broken authentication, broken authorization, and unsafe access control.
 
 ### Dashboards and Observability

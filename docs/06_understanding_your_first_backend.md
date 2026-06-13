@@ -73,7 +73,7 @@ We will use the following API operations as reading examples.
 ```http
 GET  /health
 POST /players
-GET  /players/{playerId}
+GET  /players/me
 POST /scores
 GET  /leaderboard
 ```
@@ -85,7 +85,7 @@ them in this chapter.
 |---|---|
 | `GET /health` | Check a simple health signal from the API Server. |
 | `POST /players` | Create a player record. |
-| `GET /players/{playerId}` | Read information about one player. |
+| `GET /players/me` | Read the authenticated player's own profile information. |
 | `POST /scores` | Create a score submission record for a completed stage run. |
 | `GET /leaderboard` | Read ranked scores. |
 
@@ -125,7 +125,7 @@ In an API contract, the same shape may be written like this:
 GET /players/{playerId}
 ```
 
-Here, `{playerId}` means that a real player ID should be placed at that part of the path.
+Here, `{playerId}` means that a real player ID should be placed at that part of the path. Use this shape only when the API is meant to look up a specific player resource, such as a limited public profile or an authorized admin/support view. For a player's own private profile, an endpoint such as `GET /players/me` is usually safer and clearer.
 
 A query parameter is a value placed after `?` in the URL.
 
@@ -482,8 +482,7 @@ GET /players/player_001
 
 Here, the server reads `player_001` as the `playerId` path parameter.
 
-A player lookup handler may use that value to find the player record. In this chapter, focus on the
-idea rather than the database code.
+A player lookup handler may use that value to find the player record, but the server must still check whether the caller is allowed to read that record. For a private "my profile" flow, `GET /players/me` avoids letting the client choose an arbitrary player ID. In this chapter, focus on the idea rather than the database code.
 
 ### Query Parameters
 
@@ -1007,7 +1006,7 @@ Content-Type: application/json
 10. Identify the beginner-level error status code used here for invalid score data.
 11. Write one sentence about what data may need to be stored later.
 
-### Self-Check
+### Suggested Review
 
 | Item | Example Answer |
 |---|---|

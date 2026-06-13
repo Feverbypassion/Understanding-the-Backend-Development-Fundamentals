@@ -99,7 +99,7 @@ This may work for a temporary demonstration. But it is dangerous for real player
 restarts, the memory is cleared. The scores disappear.
 
 For a game service, disappearing data is not a minor problem. It can affect player trust, fairness, customer
-support, and live operations.
+support, and LiveOps workflows.
 
 | Data | Problem if it disappears |
 |---|---|
@@ -1124,9 +1124,11 @@ The `currency_ledger` table stores structured currency change history.
 | ledger-9001 | player-001 | coin_gold | 100 | daily_reward | 2026-06-01 10:40:00 |
 | ledger-9002 | player-001 | coin_gold | -50 | item_purchase | 2026-06-01 10:45:00 |
 
-These ledger rows show recent changes, not the player's complete lifetime currency history. For example, if
-`player-001` had 1,150 `coin_gold` before these two rows, then `+100` and `-50` lead to the current balance of
-1,200 at `2026-06-01 10:45:00`.
+This table shows only two recent example rows, not a full history view. For example, if `player-001` had 1,150
+`coin_gold` before these two rows, then `+100` and `-50` lead to the current balance of 1,200 at
+`2026-06-01 10:45:00`.
+
+A real backend should define a retention policy. For economy, purchase, support, or audit workflows, teams usually keep enough structured history to investigate and recover important account changes.
 
 This table answers:
 
@@ -1702,7 +1704,7 @@ storage responsibilities.
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
-### Learning Practice: Read a Simple Game Backend Data Model
+### Read a Simple Game Backend Data Model
 
 In this practice, you will read a small data model and identify what each structure stores, which data is
 original history, which data is maintained current state, which data is auxiliary, and how several records relate

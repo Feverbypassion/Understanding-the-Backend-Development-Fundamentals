@@ -60,7 +60,7 @@ This is the main way to read Chapter 15: one feature can lead to several learnin
 By the end of this chapter, you should be able to:
 
 - Summarize the backend map you have built through this guide.
-- Explain how Web Backend, Real-time Multiplayer Backend, LiveOps / Tools Backend, Cloud / Infrastructure, and Platform Backend differ, and how AI-assisted learning habits can support those paths.
+- Explain how Web Backend, Real-time Multiplayer Backend, LiveOps / Tools Backend, Cloud / Infrastructure, and Platform Backend differ.
 - Connect earlier chapters to possible advanced learning paths.
 - Choose a next learning direction based on the backend problem that interests you.
 - Avoid trying to study every advanced topic at the same time.
@@ -74,7 +74,7 @@ You will not complete a production backend in this chapter. You will create a cl
 
 Backend learning can feel confusing because backend development is broad.
 
-The word "backend" can point to many areas: HTTP APIs, databases, transactions, real-time communication, cloud deployment, container orchestration, security, observability, admin dashboards, and AI-assisted development tools.
+The word "backend" can point to many areas: HTTP APIs, databases, transactions, real-time communication, cloud deployment, container orchestration, security, observability, admin dashboards, and platform services.
 
 All of these can be related to backend development, but they do not solve the same problem.
 
@@ -177,7 +177,6 @@ Each part answers a different question.
 | Cloud / Infrastructure | Where does the backend run, and how does it stay reachable and reliable? |
 | Architecture Patterns | How should responsibilities be organized as the system grows? |
 | Platform Backend | Which parts can be handled by a managed or open-source game backend platform? |
-| AI-assisted learning habit | How can AI tools support learning and development without replacing backend judgment? |
 
 This map is useful because backend decisions are connected.
 
@@ -206,7 +205,6 @@ Use this table as a starting point.
 | Admin dashboards, player support, Remote Config, event operation, audit logs | LiveOps / Tools Backend |
 | Docker, cloud, DNS, HTTPS, load balancers, deployment, reliability | Cloud / Infrastructure |
 | PlayFab-style services, Unity Gaming Services-style services, Nakama-style services, build-versus-platform decisions | Platform Backend |
-| Using AI-assisted development tools, reviewing generated code, improving learning workflow, understanding automation limits | Add AI-assisted learning habits to your primary backend path |
 
 When choosing, do not ask only, "Which technology is popular?"
 
@@ -220,7 +218,7 @@ Which earlier chapters still feel unclear?
 Which path can I realistically study over the next three months?
 ```
 
-### 15.5.1 A Simple Decision Flow
+### A Simple Decision Flow
 
 You can use this flow when you feel unsure.
 
@@ -240,8 +238,6 @@ Do I want to understand how servers run outside my computer?
 Do I want to compare custom backend work with ready-made services?
   -> Start with Platform Backend.
 
-Do I want to use AI tools while learning responsibly?
-  -> Add AI-assisted learning habits to any backend path.
 ```
 
 For most beginners, Web Backend is often the easiest advanced path to start with because it connects directly to APIs, databases, validation, and many game service features.
@@ -256,15 +252,15 @@ The important point is to choose one primary path first. You can study the other
 
 ## 15.6 Advanced Track Overview
 
-This section summarizes the major advanced backend tracks that can follow this guide, plus AI-assisted learning habits that can support any track.
+This section summarizes the major advanced backend tracks that can follow this guide.
 
 Treat this section as a set of learning directions, not as a checklist that must be completed immediately.
 
-### 15.6.1 Web Backend
+### Web Backend
 
 The Web Backend path focuses on request/response features.
 
-Choose this path if you want to understand how an API Server receives requests, validates input, applies service-side rules, reads or writes data, and returns responses.
+Choose this path if you want to understand how an API Server receives requests, validates input, applies server-side rules, reads or writes data, and returns responses.
 
 Common topics include:
 
@@ -315,7 +311,7 @@ What belongs to a later Web Backend course:
 
 In this guide, you built the conceptual map. In a Web Backend course, you would turn part of that map into working code step by step.
 
-### 15.6.2 Real-time Multiplayer Backend
+### Real-time Multiplayer Backend
 
 The Real-time Multiplayer Backend path focuses on continuous communication and shared state.
 
@@ -369,7 +365,7 @@ What belongs to a later Real-time Multiplayer Backend course:
 
 This guide introduced the vocabulary and mental model. A Real-time Multiplayer Backend advanced course would go deeper into implementation, performance, and correctness.
 
-### 15.6.3 LiveOps / Tools Backend
+### LiveOps / Tools Backend
 
 The LiveOps / Tools Backend path focuses on operating a game safely after launch.
 
@@ -424,7 +420,7 @@ What belongs to a later LiveOps / Tools Backend course:
 
 In this guide, you learned why tools are necessary and risky. A deeper course would teach how to design and implement them safely.
 
-### 15.6.4 Cloud / Infrastructure
+### Cloud / Infrastructure
 
 The Cloud / Infrastructure path focuses on where backend systems run and how they stay available.
 
@@ -487,7 +483,7 @@ What belongs to a later Cloud / Infrastructure course:
 
 This guide introduced the infrastructure map. A deeper course would teach how to operate systems safely and repeatably.
 
-### 15.6.5 Platform Backend
+### Platform Backend
 
 The Platform Backend path focuses on choosing, evaluating, and integrating backend platforms.
 
@@ -555,76 +551,21 @@ What belongs to a later Platform Backend course:
 
 A platform does not remove the need to understand backend fundamentals. It changes which parts you build yourself and which parts you rely on a platform to provide.
 
-### 15.6.6 AI-Assisted Backend Learning
+### AI-Assisted Learning as a Small Supporting Habit
 
-In this chapter, AI-assisted backend learning means learning how to use AI tools responsibly while studying any backend path. It can support every primary backend track, but it is not a replacement for backend fundamentals.
+AI tools can help explain unfamiliar terms, summarize documentation, or suggest small practice examples. In this introductory guide, treat them only as a study aid, not as a separate backend track.
 
-AI tools can help with tasks such as:
+Keep the same backend judgment you practiced throughout this guide:
 
-- Explaining unfamiliar backend terms
-- Summarizing documentation
-- Drafting example API contracts
-- Creating practice questions
-- Suggesting test cases
-- Reviewing log examples
-- Explaining error messages
-- Comparing architecture options
-- Drafting simple code examples for later advanced courses
+- Do not paste secrets, production tokens, private player data, payment data, raw production logs, or proprietary source code into AI tools unless your organization explicitly allows it.
+- Check generated explanations against official documentation.
+- Review generated code or designs for validation, authorization, data exposure, observability, and project fit.
 
-However, AI tools do not remove the need for backend judgment.
+A later advanced course can cover AI-assisted backend workflows in more detail, including AI coding workflows, test generation, prompt design, documentation review, and safe review practices.
 
-Also be careful about what you paste into AI tools.
+### Future Trends to Watch
 
-Do not paste secrets, private keys, or production tokens into AI tools.
-
-Also avoid pasting real player data, payment data, raw production logs, internal incident details, or proprietary source code. Use sensitive or production data only when your organization explicitly allows it and the tool is approved for that data.
-
-For learning, use sample code, mock data, and sanitized examples.
-
-A backend learner still needs to ask:
-
-- Is the request validation correct?
-- Does this code trust the client too much?
-- Does this database change protect important data?
-- Does this admin operation require permission and audit logging?
-- Does this architecture solve the actual problem, or only add complexity?
-- Does this generated answer match the current official documentation?
-
-The core questions remain familiar.
-
-```text
-What problem are we solving?
-What data is important?
-Who is allowed to do this?
-What can go wrong?
-How will we observe and recover from failure?
-Which part should be built, and which part can be handled by a platform or tool?
-```
-
-Earlier chapters to review:
-
-| Review chapter | Why it helps |
-|---|---|
-| Chapter 5 | Reading API contracts that AI tools may help draft |
-| Chapter 6 | Understanding the conceptual flow behind generated API examples |
-| Chapter 11 | Reviewing security assumptions in generated suggestions |
-| Chapter 12 | Interpreting logs, metrics, traces, and incidents |
-| Chapter 14 | Checking whether a suggested architecture fits the trade-off |
-
-What belongs to later AI-Assisted Backend Learning practice:
-
-- AI coding workflows
-- Prompting for test generation
-- Reviewing generated code for security and correctness
-- Comparing generated API designs
-- Using AI to summarize incidents or logs
-- Creating learning plans with feedback loops
-
-Use AI as a study assistant, not as a substitute for understanding.
-
-### 15.6.7 Future Trends to Watch
-
-As backend work continues to evolve, you may see more automation, AI-assisted development, platform services, observability tools, and internal developer platforms.
+As backend work continues to evolve, you may see more automation, platform services, observability tools, internal developer platforms, and developer-assistance tools.
 
 You may also see more serverless systems, edge computing, cloud-native operations, platform engineering, and privacy-aware operations.
 
@@ -639,9 +580,9 @@ For example:
 | Serverless | Which backend work can run as short-lived functions instead of long-running servers? |
 | Edge computing | Which data or logic benefits from being closer to players? |
 | Platform engineering | How can teams provide safer internal tools and reusable deployment paths for developers? |
-| AI-assisted development | How can generated suggestions be reviewed safely instead of accepted blindly? |
+| Developer-assistance tools | How can generated suggestions be reviewed safely instead of accepted blindly? |
 | Stronger observability | How can teams understand failures faster in distributed systems? |
-| Data governance and privacy-aware operations | How can teams protect player data while using cloud services, backend platforms, analytics tools, and AI-assisted workflows? |
+| Data governance and privacy-aware operations | How can teams protect player data while using cloud services, backend platforms, analytics tools, and automated workflows? |
 
 The future of backend is not only about using newer tools. It is about understanding service problems clearly enough to choose tools responsibly.
 
@@ -664,7 +605,7 @@ Imagine a small arcade-style game with these features:
 
 At first, this may look like one simple backend project. But different learning paths appear depending on which problem you focus on.
 
-### 15.7.1 If You Focus on Score Submission
+### If You Focus on Score Submission
 
 The Web Backend path fits well.
 
@@ -685,7 +626,7 @@ The main question is:
 How should the API Server receive, validate, store, and return score data?
 ```
 
-### 15.7.2 If You Focus on Suspicious Scores
+### If You Focus on Suspicious Scores
 
 The LiveOps / Tools Backend path becomes important.
 
@@ -705,7 +646,7 @@ The main question is:
 How can operators review and handle risky data safely?
 ```
 
-### 15.7.3 If You Focus on Daily Rewards
+### If You Focus on Daily Rewards
 
 Web Backend and LiveOps / Tools Backend both matter.
 
@@ -725,7 +666,7 @@ The main question is:
 How can the backend grant rewards safely and let operators manage reward rules?
 ```
 
-### 15.7.4 If You Focus on the Future Co-op Mode
+### If You Focus on the Future Co-op Mode
 
 The Real-time Multiplayer Backend path becomes relevant.
 
@@ -746,7 +687,7 @@ The main question is:
 How can multiple players share a match state fairly and reliably?
 ```
 
-### 15.7.5 If You Focus on Deployment
+### If You Focus on Deployment
 
 The Cloud / Infrastructure path becomes relevant.
 
@@ -766,7 +707,7 @@ The main question is:
 How can this backend run outside my computer and stay reachable?
 ```
 
-### 15.7.6 If You Focus on Speed of Development
+### If You Focus on Speed of Development
 
 The Platform Backend path may be useful.
 
@@ -788,13 +729,15 @@ This example shows that one game idea can lead to several backend learning paths
 
 ---
 
-## 15.8 Learning Practice: Create a Three-Month Learning Plan
+## 15.8 Learning Practice
 
 This Learning Practice is for planning your next learning path. It is not a production-ready implementation plan.
 
-### Goal
+### Create a Three-Month Learning Plan
 
 Choose one advanced backend direction and create a simple three-month learning plan.
+
+### Goal
 
 The goal is not to cover every backend topic. The goal is to make a realistic plan that connects your interest to earlier chapters and one advanced track.
 
@@ -808,12 +751,9 @@ Real-time Multiplayer Backend
 LiveOps / Tools Backend
 Cloud / Infrastructure
 Platform Backend
-
-Optional supporting habit:
-AI-assisted learning habits
 ```
 
-You may be interested in several tracks, but choose one primary track for this practice. You may also add AI-assisted learning habits as a supporting habit.
+You may be interested in several tracks, but choose one primary track for this practice.
 
 ### Step 2. Choose One Game Backend Problem
 
@@ -842,7 +782,6 @@ For example:
 | LiveOps / Tools Backend | Chapters 8, 11, 12, 13, 14 |
 | Cloud / Infrastructure | Chapters 2, 4, 10, 11, 12, 14 |
 | Platform Backend | Chapters 3, 8, 10, 11, 13, 14 |
-| AI-assisted learning habits | Chapters 5, 6, 11, 12, 14 |
 
 ### Step 4. Write a Month-by-Month Plan
 
@@ -1015,7 +954,6 @@ You reviewed the backend map from the full guide:
 - LiveOps / Tools Backend for operations tools, Remote Config, permissions, and audit logs
 - Cloud / Infrastructure for deployment, DNS, HTTPS, containers, cloud, and reliability
 - Platform Backend for build-versus-platform decisions and platform integration
-- AI-assisted learning habits for using AI tools while keeping backend judgment
 
 The most important idea is this:
 
@@ -1115,17 +1053,17 @@ Platform Backend focuses on build-versus-platform decisions, integration choices
 
 ### Question 6
 
-Which statement is the safest way to think about AI-assisted backend learning?
+Which statement is the safest way to think about AI tools while studying backend development?
 
 A. AI tools can replace all backend understanding.
 B. AI-generated backend code is always production-ready.
-C. AI tools can support learning and drafting, but students still need to review correctness, security, data exposure risk, and project fit.
+C. AI tools can support study and drafting, but students still need to review correctness, security, data exposure risk, and project fit.
 D. Students can paste sensitive production data into AI tools whenever it seems useful for debugging.
 
 **Answer: C**
 
 **Explanation:**
-AI tools can help with explanations, examples, tests, and summaries, but backend judgment is still needed to review correctness, security, data exposure risk, and project context.
+AI tools can help with explanations, examples, tests, and summaries, but they are only a study aid in this guide. Backend judgment is still needed to review correctness, security, data exposure risk, and project context. More detailed AI-assisted backend workflows belong in a later advanced course.
 
 ### Question 7
 
@@ -1202,7 +1140,7 @@ Official documentation and platform features can change over time. When using a 
   Use this to explore examples of game backend, LiveOps, economy, and multiplayer services.
 
 - [Unity Docs — Services](https://docs.unity.com/en-us/services)
-  Use this to explore platform services such as authentication, cloud save, economy, leaderboards, analytics, Remote Config, LiveOps, and multiplayer services.
+  Use this to explore platform services such as authentication, cloud save, economy, leaderboards, analytics, Remote Config, LiveOps, and multiplayer services. Check current deprecation notes, migration guidance, and supported hosting or matchmaking paths before planning around a specific Unity service.
 
 - [Nakama Documentation](https://heroiclabs.com/docs/nakama/)
   Use this to explore how an open-source game server platform organizes common game backend features.
@@ -1225,13 +1163,5 @@ Official documentation and platform features can change over time. When using a 
 
 - [OWASP API Security Project](https://owasp.org/www-project-api-security/)
   Use this when you want to understand common API security risks.
-
-### AI-Assisted Backend Learning
-
-- [GitHub Docs — GitHub Copilot](https://docs.github.com/en/copilot)
-  Use this when you want to understand one example of an AI coding assistant and its workflow.
-
-- [Google AI — AI Principles](https://ai.google/principles/)
-  Use this as a general reference for reviewing AI-assisted development decisions responsibly.
 
 Remember: references are not assignments. Choose the resources that match your next learning path, read slowly, and connect each resource back to the backend map from this guide.

@@ -58,7 +58,7 @@ purchases, customer support, and operations. Once those needs appear, the game c
 
 A backend helps the game service in four major ways: storage, validation, connection, and operations.
 
-### 3.3.1 Storage
+### Storage
 
 A backend uses persistent server-side storage, such as a database or object storage, so service-critical game
 data, meaning data that the live service depends on, can remain available across device changes, app deletion,
@@ -79,7 +79,7 @@ Common server-side game data includes:
 Some data can safely remain local, such as sound volume, graphics settings, and UI preferences. But account
 data, items, currency, scores, purchases, and rewards are usually sensitive enough to be managed on the server.
 
-### 3.3.2 Validation
+### Validation
 
 A backend checks whether sensitive client requests are valid.
 
@@ -108,7 +108,7 @@ the requested action.
 This does not mean every introductory backend needs a full anti-cheat system. It means the backend should be the
 reference point for service-critical game rules and data.
 
-### 3.3.3 Connection
+### Connection
 
 A backend connects the game client with many other systems.
 
@@ -138,7 +138,7 @@ A simplified view looks like this:
 The player may see only one button, such as "Claim Reward." The backend may connect identity, validation, reward
 rules, storage, logs, and operations tools behind that button.
 
-### 3.3.4 Operations
+### Operations
 
 A live game continues after launch. Events change. Rewards are adjusted. Players report issues. Servers fail.
 Requests slow down. Operators need tools to understand and manage the service.
@@ -212,7 +212,7 @@ these responsibilities in one application. A large service may split them into m
 The key point is not whether everything is one application or many services. What matters is whether you
 understand the responsibility of each part.
 
-### 3.4.1 Starting Small Is Fine
+### Starting Small Is Fine
 
 A backend for learning does not need microservices, Kubernetes, a distributed cache, or a background job system on
 the first day.
@@ -241,8 +241,8 @@ responsibility. Then study the technology that solves that responsibility.
 
 ## 3.5 The Game Client and the Backend
 
-The game client is the application running on the player's device. It may be built with Unity, Unreal Engine,
-Godot, a custom engine, or another technology. The backend is the server-side system that the client
+The game client is the application running on the player's device. It may be built with a commercial engine,
+an open-source engine, a browser stack, a custom engine, or another technology. The backend is the server-side system that the client
 communicates with.
 
 A simple request and response flow looks like this:
@@ -254,7 +254,7 @@ A simple request and response flow looks like this:
 
 The client and backend are not competing with each other. They cooperate by taking different responsibilities.
 
-### 3.5.1 What the Game Client Usually Handles
+### What the Game Client Usually Handles
 
 The client handles what is close to the player experience:
 
@@ -270,7 +270,7 @@ The client handles what is close to the player experience:
 If a player presses a movement key or taps a button, the client should respond quickly. Visual feedback should
 not wait for every small server response.
 
-### 3.5.2 What the Backend Usually Handles
+### What the Backend Usually Handles
 
 The backend usually handles responsibilities that protect service data, fairness, and operations:
 
@@ -297,7 +297,7 @@ For example, if the client displays 1,000 gold but the server database says the 
 server-side value should usually be treated as the reference. Currency, items, scores, purchases, and reward
 records are too sensitive to depend only on the client.
 
-### 3.5.3 Role Split Depends on the Game
+### Role Split Depends on the Game
 
 Not every game needs the same backend structure.
 
@@ -343,7 +343,7 @@ Use this short table as a navigation map before reading the detailed sections.
 | Admin Dashboard | Helps operators manage and investigate the service. |
 | Dedicated Game Server | Runs real-time match or session state. |
 
-### 3.6.1 API Server
+### API Server
 
 The API Server is usually the entry point for client requests.
 
@@ -391,7 +391,7 @@ The API Server is not the entire backend. It is the entry point and coordinator 
 responsibilities. Player-facing APIs and admin APIs may use the same general request/response style, but admin APIs
 require stricter authorization, validation, and audit logging because they can affect live service data.
 
-### 3.6.2 Database
+### Database
 
 A database stores persistent data. Persistent data is data that should survive server restarts and remain
 available later.
@@ -417,7 +417,7 @@ We will study database concepts in Chapter 7. In this chapter, remember this rul
 A database stores persistent service data that must not disappear when the server restarts.
 ```
 
-### 3.6.3 Cache
+### Cache
 
 A cache is temporary storage used to read frequently used data quickly.
 
@@ -443,7 +443,7 @@ For example, using a cache for the top 100 leaderboard can be reasonable because
 records. Using only a cache to store the final amount of paid currency would be dangerous because that value
 must be reliable and persistent.
 
-### 3.6.4 File/Object Storage
+### File/Object Storage
 
 File/Object Storage stores larger file-like data.
 
@@ -477,7 +477,7 @@ Object storage:
 
 We will revisit storage and infrastructure concepts in later chapters.
 
-### 3.6.5 Message Queue
+### Message Queue
 
 A message queue is a waiting line for backend work that can be processed later.
 
@@ -514,7 +514,7 @@ fails and must be retried.
 
 We will study queue and asynchronous processing as architecture concepts in Chapter 14.
 
-### 3.6.6 Authentication
+### Authentication
 
 Authentication checks who sent a request.
 
@@ -544,7 +544,7 @@ be authorized to change event rewards in an Admin Dashboard.
 
 Security, authentication, authorization, and validation will be covered more deeply in Chapter 11.
 
-### 3.6.7 Logging and Monitoring
+### Logging and Monitoring
 
 Logging and Monitoring help developers and operators understand what is happening in a running backend.
 
@@ -579,7 +579,7 @@ Common monitoring data includes:
 Without logs and monitoring, running a backend is like operating in the dark. We will study logs, metrics,
 traces, alerts, and dashboards in Chapter 12.
 
-### 3.6.8 Admin Dashboard
+### Admin Dashboard
 
 An Admin Dashboard is an internal tool used by operators, support staff, and developers to manage the service.
 
@@ -616,7 +616,7 @@ Example audit log:
 
 We will study tools, dashboards, permissions, audit logs, and LiveOps concepts in Chapter 13.
 
-### 3.6.9 Dedicated Game Server
+### Dedicated Game Server
 
 A Dedicated Game Server handles real-time match or session state.
 
@@ -648,7 +648,7 @@ Not every game needs a Dedicated Game Server. Many online puzzle games, collecti
 can use API-based backend services without a real-time match server. Real-time multiplayer games need a deeper
 design discussion, which belongs to Chapter 9 and later advanced courses.
 
-### 3.6.10 Quick Recap
+### Quick Recap
 
 At this point, do not worry about memorizing every component. The most important pattern is this: the API Server
 receives requests, persistent storage keeps long-term data, caching improves repeated reads, message queues handle
@@ -679,7 +679,7 @@ synchronization, combat validation, match rules, and result decisions.
 
 In this context, **server authority** means that the server is treated as the final reference for important match decisions, such as movement, hits, damage, or match results. Server authority is a responsibility model, not a guarantee that every authoritative system must be a separate physical server. Chapter 9 will revisit this idea more carefully.
 
-### 3.7.1 Example: Online Puzzle Game
+### Example: Online Puzzle Game
 
 An online puzzle game may need:
 
@@ -694,7 +694,7 @@ An online puzzle game may need:
 
 These can often be handled by a Game Backend Service through API requests.
 
-### 3.7.2 Example: Real-time Co-op Action Game
+### Example: Real-time Co-op Action Game
 
 A real-time co-op action game may need all of the above, plus:
 
@@ -743,7 +743,7 @@ more than once.
 Now that we have a component map, let’s apply it to three common game flows. These examples are not implementation
 tasks. They are reading examples that help you understand how backend components work together.
 
-### 3.8.1 Login, Profile Load, and Lobby
+### Login, Profile Load, and Lobby
 
 Imagine a player opens a game and enters the lobby.
 
@@ -794,7 +794,7 @@ the player. The database stores profile data. Logs help the team investigate err
 source might be a database, cache, file/object storage, or separate configuration service, depending on the system
 design.
 
-### 3.8.2 Score Submission and Leaderboard Display
+### Score Submission and Leaderboard Display
 
 Imagine a player finishes a stage and sees the leaderboard.
 
@@ -851,7 +851,7 @@ A simplified component map:
 This example shows why the backend is a system. A single feature can use API Server, authentication, Service
 Logic, database, cache, message queue, and logging together.
 
-### 3.8.3 Daily Reward Claim
+### Daily Reward Claim
 
 Daily rewards are a useful example because they look simple but require careful backend responsibilities.
 
@@ -899,18 +899,18 @@ and investigation paths.
 
 This Learning Practice is for observation and study. It is not a production-ready implementation.
 
-### 3.9.1 Learning Practice: Map a Game Feature to Backend Responsibilities
+### Map a Game Feature to Backend Responsibilities
 
 The goal of this practice is to observe how one game feature uses several backend components and
 responsibilities together. You do not need to write code.
 
-### 3.9.2 Scenario
+### Scenario
 
 A player opens the game and presses the daily reward button. The backend must check who the player is, decide
 what “today” means using the service’s server-side reset rule, confirm whether the reward was already claimed,
 grant the reward if allowed, save the result safely, and leave a record that operators can inspect later.
 
-### 3.9.3 Steps
+### Steps
 
 1. Read the scenario slowly.
 2. Copy the table below into your notes.
@@ -918,7 +918,7 @@ grant the reward if allowed, save the result safely, and leave a record that ope
 4. Draw a simple box-and-arrow diagram in plain text.
 5. Write two or three sentences about what you observed.
 
-### 3.9.4 Table to Complete
+### Table to Complete
 
 | Step | Backend component or responsibility | What it does |
 |---|---|---|
@@ -931,7 +931,7 @@ grant the reward if allowed, save the result safely, and leave a record that ope
 | Server writes a log record | Logs | ______ |
 | Operator checks a player issue later | Admin Dashboard | Helps inspect the reward history. |
 
-### 3.9.5 One Possible Completed Version
+### One Possible Completed Version
 
 Your wording does not need to match this exactly. Use this table to compare your responsibility map after you
 try the practice. Different systems may organize the same responsibility in slightly different ways.
@@ -947,7 +947,7 @@ try the practice. Different systems may organize the same responsibility in slig
 | Server writes a log record | Logs | Records what happened for later investigation. |
 | Operator checks a player issue later | Admin Dashboard | Helps inspect the reward history. |
 
-### 3.9.6 Example Diagram
+### Example Diagram
 
 ```text
 Main request flow:
@@ -975,7 +975,7 @@ Later investigation path:
    +--> [Logs]
 ```
 
-### 3.9.7 What to Observe
+### What to Observe
 
 - One simple player action can involve several backend components and responsibilities.
 - The API Server receives the request, but it is not the whole backend.
@@ -985,7 +985,7 @@ Later investigation path:
 - Logs and Admin Dashboard investigation paths matter because live services need support and operations.
 - This practice is about mapping responsibilities, not designing a complete architecture.
 
-### 3.9.8 Short Note
+### Short Note
 
 Write two or three sentences like this:
 
@@ -993,39 +993,39 @@ Write two or three sentences like this:
 
 ## 3.10 Common Mistakes
 
-### 3.10.1 Mistake 1: Thinking the backend is only one server file
+### Mistake 1: Thinking the backend is only one server file
 
 A backend can start as one application, but it is better to think in responsibilities. Even a small backend may
 include request handling, validation, storage, logging, and operational needs.
 
-### 3.10.2 Mistake 2: Thinking every online game needs a Dedicated Game Server
+### Mistake 2: Thinking every online game needs a Dedicated Game Server
 
 Many online games can use API-based backend services for login, save data, inventory, events, and leaderboards.
 A Dedicated Game Server is mainly needed when the game requires real-time shared state, such as movement,
 combat, or match simulation.
 
-### 3.10.3 Mistake 3: Thinking a database is enough
+### Mistake 3: Thinking a database is enough
 
 A database is essential for persistent data, but it does not solve everything. You may also need authentication,
 validation, cache, logs, admin tools, and background processing.
 
-### 3.10.4 Mistake 4: Treating cache as the final source of truth
+### Mistake 4: Treating cache as the final source of truth
 
 A cache is useful for speed, but it is usually temporary. Final service records such as currency, purchase
 grants, and inventory changes should not depend only on cache.
 
-### 3.10.5 Mistake 5: Trusting client values blindly
+### Mistake 5: Trusting client values blindly
 
 The client is close to the player and may send incorrect values. The backend should validate sensitive requests,
 especially scores, rewards, purchases, inventory, and competitive results.
 
-### 3.10.6 Mistake 6: Forgetting operations tools until too late
+### Mistake 6: Forgetting operations tools until too late
 
 Live games need support workflows and operational tools. If there are no logs, admin tools, or audit records, it
 becomes hard to investigate player issues or service problems. Even if the first tool is simple, the backend should
 leave enough records for safe operations.
 
-### 3.10.7 Mistake 7: Starting with microservices before understanding responsibilities
+### Mistake 7: Starting with microservices before understanding responsibilities
 
 Microservices are not the first goal. Start by understanding what each part is responsible for. Architecture
 patterns become useful later when you understand the problems they solve.

@@ -71,7 +71,7 @@ Player action
 
 The client can request an action, but the server should decide important game state changes. This is especially important for data connected to fairness, progress, ranking, currency, or rewards.
 
-### 8.3.1 Game Backend Services and Dedicated Game Servers
+### Game Backend Services and Dedicated Game Servers
 
 A game backend service is usually centered on request/response flows. The client asks for a profile, submits a score, claims a reward, or requests current event information. The backend checks data and returns a response. Some service work may continue asynchronously after the response, but the player-facing API often begins as a request/response flow.
 
@@ -93,7 +93,7 @@ This chapter focuses on the game backend service side. Chapter 9 will focus on R
 
 This section introduces major service areas used in many online games. Most areas are discussed through recurring questions: problem, data, API shape, validation, failure cases, and which parts may need deeper study later.
 
-### 8.4.1 Account, Authentication, Profile, and Save Data
+### Account, Authentication, Profile, and Save Data
 
 Account and authentication answer the question:
 
@@ -173,7 +173,7 @@ Account recovery and customer support also become difficult when the backend doe
 
 Authentication implementation, token handling, account linking, password storage, OAuth, and secure session management belong to security-focused parts of a later advanced course.
 
-### 8.4.2 Inventory, Economy, and Rewards
+### Inventory, Economy, and Rewards
 
 Inventory, economy, and rewards answer the question:
 
@@ -273,7 +273,7 @@ For important economy changes, a later advanced course will study transactions, 
 
 Full inventory implementation, economy ledgers, premium currency records, other sensitive grant records, and safe transaction design belong to a later advanced course. At this introductory level, store-related flows are mentioned only lightly as examples of sensitive backend responsibility.
 
-### 8.4.3 Leaderboards, Achievements, and Matchmaking
+### Leaderboards, Achievements, and Matchmaking
 
 Leaderboards, achievements, and matchmaking help games create goals, comparison, and connection between players.
 
@@ -397,7 +397,7 @@ Operations are also important. Teams may need to remove suspicious scores, repro
 
 Large-scale leaderboard design, anti-cheat review, achievement pipelines, matchmaking algorithms, rating systems, and Dedicated Game Server allocation belong to a later advanced course.
 
-### 8.4.4 Remote Config, Events, and Push Notifications
+### Remote Config, Events, and Push Notifications
 
 Remote Config, events, and push notifications are closely connected to LiveOps. They help the team change some live-service rules or player-facing behavior after launch without rebuilding the client for every small update.
 
@@ -500,7 +500,7 @@ Operational safety matters here. Live service changes should be reviewable, logg
 
 Remote Config editors, feature flag systems, event management tools, push notification delivery infrastructure, segmentation, A/B testing, and LiveOps automation belong to a later advanced course.
 
-### 8.4.5 Build vs. Buy and Platform Strategy
+### Build vs. Buy and Platform Strategy
 
 A team does not always need to create every game backend service from scratch. Many teams use managed platforms, open-source platforms, custom services, or a hybrid approach.
 
@@ -549,7 +549,7 @@ Imagine a small arcade-style running game. The player logs in, plays short runs,
 
 The game does not have Real-time Multiplayer. It still needs game backend services.
 
-### 8.5.1 Feature Map
+### Feature Map
 
 | Player-facing feature | Backend service | Important backend question |
 |---|---|---|
@@ -565,7 +565,7 @@ The game does not have Real-time Multiplayer. It still needs game backend servic
 
 The point is not that every arcade game must include all of these features. The point is that these features are common enough that you should be able to recognize what the backend is responsible for.
 
-### 8.5.2 Example API Shapes
+### Example API Shapes
 
 The following examples show what API shapes might appear in such a game. They are not required implementation tasks.
 
@@ -588,11 +588,11 @@ A possible score submission request might look like this:
   "score": 15200,
   "distance": 1840,
   "durationMs": 123000,
-  "clientRunId": "run-2026-06-01-001"
+  "runId": "run-2026-06-01-001"
 }
 ```
 
-A `clientRunId` and client-sent timing fields can help the server detect duplicate submissions and run plausibility checks, but neither proves that the run was valid. The server still needs score, stage, timing, and rule checks.
+A `runId` should be issued or recorded by the server before the backend accepts duplicate-sensitive score submissions. Client-sent timing fields can help with plausibility checks, but they do not prove that the run was valid. The server still needs score, stage, timing, and rule checks.
 
 The server may need to check:
 
@@ -613,7 +613,7 @@ But the server still needs to check authentication, server-side reward period, e
 
 In a real API, the `requestId` or idempotency key might appear in a header or request body. This example keeps the visible API shape simple.
 
-### 8.5.3 Server-Side Validation Questions
+### Server-Side Validation Questions
 
 For each feature, ask what the server should decide.
 
@@ -630,7 +630,7 @@ For each feature, ask what the server should decide.
 
 The server should be especially careful when a request changes state. Reading a leaderboard is usually less risky than granting currency. Submitting a score is more sensitive than viewing an event banner.
 
-### 8.5.4 Operations and Support Questions
+### Operations and Support Questions
 
 Backend services also need to support operations.
 
@@ -852,5 +852,4 @@ Platform features, pricing, API names, and support status can change. Use these 
   Use this when you want to understand why device tokens can become stale or expire and why the backend should update token records.
 
 - [Unity Matchmaker documentation](https://docs.unity.com/en-us/matchmaker)  
-  Use this as a conceptual reference for how a platform describes matchmaking, hosting-provider integration, rule-based matching, and rule relaxation. Check the current hosting-provider support status, deprecation notes, and migration guidance before relying on any specific server allocation flow.
-
+  Use this as a conceptual reference for how a platform describes matchmaking, hosting-provider integration, rule-based matching, and rule relaxation. Unity service integrations and hosting timelines can change, so check the current hosting-provider support status, deprecation notes, and migration guidance before relying on any specific server allocation flow.
