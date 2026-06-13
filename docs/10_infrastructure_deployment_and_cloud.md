@@ -656,11 +656,11 @@ Secrets such as database passwords, token signing keys, payment keys, and admin 
 
 An image is the package. A container is the running instance created from that package.
 
-### Mistake 5: Using `localhost` Inside a Container Without Thinking
+### Mistake 5: Using `localhost` inside a Container without Thinking
 
 Inside a container, `localhost` usually means the container itself. If an API container needs to connect to a database container, it often needs the database service name or network address, not `localhost`.
 
-### Mistake 6: Sending Private Player Data Through CDN
+### Mistake 6: Sending Private Player Data through CDN
 
 A CDN is useful for static content such as images and patch files. A public CDN path is not a safe place for session tokens, private inventory data, production database backups, or admin-only files. Some systems use private CDN access controls or signed URLs, but that is an advanced access-control topic beyond this chapter.
 

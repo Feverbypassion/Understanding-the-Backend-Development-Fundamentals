@@ -713,7 +713,7 @@ Real-time Multiplayer is important, but many games need backend services before 
 
 The client can display UI and request actions, but sensitive decisions should be checked by the server. Scores, rewards, currencies, inventory changes, ranking points, and important grants should not be blindly trusted.
 
-### Mistake 3: Mixing Item Definitions With Player Ownership
+### Mistake 3: Mixing Item Definitions with Player Ownership
 
 An item definition describes what an item is. Player inventory describes who owns it and how many. Mixing these concepts makes inventory, economy, support tools, and balancing harder.
 

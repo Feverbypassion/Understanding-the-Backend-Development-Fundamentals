@@ -587,7 +587,7 @@ should clearly understand why the server should not blindly accept client-sent v
 A server can only validate rules and evidence it actually has, such as stage ID, authenticated
 player, issued `runId`, score range, and server-side records.
 
-### Why `runId` Helps With Repeated Requests
+### Why `runId` Helps with Repeated Requests
 
 A `runId` can represent one play attempt or one stage run.
 

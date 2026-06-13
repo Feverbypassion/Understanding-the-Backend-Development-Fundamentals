@@ -100,7 +100,6 @@ For a game backend learner, this means asking questions such as:
 - Do I want to understand operations tools, Remote Config, and audit logs?
 - Do I want to understand deployment, cloud, DNS, HTTPS, scaling, and reliability?
 - Do I want to understand when to use a Game Backend Platform?
-- Do I want to use AI tools while keeping enough backend judgment to review the result?
 
 This chapter matters because it helps you choose a practical next step inside a broad field.
 
@@ -875,15 +874,15 @@ After writing your plan, check whether it follows these rules.
 
 ## 15.9 Common Mistakes
 
-### Mistake 1. Trying to Learn Every Backend Area at Once
+### Mistake 1: Trying to Learn Every Backend Area at Once
 
-Backend development is broad. Web APIs, databases, real-time networking, cloud infrastructure, security, observability, tools, platforms, and AI workflows can each become a large topic.
+Backend development is broad. Web APIs, databases, real-time networking, cloud infrastructure, security, observability, tools, and platforms can each become a large topic.
 
 Trying to study all of them at the same time usually creates shallow understanding.
 
 Choose one primary direction first. Keep the others on your map for later.
 
-### Mistake 2. Choosing a Tool Before Understanding the Problem
+### Mistake 2: Choosing a Tool Before Understanding the Problem
 
 A tool is useful only when it solves a real problem.
 
@@ -895,7 +894,7 @@ A platform can speed up development, but it may create limitations or migration 
 
 Ask what problem you are solving before choosing a technology.
 
-### Mistake 3. Thinking Platforms Remove Backend Responsibility
+### Mistake 3: Thinking Platforms Remove Backend Responsibility
 
 A Game Backend Platform can provide many useful features, but it does not remove backend thinking.
 
@@ -903,13 +902,13 @@ You still need to understand player identity, data ownership, validation, securi
 
 Using a platform changes your responsibility. It does not erase it.
 
-### Mistake 4. Treating Real-time Multiplayer as Just WebSocket
+### Mistake 4: Treating Real-time Multiplayer as Just WebSocket
 
 WebSocket can be useful for persistent communication, but Real-time Multiplayer Backend is larger than one protocol.
 
 You also need to think about rooms, sessions, matches, server authority, latency, state synchronization, match result reporting, and Dedicated Game Server hosting and operations.
 
-### Mistake 5. Ignoring Operations Until the End
+### Mistake 5: Ignoring Operations Until the End
 
 A feature that works once is not automatically safe to operate.
 
@@ -922,20 +921,7 @@ For example:
 
 Operations should not be an afterthought.
 
-### Mistake 6. Believing AI-Generated Code Without Review
-
-AI tools can help you learn and draft examples, but generated output can still be wrong, outdated, insecure, or not aligned with your project context.
-
-Review AI suggestions with backend fundamentals:
-
-- Does it validate input?
-- Does it protect secrets?
-- Does it avoid trusting the client blindly?
-- Does it handle errors clearly?
-- Does it match the official documentation?
-- Does it fit the problem, or only look impressive?
-
-### Mistake 7. Thinking This Guide Means Backend Learning Is Finished
+### Mistake 6: Thinking This Guide Means Backend Learning Is Finished
 
 This guide gives you a map. It does not finish the journey.
 
@@ -1087,7 +1073,7 @@ You do not need to read all of these resources immediately. Use them as referenc
 
 Official documentation and platform features can change over time. When using a platform or tool, check the current documentation, pricing, support options, and feature availability.
 
-### Web Backend
+### Start Here
 
 - [MDN — Server-side website programming](https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side)
   Use this when you want to review the big picture of server-side development.
@@ -1095,21 +1081,36 @@ Official documentation and platform features can change over time. When using a 
 - [MDN — Overview of HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Overview)
   Use this when you want to review HTTP request and response concepts.
 
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+  Use this when you want to explore relational database concepts more deeply.
+
+- [MDN — The WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+  Use this as a concept reference for bidirectional browser communication.
+
+- [Microsoft Learn — PlayFab Documentation](https://learn.microsoft.com/en-us/gaming/playfab/)
+  Use this to explore examples of game backend, LiveOps, economy, and multiplayer services.
+
+- [Docker Docs — Get Started](https://docs.docker.com/get-started/)
+  Use this when you want to understand containers and local container-based development.
+
+- [OWASP API Security Project](https://owasp.org/www-project-api-security/)
+  Use this when you want to understand common API security risks.
+
+### Optional by Track
+
+Use these after choosing a specific learning direction.
+
+#### Web Backend
+
 - [OpenAPI Initiative — Learn OpenAPI](https://learn.openapis.org/)
   Use this when you want to understand how API contracts and API documentation are described.
 
-### Data and Databases
-
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-  Use this when you want to explore relational database concepts more deeply.
+#### Data and Databases
 
 - [Redis Documentation](https://redis.io/docs/latest/)
   Use this when you want to understand cache and in-memory data structures.
 
-### Real-time Multiplayer Backend
-
-- [MDN — The WebSocket API](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
-  Use this as a concept reference for bidirectional browser communication.
+#### Real-time Multiplayer Backend
 
 - [Colyseus Documentation](https://docs.colyseus.io/)
   Use this to see how a real-time multiplayer framework describes rooms and state synchronization.
@@ -1120,10 +1121,7 @@ Official documentation and platform features can change over time. When using a 
 - [Amazon GameLift Servers Documentation](https://docs.aws.amazon.com/gameliftservers/)
   Use this when you want to explore managed Dedicated Game Server hosting and scaling concepts.
 
-### LiveOps / Tools Backend and Platform Backend
-
-- [Microsoft Learn — PlayFab Documentation](https://learn.microsoft.com/en-us/gaming/playfab/)
-  Use this to explore examples of game backend, LiveOps, economy, and multiplayer services.
+#### LiveOps / Tools Backend and Platform Backend
 
 - [Unity Docs — Services](https://docs.unity.com/en-us/services)
   Use this to explore platform services such as authentication, cloud save, economy, leaderboards, analytics, Remote Config, LiveOps, and multiplayer services. Check current deprecation notes, migration guidance, and supported matchmaking, relay, and hosting paths before planning around a specific Unity service.
@@ -1131,10 +1129,7 @@ Official documentation and platform features can change over time. When using a 
 - [Nakama Documentation](https://heroiclabs.com/docs/nakama/)
   Use this to explore how an open-source game server platform organizes common game backend features.
 
-### Cloud / Infrastructure and Observability
-
-- [Docker Docs — Get Started](https://docs.docker.com/get-started/)
-  Use this when you want to understand containers and local container-based development.
+#### Cloud / Infrastructure and Observability
 
 - [Google Cloud Well-Architected Framework](https://cloud.google.com/architecture/framework)
   Use this as a broad reference for reliability, security, operational excellence, cost, and performance thinking.
@@ -1142,12 +1137,9 @@ Official documentation and platform features can change over time. When using a 
 - [OpenTelemetry Documentation](https://opentelemetry.io/docs/)
   Use this when you want to explore observability concepts such as logs, metrics, and traces.
 
-### Security
+#### Security
 
 - [OWASP Web Security Testing Guide — Stable](https://owasp.org/www-project-web-security-testing-guide/stable/)
   Use this when you want to explore web security testing concepts at a deeper level.
-
-- [OWASP API Security Project](https://owasp.org/www-project-api-security/)
-  Use this when you want to understand common API security risks.
 
 Remember: references are not assignments. Choose the resources that match your next learning path, read slowly, and connect each resource back to the backend map from this guide.

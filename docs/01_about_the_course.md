@@ -364,7 +364,7 @@ Web Backend and Real-time Communication can both be part of game backend develop
 
 A leaderboard query is usually a request/response feature. A real-time match requires message or state exchange over time. The tools, risks, and design questions are different.
 
-### Mistake 3: Confusing LiveOps With Infrastructure Operations
+### Mistake 3: Confusing LiveOps with Infrastructure Operations
 
 LiveOps and infrastructure operations both matter after launch, but they are not the same thing.
 

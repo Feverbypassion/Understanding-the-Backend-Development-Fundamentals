@@ -1924,7 +1924,7 @@ cached_leaderboard_result: auxiliary cached response
 
 If losing cached data would destroy the only truth of the service, the design is risky.
 
-### Mistake 5: Adding Indexes Without Understanding Queries
+### Mistake 5: Adding Indexes without Understanding Queries
 
 Indexes should support important query patterns. They should not be added to every column automatically.
 
@@ -1952,7 +1952,7 @@ A `UNIQUE (player_id, item_id)` model can work well for stackable items such as 
 not work for equipment instances where a player can own multiple copies of the same item with different
 enhancement levels, options, or durability.
 
-### Mistake 9: Confusing Score History With a Per-Player Best-Score Leaderboard
+### Mistake 9: Confusing Score History with a Per-Player Best-Score Leaderboard
 
 The `scores` table can store many submissions from the same player. A per-player best-score leaderboard needs a
 rule or maintained best-score state that chooses one best score per player for the ranking period.

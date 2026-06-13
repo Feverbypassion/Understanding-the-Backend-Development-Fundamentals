@@ -816,7 +816,7 @@ Microservices can be useful, but they are not the default answer. They add netwo
 
 A monolith is not automatically bad. The problem is not “one application.” The problem is unclear responsibility. A well-organized modular monolith can be easier to understand and safer to operate than poorly designed microservices.
 
-### Mistake 3: Adding a Cache Without Understanding Freshness
+### Mistake 3: Adding a Cache without Understanding Freshness
 
 A cache may show older data than the database. If players expect immediate correctness, caching must be designed carefully. Do not store important final player data only in cache.
 
@@ -824,7 +824,7 @@ A cache may show older data than the database. If players expect immediate corre
 
 Queues and workers are useful for delayed work, but not every task belongs in a queue. If the player needs an immediate result, the core decision should usually happen before the response. Background jobs may also be retried, so reward grants and similar operations need idempotency and clear progress records.
 
-### Mistake 5: Confusing Events With Queues
+### Mistake 5: Confusing Events with Queues
 
 A queue is a delivery mechanism. A domain event is a meaningful fact that happened. An event may be delivered through a queue, but the event itself is the meaning, not the delivery mechanism.
 

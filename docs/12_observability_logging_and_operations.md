@@ -573,7 +573,7 @@ The server is running.
 That is not enough.
 A backend that is ready to operate safely should help the team ask better questions.
 
-### Step 1: Notice the Signal Through an Alert and Dashboard
+### Step 1: Notice the Signal through an Alert and Dashboard
 
 The dashboard shows that daily reward failures increased sharply after the event started.
 
@@ -588,7 +588,7 @@ Daily reward grant failures
 This metric shows that the issue is not only one player.
 It is a system-level problem connected to a specific feature.
 
-### Step 2: Check the Scope With Dashboard Signals and Metrics
+### Step 2: Check the Scope with Dashboard Signals and Metrics
 
 The team checks related metrics:
 

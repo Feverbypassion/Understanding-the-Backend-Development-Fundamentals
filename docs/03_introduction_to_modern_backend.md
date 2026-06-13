@@ -1023,7 +1023,7 @@ Live games need support workflows and operational tools. If there are no logs, a
 becomes hard to investigate player issues or service problems. Even if the first tool is simple, the backend should
 leave enough records for safe operations.
 
-### Mistake 7: Starting With Microservices Before Understanding Responsibilities
+### Mistake 7: Starting with Microservices Before Understanding Responsibilities
 
 Microservices are not the first goal. Start by understanding what each part is responsible for. Architecture
 patterns become useful later when you understand the problems they solve.
