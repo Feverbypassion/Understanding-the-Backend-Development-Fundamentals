@@ -7,12 +7,14 @@
   var documentList = document.getElementById("documentList");
   var modeToggle = document.getElementById("modeToggle");
   var downloadButton = document.getElementById("downloadButton");
+  var reloadButton = document.getElementById("reloadButton");
   var reader = document.getElementById("reader");
   var documents = [];
   var markdownCache = new Map();
   var draftCache = new Map();
   var currentFile = "";
   var isEditMode = false;
+  var DRAFT_STORAGE_PREFIX = "backend-guide-draft:";
 
   function setReaderState(message, type) {
     reader.className = "markdown-body";
@@ -34,7 +36,49 @@
     return file.split("/").pop() || "document.md";
   }
 
+  function getDraftStorageKey(file) {
+    return DRAFT_STORAGE_PREFIX + file;
+  }
+
+  function readStoredDraft(file) {
+    try {
+      return window.sessionStorage.getItem(getDraftStorageKey(file));
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function storeDraft(file, markdown) {
+    draftCache.set(file, markdown);
+    try {
+      window.sessionStorage.setItem(getDraftStorageKey(file), markdown);
+    } catch (error) {
+      // The in-memory draft still works if session storage is unavailable.
+    }
+  }
+
+  function clearDraft(file) {
+    draftCache.delete(file);
+    try {
+      window.sessionStorage.removeItem(getDraftStorageKey(file));
+    } catch (error) {
+      // Ignore storage failures; the in-memory draft has already been cleared.
+    }
+  }
+
+  function ensureDraftLoaded(file) {
+    if (!file || draftCache.has(file)) {
+      return;
+    }
+
+    var storedDraft = readStoredDraft(file);
+    if (storedDraft !== null) {
+      draftCache.set(file, storedDraft);
+    }
+  }
+
   function hasDocumentUpdate(file) {
+    ensureDraftLoaded(file);
     return (
       Boolean(file) &&
       markdownCache.has(file) &&
@@ -45,6 +89,10 @@
 
   function setDownloadButtonState() {
     downloadButton.disabled = !hasDocumentUpdate(currentFile);
+  }
+
+  function setReloadButtonState() {
+    reloadButton.disabled = !currentFile;
   }
 
   function getEncodedPath(file) {
@@ -283,6 +331,7 @@
   }
 
   function getVisibleMarkdown(file, markdown) {
+    ensureDraftLoaded(file);
     return draftCache.has(file) ? draftCache.get(file) : markdown;
   }
 
@@ -308,7 +357,7 @@
   function syncEditorDraft() {
     var editor = document.getElementById("markdownEditor");
     if (currentFile && editor) {
-      draftCache.set(currentFile, editor.value);
+      storeDraft(currentFile, editor.value);
       setDownloadButtonState();
     }
   }
@@ -322,7 +371,7 @@
     editor.setAttribute("aria-label", "Markdown text editor");
     editor.addEventListener("input", function () {
       if (currentFile) {
-        draftCache.set(currentFile, editor.value);
+        storeDraft(currentFile, editor.value);
         setDownloadButtonState();
       }
     });
@@ -366,6 +415,30 @@
       document.title = SITE_TITLE;
       setModeToggleState();
       setDownloadButtonState();
+      setReloadButtonState();
+      setReaderState(error.message, "error");
+    }
+  }
+
+  async function reloadCurrentDocument() {
+    if (!currentFile) {
+      return;
+    }
+
+    clearDraft(currentFile);
+    setDownloadButtonState();
+
+    try {
+      var markdown = await fetchMarkdown(currentFile);
+      renderCurrentDocument(markdown);
+      reader.scrollTop = 0;
+      document.querySelector(".content-shell").scrollTop = 0;
+    } catch (error) {
+      currentFile = "";
+      document.title = SITE_TITLE;
+      setModeToggleState();
+      setDownloadButtonState();
+      setReloadButtonState();
       setReaderState(error.message, "error");
     }
   }
@@ -402,8 +475,10 @@
     }
 
     currentFile = file;
+    ensureDraftLoaded(file);
     setModeToggleState();
     setDownloadButtonState();
+    setReloadButtonState();
     setReaderState("Loading...");
     updateActiveNav(file);
 
@@ -421,6 +496,7 @@
       document.title = SITE_TITLE;
       setModeToggleState();
       setDownloadButtonState();
+      setReloadButtonState();
       setReaderState(error.message, "error");
     }
   }
@@ -461,7 +537,9 @@
 
   modeToggle.addEventListener("click", toggleMode);
   downloadButton.addEventListener("click", downloadCurrentDocument);
+  reloadButton.addEventListener("click", reloadCurrentDocument);
   setModeToggleState();
   setDownloadButtonState();
+  setReloadButtonState();
   init();
 })();
