@@ -354,10 +354,10 @@ Here is a simplified conceptual audit log example:
 
 ```json
 {
-  "auditLogId": "audit_20260601_0001",
+  "auditLogId": "audit-20260601-0001",
   "timestamp": "2026-06-01T10:15:30Z",
   "environment": "production",
-  "actorId": "operator_042",
+  "actorId": "operator-042",
   "actorRole": "liveops_lead",
   "operation": "remote_config.update",
   "resourceType": "remote_config",
@@ -367,10 +367,10 @@ Here is a simplified conceptual audit log example:
   "targetSegment": "all_players",
   "estimatedAffectedPlayers": 25000,
   "reason": "Weekend bonus event",
-  "approvalId": "approval_7788",
+  "approvalId": "approval-7788",
   "approvalStatus": "approved",
   "requestId": "req-admin-abc123",
-  "changeRequestId": "change_7788",
+  "changeRequestId": "change-7788",
   "status": "succeeded"
 }
 ```
@@ -420,7 +420,7 @@ accessToken = eyJhbGciOiJIUzI1NiIs...
 Safer:
 accessTokenChanged = true
 rawTokenStored = false
-tokenReferenceId = token_ref_1234
+tokenReferenceId = token-ref-1234
 tokenFingerprint = sha256:ab12cd34...
 ```
 

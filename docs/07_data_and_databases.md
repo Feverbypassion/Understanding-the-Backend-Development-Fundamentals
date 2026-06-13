@@ -224,7 +224,7 @@ An item definition might say:
 |---|---|---|---:|
 | potion-small | Small Potion | consumable | 99 |
 | material-iron | Iron Material | material | 999 |
-| sword_iron | Iron Sword | weapon | 1 |
+| sword-iron | Iron Sword | weapon | 1 |
 
 This table does not say which player owns the item. It only defines what the item is.
 
@@ -369,7 +369,7 @@ history. If the score submission history disappears, the backend may not know th
 
 | Data example | Likely category | Why |
 |---|---|---|
-| Item definition for `sword_iron` | Game Master Data | Defines what the item is |
+| Item definition for `sword-iron` | Game Master Data | Defines what the item is |
 | Currency definition for `coin-gold` | Game Master Data | Defines what the currency type means |
 | `player-001` owns `potion-small` x3 | User Data | Belongs to a specific player |
 | `player-001` has `coin-gold = 1200` | User Data | Describes a specific player's current currency state |
@@ -980,7 +980,7 @@ The `game_items` table stores item definitions.
 |---|---|---|---:|
 | potion-small | Small Potion | consumable | 99 |
 | material-iron | Iron Material | material | 999 |
-| sword_iron | Iron Sword | weapon | 1 |
+| sword-iron | Iron Sword | weapon | 1 |
 
 This table answers:
 
@@ -1656,7 +1656,7 @@ Examples:
 
 ```text
 session:token-abc123 -> player-001
-rate-limit:player-001:POST-scores -> 5
+rate-limit:player-001:POST-players-me-scores -> 5
 leaderboard:stage-01:season-2026-06:per-player-best -> cached top 100 per-player best-score result
 ```
 

@@ -470,7 +470,7 @@ A risky design lets the client send the reward amount.
 
 ```json
 {
-  "rewardId": "daily_01",
+  "rewardId": "daily-01",
   "currencyId": "gem",
   "amount": 5000
 }

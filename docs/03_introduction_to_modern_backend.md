@@ -464,13 +464,13 @@ For example, the database may store replay metadata while File/Object Storage st
 
 ```text
 Database record:
-- replayId: replay_9001
+- replayId: replay-9001
 - playerId: player-1001
-- matchId: match_7001
-- storagePath: replays/2026/05/replay_9001.dat
+- matchId: match-7001
+- storagePath: replays/2026/05/replay-9001.dat
 
 Object storage:
-- replays/2026/05/replay_9001.dat
+- replays/2026/05/replay-9001.dat
 ```
 
 We will revisit storage and infrastructure concepts in later chapters.

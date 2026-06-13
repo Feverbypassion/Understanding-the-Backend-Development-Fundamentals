@@ -317,7 +317,7 @@ API shapes may look like this:
 ```http
 POST /players/me/scores
 GET /leaderboards/weekly?limit=100
-GET /leaderboards/weekly/me
+GET /players/me/leaderboard-rank?period=weekly
 ```
 
 Score submission is sensitive. If the client sends a score of `999999999` for a stage where normal scores are much lower, the backend should not simply accept it without review or rule checks. This is not a full anti-cheat system; it is a basic backend sanity check that helps reject impossible values or flag risky results for review.
@@ -453,7 +453,7 @@ Event data may include:
 
 | Data | Example |
 |---|---|
-| eventId | weekend_double_exp |
+| eventId | weekend-double-exp |
 | startAt / endAt | server-side event time |
 | region | global, South Korea, Europe |
 | reward table | daily ticket, bonus currency |
@@ -584,7 +584,7 @@ A possible score submission request might look like this:
 
 ```json
 {
-  "stageId": "run_forest_01",
+  "stageId": "run-forest-01",
   "score": 15200,
   "distance": 1840,
   "durationMs": 123000,
