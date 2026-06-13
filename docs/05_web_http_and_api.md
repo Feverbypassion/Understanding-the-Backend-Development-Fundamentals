@@ -542,7 +542,7 @@ A path should help developers understand which resource the API operation is abo
 | Less Clear | More REST-Style | Why It Is Clearer |
 |---|---|---|
 | `GET /getLeaderboard` | `GET /leaderboard` | The method already says this is a read operation. |
-| `POST /submitScore` | `POST /players/me/scores` | The resource is `scores`; `POST` shows that data is being submitted. |
+| `POST /submitScore` | `POST /players/me/scores` | The path identifies the authenticated player's score submissions, and `POST` shows that data is being submitted. |
 | `GET /getMyPlayer` | `GET /players/me` | The path identifies the authenticated player's own profile resource. |
 | `GET /getPublicPlayer?id=player-001` | `GET /players/player-001` | The path identifies a public player profile resource. The server must still check what data is allowed to be exposed. |
 | `POST /claimDailyReward` | `POST /players/me/rewards/daily` | The path points to the daily reward resource. |

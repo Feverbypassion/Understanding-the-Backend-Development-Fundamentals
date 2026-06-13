@@ -236,10 +236,10 @@ first step. Checking comes next.
 The API Server compares the method and path against its routing rules.
 
 ```text
-POST + /scores      → score submission handler
-GET  + /scores      → not defined in this example; some APIs might return 405 Method Not Allowed
-GET  + /leaderboard → leaderboard query handler
-GET  + /players/me  → authenticated player profile handler
+POST + /players/me/scores → score submission handler
+GET  + /players/me/scores → not defined in this example; some APIs might return 405 Method Not Allowed
+GET  + /leaderboard       → leaderboard query handler
+GET  + /players/me        → authenticated player profile handler
 ```
 
 A route is the server-side rule that connects a method and path pattern to a handler. In a real API,
@@ -402,9 +402,9 @@ Conceptually, the server may have routing rules like this:
 
 ```text
 GET /health             → health handler
-POST /players            → player creation handler
-GET /players/me          → authenticated player profile handler
-POST /players/me/scores             → score submission handler
+POST /players           → player creation handler
+GET /players/me         → authenticated player profile handler
+POST /players/me/scores → score submission handler
 GET /leaderboard        → leaderboard query handler
 ```
 
