@@ -154,7 +154,7 @@ SESSION_TOKEN_SECRET=replace-with-your-secret
 
 The key idea is that configuration should not be hard-coded inside the application logic. The same code should be able to run in different environments with different configuration values.
 
-### Configuration and secrets are not the same
+### Configuration and Secrets Are Not the Same
 
 Some configuration values are safe to share. Other values are secrets.
 
@@ -185,13 +185,13 @@ A useful rule is:
 Share configuration names. Protect real secret values.
 ```
 
-### Secrets do not belong in the game client
+### Secrets Do Not Belong in the Game Client
 
 The game client runs on a player’s device. That means it can be inspected, copied, modified, or attacked. Secrets such as admin keys, payment verification keys, database passwords, and token signing secrets should not be placed inside the client.
 
 If a secret has already been exposed, deleting it from a file is not enough. The team should assume the exposed value is no longer safe and replace it. This replacement process is often called secret rotation.
 
-### Remote Config is different
+### Remote Config Is Different
 
 Remote Config is a game service feature that lets the server deliver selected game settings that are safe for clients to see. It may be used for feature flags, event settings, balance values, banner visibility, or temporary service behavior.
 
@@ -230,7 +230,7 @@ Dockerfile
 
 An image is not the running process. It is the package used to create one or more running containers. A container is the runtime unit that actually runs from the image.
 
-### Ports and containers
+### Ports and Containers
 
 When a backend runs inside a container, it still needs a port so requests can reach it.
 
@@ -246,7 +246,7 @@ In many containerized web server setups, the server process must listen on the c
 
 You do not need to memorize Docker commands in this chapter. The important idea is that a container helps teams run the same application package in a more predictable way.
 
-### Docker Compose as a component map
+### Docker Compose as a Component Map
 
 Many backend systems need more than one component. For example, an API Server may need a database.
 
@@ -270,7 +270,9 @@ services:
     image: postgres:16
 ```
 
-In this example, `api` and `db` are separate services. The API Server uses `db` as the database service name inside the Compose network. It should not use `localhost` to mean the database container, because inside the API container, `localhost` means the API container itself. The PostgreSQL version in this snippet is illustrative; real projects should choose a supported version intentionally.
+In this example, `api` and `db` are separate services. The API Server uses `db` as the database service name inside the Compose network.
+
+It should not use `localhost` to mean the database container, because inside the API container, `localhost` means the API container itself. The PostgreSQL version in this snippet is illustrative; real projects should choose a supported version intentionally.
 
 Again, the goal here is reading the structure:
 
@@ -282,13 +284,13 @@ API container
 
 You are not expected to run this setup in this chapter.
 
-### Virtual machines and containers
+### Virtual Machines and Containers
 
 A virtual machine, or VM, is a software-defined server that runs on cloud or data center hardware. You can think of it as a rented computer where you install and run server software.
 
 A container is usually smaller and more application-focused than a VM. In many real systems, containers may still run on VMs or other managed compute platforms behind the scenes.
 
-### Cloud hosting concepts
+### Cloud Hosting Concepts
 
 Cloud hosting means using infrastructure provided by a cloud platform instead of running everything on your own physical machines.
 
@@ -466,7 +468,7 @@ Code Change
 
 Deployment does not end when the code is uploaded. The team should check whether the server is actually usable.
 
-### Liveness and readiness
+### Liveness and Readiness
 
 A liveness check asks:
 
@@ -482,7 +484,7 @@ Can this server safely receive real traffic right now?
 
 A server may be alive but not ready. For example, the process may be running, but the database connection may be broken. In that case, sending real traffic to the server could still fail.
 
-### Smoke test
+### Smoke Test
 
 A smoke test is a quick check after deployment. It does not prove that every feature is perfect. It checks whether the most important flows still work.
 
@@ -495,13 +497,13 @@ For a small game backend, a smoke test might include safe checks that avoid unne
 - Daily reward eligibility check, or reward verification that does not grant real rewards
 - One static asset download from CDN
 
-### Rollback and roll forward
+### Rollback and Roll Forward
 
 Rollback means returning to a previous version. Roll forward means deploying a new fixed version.
 
 Rollback is not always simple. If a database migration, client version change, or data format change has already happened, returning to the old server version may create a new problem. That is why deployment planning should include compatibility and recovery planning.
 
-### Beginner deployment checklist
+### Beginner Deployment Checklist
 
 Before deployment, ask:
 
@@ -638,35 +640,35 @@ Static assets can use a CDN, but player-specific data should go through the API 
 
 ## 10.12 Common Mistakes
 
-### Mistake 1: Thinking `localhost` is a public server address
+### Mistake 1: Thinking `localhost` Is a Public Server Address
 
 `localhost` points to the computer making the request. It is useful for local development, but it is not the same as a public domain that real players can reach.
 
-### Mistake 2: Treating staging like production or production like staging
+### Mistake 2: Treating Staging Like Production or Production Like Staging
 
 Staging is for rehearsal. Production is where real players and real data exist. Production should not be used as a casual test space.
 
-### Mistake 3: Putting secrets in code or in the game client
+### Mistake 3: Putting Secrets in Code or in the Game Client
 
 Secrets such as database passwords, token signing keys, payment keys, and admin keys should be protected. They should not be committed to a source repository, written into logs, included in container images, or embedded in a client build.
 
-### Mistake 4: Confusing Docker image and container
+### Mistake 4: Confusing Docker Image and Container
 
 An image is the package. A container is the running instance created from that package.
 
-### Mistake 5: Using `localhost` inside a container without thinking
+### Mistake 5: Using `localhost` Inside a Container Without Thinking
 
 Inside a container, `localhost` usually means the container itself. If an API container needs to connect to a database container, it often needs the database service name or network address, not `localhost`.
 
-### Mistake 6: Sending private player data through CDN
+### Mistake 6: Sending Private Player Data Through CDN
 
 A CDN is useful for static content such as images and patch files. A public CDN path is not a safe place for session tokens, private inventory data, production database backups, or admin-only files. Some systems use private CDN access controls or signed URLs, but that is an advanced access-control topic beyond this chapter.
 
-### Mistake 7: Assuming deployment ends when code is uploaded
+### Mistake 7: Assuming Deployment Ends When Code Is Uploaded
 
 Deployment also requires configuration, secret management, dependency checks, verification, monitoring, and a recovery plan.
 
-### Mistake 8: Treating API Server hosting and Dedicated Game Server hosting as the same problem
+### Mistake 8: Treating API Server Hosting and Dedicated Game Server Hosting as the Same Problem
 
 API Servers usually handle request/response flows. Dedicated Game Servers may handle active match state, region selection, player latency, allocation, result reporting, and match lifecycle.
 

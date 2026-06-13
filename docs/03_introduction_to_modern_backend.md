@@ -28,8 +28,7 @@ As you read, keep asking three questions:
 2. Which game feature might use it?
 3. Which later chapter will revisit this topic?
 
-By the end of this chapter, the word “backend” should feel less vague. You should be able to see it as a set of connected
-backend responsibilities.
+By the end of this chapter, the word “backend” should feel less vague. You should be able to see it as a set of connected responsibilities.
 
 ## 3.2 What You Will Learn
 
@@ -241,9 +240,8 @@ responsibility. Then study the technology that solves that responsibility.
 
 ## 3.5 The Game Client and the Backend
 
-The game client is the application running on the player's device. It may be built with a commercial engine,
-an open-source engine, a browser stack, a custom engine, or another technology. The backend is the server-side system that the client
-communicates with.
+The game client is the application running on the player's device. It may be built with a commercial engine, an open-source engine, a browser stack, a custom engine, or another technology.
+The backend is the server-side system that the client communicates with.
 
 A simple request and response flow looks like this:
 
@@ -993,39 +991,39 @@ Write two or three sentences like this:
 
 ## 3.10 Common Mistakes
 
-### Mistake 1: Thinking the backend is only one server file
+### Mistake 1: Thinking the Backend Is Only One Server File
 
 A backend can start as one application, but it is better to think in responsibilities. Even a small backend may
 include request handling, validation, storage, logging, and operational needs.
 
-### Mistake 2: Thinking every online game needs a Dedicated Game Server
+### Mistake 2: Thinking Every Online Game Needs a Dedicated Game Server
 
 Many online games can use API-based backend services for login, save data, inventory, events, and leaderboards.
 A Dedicated Game Server is mainly needed when the game requires real-time shared state, such as movement,
 combat, or match simulation.
 
-### Mistake 3: Thinking a database is enough
+### Mistake 3: Thinking a Database Is Enough
 
 A database is essential for persistent data, but it does not solve everything. You may also need authentication,
 validation, cache, logs, admin tools, and background processing.
 
-### Mistake 4: Treating cache as the final source of truth
+### Mistake 4: Treating Cache as the Final Source of Truth
 
 A cache is useful for speed, but it is usually temporary. Final service records such as currency, purchase
 grants, and inventory changes should not depend only on cache.
 
-### Mistake 5: Trusting client values blindly
+### Mistake 5: Trusting Client Values Blindly
 
 The client is close to the player and may send incorrect values. The backend should validate sensitive requests,
 especially scores, rewards, purchases, inventory, and competitive results.
 
-### Mistake 6: Forgetting operations tools until too late
+### Mistake 6: Forgetting Operations Tools Until Too Late
 
 Live games need support workflows and operational tools. If there are no logs, admin tools, or audit records, it
 becomes hard to investigate player issues or service problems. Even if the first tool is simple, the backend should
 leave enough records for safe operations.
 
-### Mistake 7: Starting with microservices before understanding responsibilities
+### Mistake 7: Starting With Microservices Before Understanding Responsibilities
 
 Microservices are not the first goal. Start by understanding what each part is responsible for. Architecture
 patterns become useful later when you understand the problems they solve.

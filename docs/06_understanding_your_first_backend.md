@@ -155,7 +155,7 @@ chapter.
 |---|---|---|---|---|---|
 | `GET` | `/health` | Check server status | None | `200 OK` | `503` |
 | `POST` | `/players` | Create a player | JSON with `displayName` | `201 Created` | `400`, `409` |
-| `GET` | `/players/{playerId}` | Read player info | None | `200 OK` | `404` |
+| `GET` | `/players/me` | Read the authenticated player's own profile | None | `200 OK` | `401`, `404` |
 | `POST` | `/scores` | Create a score submission record | JSON with `stageId`, `runId`, and `score` | `201 Created` | `400`, `401`, `403`, `409`, `413`, `415` |
 | `GET` | `/leaderboard` | Read leaderboard | None | `200 OK` | `400` |
 
@@ -172,10 +172,11 @@ designed as part of the API contract.
 In a real game service, player creation may also include account-related setup, but this chapter
 keeps the example small by using only `displayName` in the request body.
 
-The player lookup and leaderboard examples are also simplified. If an API returns public profile or
-ranking data, the common error examples may be small. If it returns private player data or protected
-leaderboard details, authentication and authorization errors such as `401 Unauthorized` or `403 Forbidden`
-may also need to be considered.
+The player profile and leaderboard examples are also simplified. `GET /players/me` assumes authenticated
+self-profile access, so a real API should include authentication checks. If an API returns limited public
+profile or ranking data, the common error examples may be small. If it returns private player data,
+admin/support data, or protected leaderboard details, authentication and authorization errors such as
+`401 Unauthorized` or `403 Forbidden` may also need to be considered.
 
 ## 6.6 Core Flow of an API Server
 
@@ -236,10 +237,10 @@ first step. Checking comes next.
 The API Server compares the method and path against its routing rules.
 
 ```text
-POST + /scores → score submission handler
-GET  + /scores → not defined in this example; some APIs might return 405 Method Not Allowed
+POST + /scores      → score submission handler
+GET  + /scores      → not defined in this example; some APIs might return 405 Method Not Allowed
 GET  + /leaderboard → leaderboard query handler
-GET  + /players/{playerId} → player lookup handler
+GET  + /players/me  → authenticated player profile handler
 ```
 
 A route is the server-side rule that connects a method and path pattern to a handler. In a real API,
@@ -403,7 +404,7 @@ Conceptually, the server may have routing rules like this:
 ```text
 GET  /health             → health handler
 POST /players            → player creation handler
-GET  /players/{playerId} → player lookup handler
+GET  /players/me          → authenticated player profile handler
 POST /scores             → score submission handler
 GET  /leaderboard        → leaderboard query handler
 ```
@@ -479,6 +480,8 @@ Path parameters identify a specific resource.
 ```http
 GET /players/player_001
 ```
+
+This example is only for understanding path parameters. For a private "my profile" API, this guide uses `GET /players/me`.
 
 Here, the server reads `player_001` as the `playerId` path parameter.
 
@@ -584,7 +587,7 @@ should clearly understand why the server should not blindly accept client-sent v
 A server can only validate rules and evidence it actually has, such as stage ID, authenticated
 player, issued `runId`, score range, and server-side records.
 
-### Why `runId` Helps with Repeated Requests
+### Why `runId` Helps With Repeated Requests
 
 A `runId` can represent one play attempt or one stage run.
 

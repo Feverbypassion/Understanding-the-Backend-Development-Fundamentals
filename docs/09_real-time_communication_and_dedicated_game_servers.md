@@ -336,7 +336,7 @@ need sequencing, validation, acknowledgement, or another reliability strategy.
 For example, a repeated movement direction sample may be handled differently
 from a one-time "use ultimate skill" command.
 
-### Do Not Confuse UDP with Dedicated Game Servers
+### Do Not Confuse UDP With Dedicated Game Servers
 
 UDP is a communication method. A Dedicated Game Server is a server execution
 structure.

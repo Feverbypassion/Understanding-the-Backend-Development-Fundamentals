@@ -75,7 +75,7 @@ The key idea is simple:
 
 > A backend is not only server code. It is a set of responsibilities that help a game operate as a service.
 
-## 1.4 Core Concepts: Backend Areas and Supporting Concerns
+## 1.4 Core Concepts: Backend Areas and Cross-Cutting Concerns
 
 Game backend learning becomes easier when you separate backend work into areas. These areas are connected, but they solve different problems.
 
@@ -88,7 +88,7 @@ This guide will repeatedly return to four major backend areas.
 | LiveOps / Tools Backend | How does a team operate and adjust the game after launch? | Remote Config, event reward settings, admin dashboard, audit log |
 | Infrastructure / Operations | Where do servers run, and how are they kept reliable? | Local vs production, deployment concept, monitoring, incident response |
 
-This guide also introduces one set of cross-cutting concerns that appears across the core areas. Security and Observability affect many backend flows rather than replacing the core areas.
+This guide also introduces Security and Observability as cross-cutting concerns that appear across the core areas. They affect many backend flows rather than replacing the core areas.
 
 | Cross-Cutting Concerns | Main Question | Simple Game Example |
 |---|---|---|
@@ -221,7 +221,7 @@ After this guide, you may continue in several directions.
 | LiveOps / Tools Backend | operations tools, Remote Config, events, support workflows | Admin Tool concepts, audit logs, event settings, reward history |
 | Cloud / Infrastructure | deployment, containers, cloud, monitoring, reliability | local vs production, Docker overview, infrastructure map |
 
-In addition to these tracks, the Security and Observability specialization appears in every backend path because every backend system needs access control, validation, logs, metrics, and ways to investigate problems.
+In addition to these tracks, Security and Observability appear across every backend path because every backend system needs access control, validation, logs, metrics, and ways to investigate problems.
 
 You do not need to choose one path today. As you read the guide, notice which problems feel interesting to you.
 
@@ -294,11 +294,11 @@ Use the following main area labels.
 - LiveOps / Tools Backend
 - Infrastructure / Operations
 
-Use the following cross-cutting concerns when they are the main concern or a useful secondary concern.
+Use the following cross-cutting concerns when they are the primary concern or a useful secondary concern.
 
 - Security and Observability
 
-Even when Security and Observability are the main concern in a scenario, they still support a backend flow rather than replacing the core backend areas.
+Even when Security and Observability are the primary concern in a scenario, they still support a backend flow rather than replacing the core backend areas.
 
 Some scenarios can connect to more than one area. Some may not need a strong secondary area. Choose the main area or concern first, then write a short note if a secondary area is useful.
 
@@ -340,7 +340,7 @@ Notice these patterns.
 - Real-time Communication often involves connected users and message or state exchange over time.
 - LiveOps / Tools Backend often supports operators, support teams, and event workflows.
 - Infrastructure / Operations focuses on where servers run and how they stay reliable.
-- The Security and Observability specialization appears whenever trust, validation, logs, metrics, or investigation matter.
+- Security and Observability appear whenever trust, validation, logs, metrics, or investigation matter.
 
 A real feature can involve multiple areas. For example, score submission is mainly a Web Backend feature, but suspicious score handling also involves Security and Observability.
 
@@ -364,7 +364,7 @@ Web Backend and Real-time Communication can both be part of game backend develop
 
 A leaderboard query is usually a request/response feature. A real-time match requires message or state exchange over time. The tools, risks, and design questions are different.
 
-### Mistake 3: Confusing LiveOps with Infrastructure Operations
+### Mistake 3: Confusing LiveOps With Infrastructure Operations
 
 LiveOps and infrastructure operations both matter after launch, but they are not the same thing.
 
@@ -378,7 +378,7 @@ Event settings, reward adjustments, user lookup, audit logs, and Remote Config a
 
 ### Mistake 5: Treating Security and Observability as Afterthoughts
 
-The Security and Observability specialization affects every backend area. It is not a separate topic that can always be added safely at the very end.
+Security and Observability affect every backend area. They are not separate topics that can always be added safely at the very end.
 
 For example, a score submission feature should consider validation and logs from the beginning. An event reward tool should consider permissions and audit logs. A production server should consider metrics and alerts.
 
@@ -508,7 +508,7 @@ Together, Security and Observability affect many backend flows. They help teams 
 
 What is the main purpose of the Learning Practice in this chapter?
 
-A. To choose one advanced backend specialization immediately.  
+A. To choose one advanced backend direction immediately.  
 B. To classify game service scenarios into backend areas or cross-cutting concerns.
 C. To memorize every backend technology before Chapter 2.  
 D. To decide which game engine must be used for the rest of the guide.

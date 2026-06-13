@@ -146,7 +146,7 @@ This separation matters for several reasons:
 If a game client could directly modify inventory, currency, scores, rewards, or purchase records, the service
 would be difficult to protect.
 
-### Backend memory and database storage
+### Backend Memory and Database Storage
 
 It is useful to distinguish server memory from database storage.
 
@@ -162,7 +162,7 @@ For example, calculating the result of one request can happen in memory. Storing
 happen in a database. Serving a frequently viewed leaderboard may use cache, but the original score records
 should still be stored in a reliable database.
 
-### Original records, maintained state, and derived data
+### Original Records, Maintained State, and Derived Data
 
 Another useful distinction is original records, maintained current state, and derived or auxiliary data.
 
@@ -365,7 +365,7 @@ If the cached per-player best-score top 100 disappears, the backend can rebuild 
 records, such as `player_stage_best_scores`, or from `scores` if the service recalculates best scores from
 history. If the score submission history disappears, the backend may not know the true ranking history anymore.
 
-### A simple classification table
+### A Simple Classification Table
 
 | Data example | Likely category | Why |
 |---|---|---|
@@ -413,7 +413,7 @@ In this example:
 - Each column represents one field of the player record.
 - `player_id` identifies a specific player.
 
-### Table, row, and column
+### Table, Row, and Column
 
 | Term | Meaning | Game backend example |
 |---|---|---|
@@ -424,7 +424,7 @@ In this example:
 A table should usually represent one kind of thing. If one table tries to store unrelated things, it becomes
 hard to understand and query.
 
-### Primary key
+### Primary Key
 
 A primary key identifies one row in a table.
 
@@ -441,7 +441,7 @@ A useful rule:
 
 > A primary key answers, “Which exact row is this?”
 
-### Foreign key
+### Foreign Key
 
 A foreign key refers to a row in another table.
 
@@ -499,7 +499,7 @@ The exact keys can differ by project. Some schemas use `(player_id, item_id)` as
 stackable inventory table. Other schemas use a separate `player_item_id` and add `UNIQUE (player_id, item_id)`
 to prevent duplicate stack rows. The important idea is that keys give rows identity and connect related records.
 
-### Why tables are separated
+### Why Tables Are Separated
 
 Beginners sometimes wonder why we need multiple tables. Why not put everything into one huge table?
 
@@ -567,7 +567,7 @@ When you see an SQL example, ask:
 - Which rows are affected?
 - Is the query using a relationship between tables?
 
-### INSERT: storing a new row
+### INSERT: Storing a New Row
 
 `INSERT` adds a new row to a table.
 
@@ -603,7 +603,7 @@ In a real authenticated API, the backend should usually identify the player from
 context, not blindly trust a `player_id` value sent by the client. Here, `player-001` is shown only to make the
 SQL example easy to read.
 
-### SELECT: reading rows
+### SELECT: Reading Rows
 
 `SELECT` reads data from a table.
 
@@ -646,7 +646,7 @@ times. A per-player best-score leaderboard needs an explicit rule for choosing e
 The tie-breaker rule is a game design choice. This example uses earlier `best_submitted_at` first. Another game
 might choose a different rule, such as faster clear time, later submission time, or a separate ranking priority.
 
-### UPDATE: changing existing rows
+### UPDATE: Changing Existing Rows
 
 `UPDATE` changes existing rows.
 
@@ -664,7 +664,7 @@ Find player-001 and change the level to 2.
 
 The `WHERE` part is very important. Without a careful condition, an update could affect too many rows.
 
-### DELETE: removing rows
+### DELETE: Removing Rows
 
 `DELETE` removes rows. As with `UPDATE`, the `WHERE` condition is very important. Without a careful condition,
 a `DELETE` statement can remove more rows than intended.
@@ -701,7 +701,7 @@ The row still exists, but normal queries may ignore it.
 Soft delete is not always required. It is a design choice. It is useful when audit, recovery, or historical
 investigation matters. It is not a complete privacy or compliance solution by itself.
 
-### JOIN: reading related data from multiple tables
+### JOIN: Reading Related Data from Multiple Tables
 
 `JOIN` combines related rows from multiple tables for a query result.
 
@@ -801,7 +801,7 @@ When this chapter later shows an index on `player_stage_best_scores`, read it as
 best-score table. If the best-score result is only an ordinary view, index design would apply to the underlying
 tables or to a materialized structure instead.
 
-### players
+### `players` Table
 
 The `players` table stores player identity and profile-like information.
 
@@ -818,7 +818,7 @@ Possible meaning:
 - `level` is the current player level.
 - `created_at` records when the player row was created.
 
-### scores
+### `scores` Table
 
 The `scores` table stores score submission history.
 
@@ -848,7 +848,7 @@ This example uses only `stage_id` to keep the model easy to read. A real weekly 
 also need a `season_id`, `leaderboard_id`, or date range so the backend knows which ranking period is being
 queried.
 
-### player_stage_best_scores
+### `player_stage_best_scores` Table
 
 The `player_stage_best_scores` table stores one current best score per player and stage.
 
@@ -918,7 +918,7 @@ What ranking result can we serve quickly right now?
 In this beginner model, `scores` is original history, `player_stage_best_scores` is maintained current state,
 and a cached leaderboard result is auxiliary read data.
 
-### Reading a per-player best-score leaderboard
+### Reading a Per-Player Best-Score Leaderboard
 
 A query can read the maintained best-score state and sort it for display.
 
@@ -972,7 +972,7 @@ reward_claims
 The `players` table from Section 7.7 is still important because these records belong to specific players. To
 keep this section focused, we will not repeat the `players` table again.
 
-### game_items
+### `game_items` Table
 
 The `game_items` table stores item definitions.
 
@@ -998,7 +998,7 @@ How much `coin_gold` does this player have?
 Currency is intentionally not listed in this `game_items` table. In this chapter, item definitions and
 currency state are separated.
 
-### player_items
+### `player_items` Table
 
 The `player_items` table stores player ownership of stackable items.
 
@@ -1050,7 +1050,7 @@ player_item_id -> player_id + item_id + enhancement_level + options
 So `UNIQUE (player_id, item_id)` is useful for a simple stackable inventory model, but it is not a universal
 rule for every game inventory.
 
-### currency_definitions
+### `currency_definitions` Table
 
 The `currency_definitions` table stores currency types.
 
@@ -1086,7 +1086,7 @@ currency_ledger:
 Why did the currency amount change?
 ```
 
-### player_currencies
+### `player_currencies` Table
 
 The `player_currencies` table stores current currency balances.
 
@@ -1115,7 +1115,7 @@ Many games also need a rule that prevents normal currency balances from becoming
 checked by backend validation, database constraints, or both. Some special systems may allow negative values,
 but that should be an intentional design decision.
 
-### currency_ledger
+### `currency_ledger` Table
 
 The `currency_ledger` table stores structured currency change history.
 
@@ -1152,7 +1152,7 @@ Because a ledger-like table explains why a value changed, it is usually treated 
 new correction rows are added instead of casually editing old ledger rows. The exact policy depends on the
 service, but the key idea is that history should remain trustworthy.
 
-### reward_claims
+### `reward_claims` Table
 
 The `reward_claims` table stores reward claim history.
 
@@ -1187,7 +1187,7 @@ This simplified table is mainly for reading a daily reward example. Other reward
 such as `reward_id`, `event_id`, `season_id`, or `source_id`, depending on what kind of reward is being
 claimed.
 
-### Current state and history
+### Current State and History
 
 A common beginner confusion is the difference between current state and history.
 
@@ -1231,7 +1231,7 @@ currency_ledger tells us why a currency balance changed.
 Application logs help developers investigate behavior, but important economy, reward, and purchase records
 should usually be stored as structured backend records, not only as text log lines.
 
-### Reading the model as a feature flow
+### Reading the Model as a Feature Flow
 
 Let’s read a daily reward flow using these tables.
 
@@ -1341,7 +1341,7 @@ The beginner-level idea is:
 Transactions are especially important for rewards, purchases, currency changes, item upgrades, and inventory
 updates.
 
-### Transactions do not solve every duplicate request problem
+### Transactions Do Not Solve Every Duplicate Request Problem
 
 A transaction is important, but it is not the only safety mechanism.
 
@@ -1370,7 +1370,7 @@ Helpful safety ideas include:
 Idempotency means that repeating the same request should not create an additional unintended effect. This
 chapter only introduces the idea. Full idempotency design belongs to a later Web Backend course.
 
-### Unique constraints
+### Unique Constraints
 
 A unique constraint prevents duplicate values or duplicate combinations.
 
@@ -1453,7 +1453,7 @@ stage_id, season_id, best_score, best_submitted_at, player_id
 Index design depends on the database, the table size, the exact query pattern, and the column order used by
 that query. This example is only a beginner-friendly reading example.
 
-### Indexes are not free
+### Indexes Are Not Free
 
 Indexes can help reads, but they have costs.
 
@@ -1474,7 +1474,7 @@ Good index questions include:
 For example, a stage leaderboard may justify an index. A rarely used admin-only query may not need an index
 immediately.
 
-### Data safety is layered
+### Data Safety Is Layered
 
 Safe backend data handling usually uses several layers together.
 
@@ -1502,6 +1502,8 @@ In game backend discussions, you will also hear terms such as cache, Redis, NoSQ
 key-value store, and source of truth.
 
 This section gives you a beginner-friendly map.
+
+At this point, you have seen the reliable database model. The next sections are optional beginner previews of supporting storage and performance ideas. You do not need to master them before continuing.
 
 ### Cache
 
@@ -1532,7 +1534,7 @@ A cache is useful when the same result is requested often. For example, many pla
 best-score leaderboard. Reading from cache can be faster than recalculating from score history or repeatedly
 reading and sorting maintained best-score state.
 
-### Cache is not the source of truth
+### Cache Is Not the Source of Truth
 
 A cache can expire, disappear, or become outdated.
 
@@ -1568,7 +1570,7 @@ involve original score history and maintained best-score state, depending on the
 
 For many game backend features, reliable database records form the source of truth.
 
-### Cache invalidation and TTL
+### Cache Invalidation and TTL
 
 Two common cache ideas are invalidation and TTL.
 
@@ -1614,7 +1616,7 @@ Common NoSQL categories include:
 
 This chapter focuses only on document databases and key-value stores at a beginner level.
 
-### Document database
+### Document Database
 
 A document database stores data in document-like structures, often similar to JSON.
 
@@ -1642,7 +1644,7 @@ support queries, and audit needs are important.
 Flexibility is not automatically better. The right choice depends on query patterns, transaction needs,
 operational workflow, team experience, and how the data will be reviewed or changed.
 
-### Key-value store
+### Key-Value Store
 
 A key-value store stores values using a simple key-to-value pattern:
 
@@ -1672,7 +1674,7 @@ Score history and important maintained best-score records still need a reliable 
 Some cache or key-value systems can be configured to persist data, but persistence settings alone do not decide
 whether that system should be the source of truth for important business records.
 
-### Choosing storage by the problem
+### Choosing Storage by the Problem
 
 Do not start with the question “SQL or NoSQL?”
 
@@ -1730,7 +1732,7 @@ This table stores structured currency history.
 This cached result is auxiliary, not the source of truth.
 ```
 
-### Data structures to read
+### Data Structures to Read
 
 Read the following data structure descriptions. Most of them are database tables. The final one represents a
 cached result structure. `cached_leaderboard_result` is shown as a simple shape for reading. It does not mean
@@ -1849,7 +1851,7 @@ Notice these points:
 - `cached_leaderboard_result` can help serve repeated reads, but it should be rebuildable from reliable database
   records such as `player_stage_best_scores` or `scores`.
 
-### Short note
+### Short Note
 
 Write two or three sentences for yourself using this pattern:
 
@@ -1863,7 +1865,7 @@ The cached result should not be the only copy because ...
 This note is not something to submit. It is a way to check whether you can explain the difference between
 original history, maintained current state, and cached data.
 
-### Possible interpretation
+### Possible Interpretation
 
 Your interpretation may use different words, but it should include ideas like these:
 
@@ -1881,14 +1883,14 @@ Your interpretation may use different words, but it should include ideas like th
 Beginners often make similar mistakes when first learning databases. Let’s review them before the chapter
 summary.
 
-### Mistake 1: Thinking server memory is enough
+### Mistake 1: Thinking Server Memory Is Enough
 
 Server memory is useful for temporary work, but important data should not live only in memory.
 
 If player inventory, scores, currency history, or reward records disappear after a server restart, the service
 has a serious data problem.
 
-### Mistake 2: Letting the client directly control important data
+### Mistake 2: Letting the Client Directly Control Important Data
 
 The game client should not directly decide final inventory, currency, reward, purchase, score, or leaderboard
 state.
@@ -1896,7 +1898,7 @@ state.
 The client can send a request, but the API Server should validate it and write important results to trusted
 backend storage. Database credentials should also stay on the backend side, not inside the game client.
 
-### Mistake 3: Mixing item definitions, currency definitions, and player-owned state
+### Mistake 3: Mixing Item Definitions, Currency Definitions, and Player-Owned State
 
 Item definitions, currency definitions, and player-owned state answer different questions.
 
@@ -1909,7 +1911,7 @@ player_currencies: How much currency does this player currently have?
 
 Mixing these responsibilities too casually can make future updates and operations harder.
 
-### Mistake 4: Confusing original history, maintained state, and cache
+### Mistake 4: Confusing Original History, Maintained State, and Cache
 
 Cache is useful for speed, but it is not a safe replacement for reliable database records. For leaderboards,
 score history, maintained best-score state, and cached top results have different responsibilities.
@@ -1922,20 +1924,20 @@ cached_leaderboard_result: auxiliary cached response
 
 If losing cached data would destroy the only truth of the service, the design is risky.
 
-### Mistake 5: Adding indexes without understanding queries
+### Mistake 5: Adding Indexes Without Understanding Queries
 
 Indexes should support important query patterns. They should not be added to every column automatically.
 
 Before thinking about an index, ask what query needs help.
 
-### Mistake 6: Thinking NoSQL is always more modern or better
+### Mistake 6: Thinking NoSQL Is Always More Modern or Better
 
 NoSQL is not automatically better than SQL. It is an option for different storage models.
 
 Relational databases are often a strong fit for important records that need relationships, constraints,
 transactions, and careful queries.
 
-### Mistake 7: Forgetting structured history
+### Mistake 7: Forgetting Structured History
 
 Current state is useful, but some changes also need structured history. Reward claims, currency changes,
 purchase grants, item grants, and admin actions may need records that explain what happened and why.
@@ -1944,18 +1946,18 @@ Without that history, customer support, recovery, auditing, and incident investi
 For economy and reward systems, missing structured history can also damage player trust. This is why game
 backend services should be discussed together with data, validation, and failure cases.
 
-### Mistake 8: Assuming one inventory model fits every item
+### Mistake 8: Assuming One Inventory Model Fits Every Item
 
 A `UNIQUE (player_id, item_id)` model can work well for stackable items such as potions or materials. It may
 not work for equipment instances where a player can own multiple copies of the same item with different
 enhancement levels, options, or durability.
 
-### Mistake 9: Confusing score history with a per-player best-score leaderboard
+### Mistake 9: Confusing Score History With a Per-Player Best-Score Leaderboard
 
 The `scores` table can store many submissions from the same player. A per-player best-score leaderboard needs a
 rule or maintained best-score state that chooses one best score per player for the ranking period.
 
-### Mistake 10: Trusting the client device date for daily rewards
+### Mistake 10: Trusting the Client Device Date for Daily Rewards
 
 A daily reward should usually use the backend's service-defined reward day. If the backend blindly trusts the
 client device date, players may receive rewards incorrectly because of time zone differences, device settings,
@@ -2104,7 +2106,7 @@ topic from this chapter in more depth.
 The SQL references below use PostgreSQL because it provides clear official documentation. The concepts in this
 chapter are not limited to PostgreSQL.
 
-### Core references
+### Core References
 
 - [PostgreSQL — Tutorial](https://www.postgresql.org/docs/current/tutorial.html)
   Use this when you want a beginner-friendly introduction to relational databases and SQL.
@@ -2115,7 +2117,7 @@ chapter are not limited to PostgreSQL.
 - [PostgreSQL — Constraints](https://www.postgresql.org/docs/current/ddl-constraints.html)
   Use this when you want to understand primary keys, foreign keys, unique constraints, and check constraints.
 
-### Optional references
+### Optional References
 
 - [PostgreSQL — Transactions](https://www.postgresql.org/docs/current/tutorial-transactions.html)
   Use this when you want to understand why several data changes sometimes need to succeed or fail together.

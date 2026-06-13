@@ -629,7 +629,7 @@ This structure is simple. It has one API Server and one database. But responsibi
 
 As the game grows, the team may notice specific problems.
 
-### Problem 1: Leaderboard reads become heavy
+### Problem 1: Leaderboard Reads Become Heavy
 
 Many players open the weekly leaderboard after every match. The database sorting query becomes expensive.
 
@@ -645,7 +645,7 @@ A cache may help.
 
 The trade-off is freshness. The cached leaderboard may update every few seconds instead of instantly. The database still stores the score records. The cache only stores a fast view that can be rebuilt from the database.
 
-### Problem 2: Season-end rewards affect many players
+### Problem 2: Season-End Rewards Affect Many Players
 
 At the end of a season, the game needs to grant rewards to thousands of players. Doing all reward grants inside one immediate API request would be risky.
 
@@ -669,7 +669,7 @@ A queue and worker may help.
 
 The trade-off is failure handling. Jobs may need retries, duplicate prevention, progress tracking, and clear records so the same reward is not granted twice if a job is retried. The team also needs a way to see which jobs succeeded, failed, or are still pending.
 
-### Problem 3: Admin actions are risky
+### Problem 3: Admin Actions Are Risky
 
 Operators can review suspicious scores and adjust event settings. These actions affect live data.
 
@@ -684,7 +684,7 @@ The architecture should include stronger safeguards:
 
 This does not always require a separate service at first. It does require careful boundaries and records.
 
-### Problem 4: The team wants microservices immediately
+### Problem 4: The Team Wants Microservices Immediately
 
 The team may be tempted to split auth, inventory, leaderboard, rewards, and admin tools into separate services because microservices sound professional.
 

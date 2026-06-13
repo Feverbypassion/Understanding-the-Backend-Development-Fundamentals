@@ -551,7 +551,7 @@ What belongs to a later Platform Backend course:
 
 A platform does not remove the need to understand backend fundamentals. It changes which parts you build yourself and which parts you rely on a platform to provide.
 
-### AI-Assisted Learning as a Small Supporting Habit
+### A Short Note on AI-Assisted Learning
 
 AI tools can help explain unfamiliar terms, summarize documentation, or suggest small practice examples. In this introductory guide, treat them only as a study aid, not as a separate backend track.
 
@@ -1053,20 +1053,6 @@ Platform Backend focuses on build-versus-platform decisions, integration choices
 
 ### Question 6
 
-Which statement is the safest way to think about AI tools while studying backend development?
-
-A. AI tools can replace all backend understanding.
-B. AI-generated backend code is always production-ready.
-C. AI tools can support study and drafting, but students still need to review correctness, security, data exposure risk, and project fit.
-D. Students can paste sensitive production data into AI tools whenever it seems useful for debugging.
-
-**Answer: C**
-
-**Explanation:**
-AI tools can help with explanations, examples, tests, and summaries, but they are only a study aid in this guide. Backend judgment is still needed to review correctness, security, data exposure risk, and project context. More detailed AI-assisted backend workflows belong in a later advanced course.
-
-### Question 7
-
 Which learning plan is most appropriate after finishing this guide?
 
 A. Study every advanced track at the same time with no priority.
@@ -1079,7 +1065,7 @@ D. Focus only on technology names without choosing a backend problem.
 **Explanation:**
 A realistic next step is to choose one primary track, connect it to a backend problem, review supporting chapters, and plan small learning outputs.
 
-### Question 8
+### Question 7
 
 A student wants to understand DNS, HTTPS/TLS, deployment, containers, load balancers, reliability, backup planning, and server hosting environments. Which track is the best fit?
 
@@ -1140,7 +1126,7 @@ Official documentation and platform features can change over time. When using a 
   Use this to explore examples of game backend, LiveOps, economy, and multiplayer services.
 
 - [Unity Docs — Services](https://docs.unity.com/en-us/services)
-  Use this to explore platform services such as authentication, cloud save, economy, leaderboards, analytics, Remote Config, LiveOps, and multiplayer services. Check current deprecation notes, migration guidance, and supported hosting or matchmaking paths before planning around a specific Unity service.
+  Use this to explore platform services such as authentication, cloud save, economy, leaderboards, analytics, Remote Config, LiveOps, and multiplayer services. Check current deprecation notes, migration guidance, and supported matchmaking, relay, and hosting paths before planning around a specific Unity service.
 
 - [Nakama Documentation](https://heroiclabs.com/docs/nakama/)
   Use this to explore how an open-source game server platform organizes common game backend features.

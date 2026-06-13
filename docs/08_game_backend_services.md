@@ -254,7 +254,7 @@ A `requestId` or idempotency key can help the server recognize a repeated reques
 
 For example, the server might create a run ticket before gameplay starts and later accept only one result for that ticket. This is only a preview of a safer design idea; not every small game needs this pattern.
 
-For example, a daily reward claim can use a claim record for the reward period. If the record already exists, the server can return a safe response instead of granting the reward again.
+Similarly, a daily reward claim can use a claim record for the reward period. If the record already exists, the server can return a safe response instead of granting the reward again.
 
 #### What can go wrong?
 
@@ -661,7 +661,7 @@ Choose one common game backend feature and analyze it through data, validation, 
 3. Compare your notes with the daily reward example.
 4. Write one sentence that explains why the backend is needed for this feature.
 
-### Choose one feature
+### Choose One Feature
 
 Pick one feature from the list below:
 
@@ -671,7 +671,7 @@ Pick one feature from the list below:
 - Remote Config event banner
 - Push notification reminder
 
-### Fill in the analysis table
+### Fill in the Analysis Table
 
 Use the table below in your own notes.
 
@@ -685,7 +685,7 @@ Use the table below in your own notes.
 | What logs or records would help operations/support? |  |
 | Which later advanced-course topic would revisit this? |  |
 
-### Example answer: Daily reward
+### Example Answer: Daily Reward
 
 | Question | Example answer |
 |---|---|
@@ -697,7 +697,7 @@ Use the table below in your own notes.
 | Operations/support | Reward claim log, currency ledger, `requestId`, eventId, operator audit log if changed. |
 | Later advanced-course topic | Data modeling, reward records, reward validation, and LiveOps tooling. |
 
-### What to observe
+### What to Observe
 
 After finishing the table, check whether your chosen feature is only a simple UI action or a backend flow involving data, validation, and operations.
 
@@ -705,31 +705,31 @@ You should notice that the client request is only the beginning. The backend mus
 
 ## 8.7 Common Mistakes
 
-### Mistake 1: Thinking game backend only means Real-time Multiplayer
+### Mistake 1: Thinking Game Backend Only Means Real-time Multiplayer
 
 Real-time Multiplayer is important, but many games need backend services before they need a Dedicated Game Server. Login, save data, inventory, rewards, leaderboards, events, and Remote Config are also game backend features.
 
-### Mistake 2: Trusting the client for important values
+### Mistake 2: Trusting the Client for Important Values
 
 The client can display UI and request actions, but sensitive decisions should be checked by the server. Scores, rewards, currencies, inventory changes, ranking points, and important grants should not be blindly trusted.
 
-### Mistake 3: Mixing item definitions with player ownership
+### Mistake 3: Mixing Item Definitions With Player Ownership
 
 An item definition describes what an item is. Player inventory describes who owns it and how many. Mixing these concepts makes inventory, economy, support tools, and balancing harder.
 
-### Mistake 4: Treating Remote Config as the final authority for rewards
+### Mistake 4: Treating Remote Config as the Final Authority for Rewards
 
 Remote Config can help the client display events or adjust behavior. But if a request changes important data, the server should still validate the current rule, server time, eligibility, and duplicate claim state.
 
-### Mistake 5: Ignoring duplicate requests
+### Mistake 5: Ignoring Duplicate Requests
 
 Network retries and repeated button taps happen. Reward grants, currency spends, and other sensitive state-changing actions should be designed so repeated requests do not accidentally create extra rewards or incorrect balances.
 
-### Mistake 6: Thinking build vs. buy has one universal answer
+### Mistake 6: Thinking Build vs. Buy Has One Universal Answer
 
 Using a platform is not automatically right or wrong. Building custom services is not automatically better either. The right decision depends on requirements, feature-specific control, data ownership, cost, operational needs, and future flexibility.
 
-### Mistake 7: Forgetting operations and support
+### Mistake 7: Forgetting Operations and Support
 
 A feature that works once in the client is not automatically operation-ready. Operators and support staff may need logs, audit records, search tools, grant histories, and admin workflows protected by permissions and audit logs. Chapter 12 and Chapter 13 will revisit logs, observability, dashboards, and internal tools more deeply.
 
@@ -852,4 +852,4 @@ Platform features, pricing, API names, and support status can change. Use these 
   Use this when you want to understand why device tokens can become stale or expire and why the backend should update token records.
 
 - [Unity Matchmaker documentation](https://docs.unity.com/en-us/matchmaker)  
-  Use this as a conceptual reference for how a platform describes matchmaking, hosting-provider integration, rule-based matching, and rule relaxation. Unity service integrations and hosting timelines can change, so check the current hosting-provider support status, deprecation notes, and migration guidance before relying on any specific server allocation flow.
+  Use this as a conceptual reference for how a platform describes matchmaking, hosting-provider integration, rule-based matching, and rule relaxation. As of June 2026, Unity's Matchmaker documentation includes migration/deprecation guidance for Multiplay Hosting, so verify the current hosting-provider support status and migration guidance before relying on any specific server allocation flow.

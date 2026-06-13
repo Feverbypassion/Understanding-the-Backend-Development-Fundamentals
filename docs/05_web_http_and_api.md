@@ -240,8 +240,8 @@ Common HTTP methods:
 |---|---|---|
 | `GET` | Read data. | `GET /leaderboard` retrieves ranking data. |
 | `POST` | Create data or ask the server to perform an action. | `POST /scores` submits a score. |
-| `PUT` | Replace a resource with a new complete version. | `PUT /players/{playerId}/profile` could replace a full profile. |
-| `PATCH` | Partially update a resource. | `PATCH /players/{playerId}/nickname` could update only a nickname. |
+| `PUT` | Replace a resource with a new complete version. | `PUT /players/me/profile` could replace the authenticated player's full profile. |
+| `PATCH` | Partially update a resource. | `PATCH /players/me/nickname` could update only the authenticated player's nickname. |
 | `DELETE` | Remove a resource or request removal. | `DELETE /sessions/{sessionId}` could end a stored session record. |
 
 These meanings are common conventions; the actual behavior still depends on the API contract. The server decides what each endpoint actually does. Good API design makes the meaning clear and predictable.
@@ -318,7 +318,7 @@ In an API contract, it is not enough to say “send JSON.” The contract should
 Example request body fields for an authenticated score submission API:
 
 | Field | Type | Required? | Meaning |
-|---|---:|---:|---|
+|---|---|---|---|
 | `stageId` | string | Yes | The stage where the score was earned. |
 | `runId` | string | Yes | A server-issued or server-recorded identifier for one play attempt. It helps detect duplicate submissions, but it is not proof by itself that the score is valid. |
 | `score` | number | Yes | The submitted score value. |
@@ -408,7 +408,7 @@ Example request body:
 Request body fields:
 
 | Field | Type | Required? | Meaning |
-|---|---:|---:|---|
+|---|---|---|---|
 | `stageId` | string | Yes | The stage that was cleared. |
 | `runId` | string | Yes | A server-issued or server-recorded identifier for one play attempt. It helps detect duplicate submissions, but it is not proof by itself that the score is valid. |
 | `score` | number | Yes | The score reported by the client. |
@@ -697,7 +697,7 @@ Request body:
 Request body fields:
 
 | Field | Type | Required? | What to Check |
-|---|---:|---:|---|
+|---|---|---|---|
 | `stageId` | string | Yes | The stage exists. |
 | `runId` | string | Yes | The server-issued or server-recorded run exists, belongs to the authenticated player and stage, and was not already submitted with conflicting data. |
 | `score` | number | Yes | The score is plausible for the stage. |
